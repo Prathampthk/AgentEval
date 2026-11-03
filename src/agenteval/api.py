@@ -1,18 +1,22 @@
 """Local demonstration API; with optional PostgreSQL persistence; no public authentication."""
 
 import asyncio
+import json
 import logging
 import os
 from contextlib import asynccontextmanager
+from pathlib import Path
 from uuid import UUID
 
 from fastapi import FastAPI, Header, HTTPException, Response
+from sqlalchemy import func, select
 from sqlalchemy.exc import SQLAlchemyError
 from starlette.responses import JSONResponse
 
 from agenteval.database import Database, DatasetConflict, MissingRecord
 from agenteval.domain import EvaluationRequest, EvaluationResult, StrictModel
 from agenteval.jobs import JobQueue, QueueFull, SubmissionConflict
+from agenteval.models import Dataset, Job, Result, Run, TestCase
 from agenteval.persistence_schemas import (
     DatasetCreate,
     DatasetView,
@@ -277,6 +281,77 @@ def create_app(
             comparison_input(candidate, len(right.cases)),
             data.policy,
         )
+
+    @app.get("/datasets")
+    async def list_datasets():
+        async with database().sessions() as session:
+            rows = (
+                await session.execute(
+                    select(Dataset, func.count(TestCase.id))
+                    .join(TestCase)
+                    .group_by(Dataset.id)
+                    .order_by(Dataset.created_at.desc())
+                    .limit(50)
+                )
+            ).all()
+            return [
+                {"id": str(d.id), "name": d.name, "version": d.version, "case_count": count}
+                for d, count in rows
+            ]
+
+    @app.get("/overview")
+    async def overview():
+        async with database().sessions() as session:
+            runs = dict(
+                (await session.execute(select(Run.status, func.count()).group_by(Run.status))).all()
+            )
+            jobs = dict(
+                (await session.execute(select(Job.status, func.count()).group_by(Job.status))).all()
+            )
+            row = (
+                await session.execute(
+                    select(
+                        func.count(Result.id),
+                        func.count().filter(Result.passed),
+                        func.avg(Result.correctness),
+                        func.avg(Result.relevance),
+                        func.avg(Result.groundedness),
+                        func.avg(Result.generation_latency_ms + Result.judge_latency_ms),
+                    )
+                )
+            ).one()
+            simulated = await session.scalar(select(func.count()).select_from(Run).where(Run.simulated))
+            latest = (await session.execute(select(Run.id, Run.status).order_by(Run.created_at.desc()).limit(1))).first()
+            return {
+                "simulated_runs": simulated,
+                "latest_run": {"id": str(latest.id), "status": latest.status} if latest else None,
+                "total_runs": sum(runs.values()),
+                "runs": runs,
+                "jobs": jobs,
+                "result_count": row[0],
+                "passed": row[1],
+                "failed_quality": row[0] - row[1],
+                "average_correctness": row[2],
+                "average_relevance": row[3],
+                "average_groundedness": row[4],
+                "average_latency_ms": row[5],
+            }
+
+    @app.get("/judge-validation")
+    async def judge_report():
+        path = Path(__file__).resolve().parents[2] / "reports" / "judge_validation.json"
+        return (
+            json.loads(path.read_text())
+            if path.exists()
+            else {"status": "BLOCKED", "paired_count": 0}
+        )
+
+    # Serve the built dashboard when present. Source-only API installations remain valid.
+    from fastapi.staticfiles import StaticFiles
+
+    dashboard = Path(__file__).resolve().parents[2] / "frontend" / "dist"
+    if dashboard.is_dir():
+        app.mount("/dashboard", StaticFiles(directory=dashboard, html=True), name="dashboard")
 
     return app
 
