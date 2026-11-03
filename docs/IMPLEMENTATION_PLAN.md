@@ -20,3 +20,5 @@ Milestone 1 is implemented and locally validated; live Gemini access remains unv
 During milestone 1, add dependency configuration, local install/run commands, deterministic CI checks and a README. Prepare and verify the cloud environment against those actual commands, then save tested install/start instructions. Use the existing isolated checkout; no worktree is needed. PostgreSQL setup begins when persistence is implemented. Live Gemini checks require a selected model and securely configured credentials; routine tests must not require paid calls.
 
 For each milestone, explain problem, alternatives, decision, implementation, verification, trade-offs and learning takeaway. Seek approval before major architectural changes. Keep implementation work reviewable and the application working at each completed stage.
+
+Milestone 6 tooling increment: 50 unlabeled examples, a strict human-label template, optional judge runner and tested agreement analysis exist. The actual human study remains BLOCKED; independent RAG/regression/dashboard work continues without inventing labels.

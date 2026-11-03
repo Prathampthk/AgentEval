@@ -1,0 +1,21 @@
+{
+  "status": "BLOCKED",
+  "positive_class": "quality_pass",
+  "example_count": 50,
+  "human_labeled": 0,
+  "paired_count": 0,
+  "simulated_judge": false,
+  "confusion_matrix": {
+    "tp": 0,
+    "tn": 0,
+    "fp": 0,
+    "fn": 0
+  },
+  "agreement": null,
+  "precision": null,
+  "recall": null,
+  "false_positive_rate": null,
+  "false_negative_rate": null,
+  "disagreements": [],
+  "limitation": "A small controlled sample is not representative of all LLM applications."
+}
