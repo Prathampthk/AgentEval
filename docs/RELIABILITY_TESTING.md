@@ -1,0 +1,28 @@
+# Reliability testing
+
+Tests run without live Gemini and use real PostgreSQL for transactional behavior. Expected behavior and current evidence:
+
+| Scenario | Expected behavior | Evidence / observed result |
+|---|---|---|
+| Concurrent duplicate submission | One run and one job set | Five concurrent submits return one run ID |
+| Conflicting submission key | Reject conflicting request | HTTP 409 and original submission retained |
+| Concurrent queue admission | Stay within cap | At cap one, two competing submissions create one job |
+| Two claimers, one job | Exactly one committed claim | Independent PostgreSQL sessions return one winner |
+| Worker process exits after claim | Work remains RUNNING until recovery | Real subprocess exits abruptly with code 17; forced expired lease is recovered and replacement completes attempt two |
+| Response received, not persisted | External work may repeat; one accepted result | Simulated interrupted persistence yields two provider calls and one stored result |
+| Expired lease | Cannot renew; recover or fail at exhaustion | Controlled database-clock expiration tests pass |
+| Stale worker writes/fails | Reject with no result overwrite | LostLease raised for old token after a replacement claim |
+| Cancellation during execution | Invalidate lease; reject late result | Cancellation and heartbeat tests cancel the active task and preserve CANCELED |
+| Transient rate-limit failure | Persist retry schedule and budget | Simulated 429 category retries then completes; direct tests verify future eligibility survives new queue instance |
+| Permanent provider failure | Fail without retry | Invalid-output/authentication tests retain attempt count one |
+| Retry exhaustion | Stop claiming; terminal FAILED | Two-attempt policy test and expired-last-lease test pass |
+| Result transaction rejected | Roll back result and job transition together | Actual score constraint failure leaves RUNNING with no accepted result |
+| Concurrent completions | Preserve both results and correct run aggregate | Two jobs complete concurrently; run has two results and COMPLETED |
+| API/application restart | Accepted work survives new process state | Fresh API/DB instances process persisted submission; separate API and worker HTTP smoke passes |
+| Malformed structured output and provider timeout | Distinguish infrastructure failure from poor answer | Existing provider-contract and application tests pass |
+
+These are controlled failure-injection tests, not evidence that all production failure modes are covered. Crash tests deliberately move the lease expiration into the past rather than waiting 60 seconds. The post-response crash window is simulated by withholding persistence; the before-execution test uses a real abrupt process exit. No exactly-once external-call claim follows.
+
+NOT VERIFIED: stopping/restarting PostgreSQL during an active worker attempt, network partitions, long-running shutdown under load, system-wide concurrency limits, live Gemini failures, or sustained reliability at benchmark scale. These remain in the reliability roadmap.
+
+Run `.venv/bin/python scripts/local_db.py admin .venv/bin/pytest -q --junitxml=artifacts/tests.xml`. Only a dedicated `*_test` database is permitted: tests truncate data and round-trip migrations. See MILESTONE_3_EVIDENCE.md for the current observed suite result.

@@ -50,7 +50,7 @@ class Database:
     async def check_ready(self):
         async with self.sessions() as session:
             version = await session.scalar(text("SELECT version_num FROM alembic_version"))
-            if version != "0001":
+            if version != "0002":
                 raise RuntimeError("Database migrations are not current")
 
     async def create_dataset(self, data: DatasetCreate) -> tuple[DatasetView, bool]:
@@ -134,7 +134,7 @@ class Database:
             run = await session.scalar(select(Run).where(Run.id == run_id).with_for_update())
             if run is None:
                 raise MissingRecord
-            if run.status != "RUNNING":
+            if run.status != "RUNNING" or run.execution_mode != "sync":
                 raise RunConflict
             cases = (
                 await session.scalars(select(TestCase).where(TestCase.dataset_id == run.dataset_id))
@@ -177,7 +177,7 @@ class Database:
         async with self.sessions.begin() as session:
             await session.execute(
                 update(Run)
-                .where(Run.id == run_id, Run.status == "RUNNING")
+                .where(Run.id == run_id, Run.status == "RUNNING", Run.execution_mode == "sync")
                 .values(
                     status="FAILED", error_category=category, completed_at=text("CURRENT_TIMESTAMP")
                 )
@@ -202,6 +202,7 @@ class Database:
                 id=run.id,
                 dataset_id=run.dataset_id,
                 status=run.status,
+                execution_mode=run.execution_mode,
                 provider=run.provider,
                 model=run.model,
                 rubric_version=run.rubric_version,

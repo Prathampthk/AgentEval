@@ -6,15 +6,17 @@ import os
 from contextlib import asynccontextmanager
 from uuid import UUID
 
-from fastapi import FastAPI, HTTPException, Response
+from fastapi import FastAPI, Header, HTTPException, Response
 from sqlalchemy.exc import SQLAlchemyError
 from starlette.responses import JSONResponse
 
 from agenteval.database import Database, DatasetConflict, MissingRecord
 from agenteval.domain import EvaluationRequest, EvaluationResult
-from agenteval.persistence_schemas import DatasetCreate, DatasetView, RunCreate, RunView
+from agenteval.jobs import JobQueue, QueueFull, SubmissionConflict
+from agenteval.persistence_schemas import DatasetCreate, DatasetView, JobView, RunCreate, RunView
 from agenteval.persistent_runs import execute_run
-from agenteval.providers import FakeProvider, Provider, ProviderError
+from agenteval.providers import Provider, ProviderError
+from agenteval.runtime import provider_context
 from agenteval.service import evaluate
 
 logger = logging.getLogger("agenteval")
@@ -58,45 +60,18 @@ def create_app(
 ) -> FastAPI:
     @asynccontextmanager
     async def lifespan(app):
-        client = None
-        selected = provider
-        mode = os.getenv("AGENTEVAL_PROVIDER", "fake")
-        if selected is None:
-            if mode == "fake":
-                selected = FakeProvider()
-            elif mode == "gemini":
-                key = os.getenv("GEMINI_API_KEY")
-                model = os.getenv("AGENTEVAL_MODEL")
-                if not key or not model:
-                    raise RuntimeError("Gemini requires GEMINI_API_KEY and AGENTEVAL_MODEL")
-                from google import genai
-                from google.genai import types
-
-                from agenteval.gemini import GeminiProvider
-
-                client = genai.Client(
-                    api_key=key,
-                    http_options=types.HttpOptions(
-                        timeout=int(timeout_seconds * 1000),
-                        retry_options=types.HttpRetryOptions(attempts=1),
-                    ),
-                )
-                selected = GeminiProvider(client, model)
-            else:
-                raise RuntimeError("AGENTEVAL_PROVIDER must be fake or gemini")
-        app.state.provider = selected
-        url = database_url or os.getenv("AGENTEVAL_DATABASE_URL")
-        app.state.database = Database(url) if url else None
-        app.state.slots = asyncio.Queue(maxsize=4)
-        for _ in range(4):
-            app.state.slots.put_nowait(None)
-        try:
-            yield
-        finally:
-            if app.state.database:
-                await app.state.database.close()
-            if client:
-                await client.aio.aclose()
+        async with provider_context(provider, timeout_seconds) as selected:
+            app.state.provider = selected
+            url = database_url or os.getenv("AGENTEVAL_DATABASE_URL")
+            app.state.database = Database(url) if url else None
+            app.state.slots = asyncio.Queue(maxsize=4)
+            for _ in range(4):
+                app.state.slots.put_nowait(None)
+            try:
+                yield
+            finally:
+                if app.state.database:
+                    await app.state.database.close()
 
     app = FastAPI(title="AgentEval", version="0.1.0", lifespan=lifespan)
     app.add_middleware(BodyLimit)
@@ -200,6 +175,38 @@ def create_app(
         if not 1 <= limit <= 100:
             raise HTTPException(422, "limit must be between 1 and 100")
         return await database().list_runs(dataset_id, limit)
+
+    @app.post("/queued-runs", response_model=RunView, status_code=202)
+    async def submit_queued_run(
+        data: RunCreate, idempotency_key: str = Header(min_length=1, max_length=200)
+    ):
+        if not idempotency_key.strip():
+            raise HTTPException(422, "Idempotency-Key must not be blank")
+        db = database()
+        try:
+            run_id = await JobQueue(db).submit(
+                data, app.state.provider, idempotency_key, provider_timeout=timeout_seconds
+            )
+        except SubmissionConflict:
+            raise HTTPException(
+                409, "Idempotency-Key conflicts with an earlier submission"
+            ) from None
+        except QueueFull:
+            raise HTTPException(429, "Persistent job queue capacity reached") from None
+        return await db.get_run(run_id)
+
+    @app.get("/runs/{run_id}/jobs", response_model=list[JobView])
+    async def get_jobs(run_id: UUID):
+        return await JobQueue(database()).list_jobs(run_id)
+
+    @app.post("/runs/{run_id}/cancel", response_model=RunView)
+    async def cancel_run(run_id: UUID):
+        db = database()
+        try:
+            await JobQueue(db).cancel(run_id)
+        except SubmissionConflict:
+            raise HTTPException(409, "Only queued runs support cancellation") from None
+        return await db.get_run(run_id)
 
     return app
 

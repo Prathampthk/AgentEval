@@ -31,3 +31,19 @@ Verification: real PostgreSQL tests cover competing dataset creates, integrity v
 Trade-offs: all results from an incomplete run are discarded; individual progress is not exposed. A process crash or database outage can leave RUNNING records. Retrying POST /runs can create a new run and repeat provider charges. These are explicit limits until durable jobs and idempotency are implemented. Up to 20 cases run sequentially per request, sharing the existing four-request process-local capacity bound. Large results and long requests are reasons to move to workers, not reasons to claim durability now.
 
 Learning takeaway: a saved outcome and a recoverable task are different capabilities. Database persistence is a prerequisite for durable scheduling, not proof of it.
+
+## ADR 003 — Add a PostgreSQL queue with fenced sequential execution
+
+Status: implemented under the approved roadmap continuation, 2026-11-03.
+
+Problem: saving completed evaluations did not make unfinished work recoverable. A request or process could disappear after creating a run.
+
+Decision: add /queued-runs separately from existing synchronous routes. Commit submission and jobs atomically; use a unique idempotency key, short SKIP LOCKED claims, database-clock leases, owner/token guards, and unique result constraints. Serialize admission with a transaction advisory lock and aggregate updates with per-run locks. A separate sequential worker executes evaluations, renews leases, persists retry schedules and recovers expired jobs.
+
+Alternatives: replace all existing routes at once (breaking change); use an in-memory queue (not durable); add a separate broker (unnecessary infrastructure for the initial workload); implement the full concurrency pool now (larger correctness surface).
+
+Verification: real PostgreSQL concurrency and failure tests, actual process exit, post-response crash-window simulation, and a separate API/worker HTTP smoke test. See MILESTONE_3_EVIDENCE.md.
+
+Trade-offs: queue admission is serialized and may become a bottleneck; completion aggregates serialize within a run. Sequential execution intentionally delays throughput work. Provider calls can repeat after failures. Retries repeat generation and judgment together. There is no run-level deadline, Retry-After support, global provider cap or complete outage/shutdown evidence yet. These remain explicit follow-up work.
+
+Learning takeaway: a lease is temporary permission, not permanent ownership. Every final write must prove that permission is still valid.

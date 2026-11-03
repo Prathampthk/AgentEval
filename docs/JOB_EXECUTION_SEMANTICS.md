@@ -1,17 +1,41 @@
-# Proposed job semantics — awaiting approval
+# Durable job execution — milestone 3
 
-No worker exists. These are design decisions to validate during durable-job implementation.
+Implemented by `jobs.py`, `worker.py`, and migration `0002`. The worker processes **one job at a time per process**. The configurable asynchronous pool and concurrency-16 proof remain future work.
 
-- Legal transitions: PENDING → RUNNING or CANCELED; RUNNING → COMPLETED, FAILED, PENDING, or CANCELED. Terminal states do not reactivate. Retry exhaustion ends in FAILED.
-- Claim eligible jobs using a short PostgreSQL transaction and `FOR UPDATE SKIP LOCKED`, updating status, attempt count, owner, expiration and a new fencing token before commit. Other claimers skip locked rows. Never hold the claim transaction during a provider call.
-- Proposed defaults: 60-second lease, heartbeat every 15 seconds, 30-second provider request timeout and 45-second per-attempt job deadline. Configure connection timeout separately. Validate these values under load; database time determines lease eligibility.
-- Renew and finalize only with matching job, RUNNING status, owner, token and unexpired lease. Cancellation invalidates the claim. Store result and completion together. A zero-row guarded update means the worker lost ownership and must discard its result.
-- Recover expired RUNNING jobs to PENDING when budget remains, otherwise FAILED. Heartbeat database failure prevents accepting work after lease loss. A recovered attempt may repeat an already completed external call.
-- Persist next execution time and attempts. Retry only classified transient failures, using capped exponential backoff with jitter and provider retry guidance. Permanent failures and malformed judge output fail explicitly by default. Proposed maximum: three attempts.
-- Pending/retry-wait jobs cancel immediately. Running cancellation is best effort for external work, immediate for accepting future result writes. Completed jobs remain completed.
-- Use a fixed number of worker coroutines, claiming only available capacity. Initial process-local concurrency is configurable, up to a benchmark target of 16. One worker process is required for the initial 16-active benchmark; there is no claimed global concurrency limit.
-- Admission must be bounded transactionally. Choose limits and locking strategy when implementing submission, and test concurrent submissions against the bound. Do not rely on an unlocked COUNT query.
-- Graceful shutdown stops claiming, drains within a deadline, then cancels tasks; remaining leases expire and recover. Persisted jobs survive process exit.
-- Overall run deadline is distinct from job/provider/lease deadlines. Deadline expiration cancels remaining work and makes comparisons with insufficient results INCONCLUSIVE.
+## Submission and admission
 
-Required verification uses real PostgreSQL for competing claims, concurrent idempotency, transaction rollback, expired leases, fencing, cancellation and restart. Failure injection must cover response-before-persistence crashes. None of these guarantees is currently VERIFIED.
+`POST /queued-runs` requires an opaque `Idempotency-Key` header (1–200 nonblank characters) and returns HTTP 202. Scope is the entire local installation/database. Equivalent submissions return the original run even after it finishes or the queue fills. Reusing a key with a different dataset, prompt, provider/model/rubric or execution policy returns 409. There is no TTL or key eviction yet; deleting history manually also removes its deduplication protection.
+
+A PostgreSQL unique constraint protects keys. Submission, payload hash and all case jobs commit together. An installation-wide transaction-scoped advisory lock serializes admissions and duplicate resolution. Active PENDING/RUNNING jobs are counted under that lock; the default cap is 1,000 jobs. Concurrent draining only makes this count conservative. Other submission paths must use the same lock to preserve this bound. Queue overload returns 429 without creating a partial run. This limit is job count, not provider request concurrency.
+
+## Claiming and state transitions
+
+Legal job transitions:
+
+- PENDING → RUNNING or CANCELED.
+- RUNNING → COMPLETED, FAILED, PENDING (retry/recovery), or CANCELED.
+- Terminal states do not reactivate through queue operations.
+
+Claims use a short `FOR UPDATE OF evaluation_jobs SKIP LOCKED` transaction. Each claim increments the persisted attempt count, sets a new random fencing token and owner, and commits before any provider call. Workers select only jobs matching their provider name, model and simulation flag. Run status RUNNING means accepted and not yet terminal, even if all jobs are still PENDING; inspect job states for actual progress.
+
+## Leases, retries and finalization
+
+Default lease: 60 seconds. Heartbeat interval: 15 seconds. Renewal and result writes require RUNNING status, matching owner/token and an unexpired lease, using the database clock. Renewal never revives an expired lease. Completion updates the guarded job, inserts one result, and updates the run aggregate in one transaction. Unique and composite foreign-key constraints bind one result to the correct job, run, case and dataset.
+
+Run-level row locks serialize aggregate changes; result finalization, failure, recovery and cancellation take the run lock before job locks. Claiming/renewal never wait for a run row lock, avoiding inverted lock order. Provider calls retain neither transaction nor connection.
+
+Retryable provider failures use full-jitter capped exponential backoff: delay uniformly between 0 and `min(60, 2 ** (attempt - 1))` seconds. Default maximum is three attempts. Attempts and next eligible time persist across restarts. Permanent errors fail immediately. Provider Retry-After handling is not implemented yet. A retry attempt repeats the whole generation/judgment evaluation; a successful generation followed by judge failure can incur repeated generation charges.
+
+The worker scans up to 100 expired leases per iteration. Expired jobs return to PENDING when budget remains; otherwise they become FAILED with `lease_expired`. Old workers cannot renew or save over a later claim. A worker crash after receiving a response can repeat an external call: execution is at-least-once attempts, with fenced result persistence, **not exactly-once provider execution**. Finite attempt budgets can end in failure.
+
+Successful case results remain visible when other cases fail or the run is canceled. Once every job is terminal, any failed job makes the run FAILED; otherwise canceled jobs make it CANCELED; otherwise it is COMPLETED. These are execution outcomes, not answer quality. A completed result can have `passed=false`.
+
+## Cancellation and deadlines
+
+`POST /runs/{id}/cancel` cancels all still-active jobs for a queued run, invalidating leases transactionally. Completed jobs/results remain intact; terminal runs are unchanged. Synchronous runs return 409 for this operation. Cancellation of provider work already in flight is best effort: a heartbeat detects the lost claim and requests task cancellation; any late completion is rejected regardless of heartbeat timing.
+
+Per-provider-operation application timeout: 30 seconds. Whole evaluation attempt deadline: 45 seconds, distinct from its lease. The SDK receives a request timeout; explicit connection-versus-read timeout configuration remains future work. Database connection timeout is five seconds with ten-second command/statement bounds. There is no overall run deadline yet.
+
+SIGINT/SIGTERM stops the worker loop from starting subsequent work. An active attempt may drain for up to 50 seconds, after which cancellation is requested and its lease is left for recovery. This is cooperative shutdown, not a hard process-kill deadline. Database/heartbeat failure prevents unconditional result acceptance; the final database guard is always authoritative. Live database outage recovery and shutdown-under-load remain additional reliability checks for later milestones.
+
+Application transition guards do not prevent privileged manual SQL from violating lifecycle rules. Use supported queue operations; PostgreSQL enforces structural status/lease/count/relationship constraints but no transition-history trigger.

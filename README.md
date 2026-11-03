@@ -1,7 +1,7 @@
 # AgentEval
 
 A new AI evaluation and regression-testing platform, being built incrementally.
-**Milestones 1–2:** a local FastAPI evaluation workflow, Gemini adapter, and PostgreSQL dataset/run/result persistence. Durable job processing is still planned.
+**Milestones 1–3:** a local FastAPI evaluation workflow, PostgreSQL persistence, and a durable job queue with a separate sequential worker. Gemini adapter contracts are tested; live Gemini remains unverified.
 
 ## Run locally
 
@@ -81,7 +81,7 @@ In another terminal:
 
 Case fields are `external_id`, `question`, `expected_answer`, optional `context` and `exact_match`. The existing body-size cap still applies to the entire dataset. A provider failure records FAILED with no partial results. Successful evaluations can still contain `passed=false` answers. Database errors return sanitized HTTP 503 responses; record lookup errors return 404.
 
-Runs are request-scoped, not queued: up to 20 cases execute sequentially per run, sharing the four-active-request limit with stateless evaluations. Each case can make two paid calls in Gemini mode. Repeated POST /runs creates new work; there is no run-submission idempotency yet. A crash or database outage can leave a RUNNING row. No recovery is claimed.
+The original `/runs` endpoint remains request-scoped: up to 20 cases execute sequentially per run, sharing the four-active-request limit with stateless evaluations. Each case can make two paid calls in Gemini mode. Repeated POST /runs creates new work; there is no run-submission idempotency yet. A crash or database outage can leave a RUNNING row. No recovery is claimed.
 
 Run all tests, including real-database tests:
 
@@ -94,3 +94,33 @@ Without `AGENTEVAL_TEST_DATABASE_URL`, integration tests are explicitly skipped.
 For external PostgreSQL, securely set `AGENTEVAL_DATABASE_URL` (`postgresql+asyncpg://...`); use a schema-owning `AGENTEVAL_MIGRATION_DATABASE_URL` when runtime has only DML permissions. Run migrations explicitly with `.venv/bin/alembic upgrade head`. Never commit these URLs. The helper's `run` mode injects only local runtime configuration; `admin` additionally injects local migration/test URLs. Existing explicit external URLs are preserved. Local configuration is not production secret management.
 
 See [database schema](docs/DATABASE_SCHEMA.md), [milestone 2 evidence](docs/MILESTONE_2_EVIDENCE.md), and [engineering decisions](docs/ENGINEERING_DECISIONS.md). PostgreSQL startup and application processes must be restored explicitly in future tasks; snapshot restoration itself is not yet verified.
+
+## Durable queued runs
+
+After installing dependencies and applying migrations, keep the API running and open another terminal:
+
+```bash
+AGENTEVAL_PROVIDER=fake .venv/bin/python scripts/local_db.py run .venv/bin/python -m agenteval.worker
+```
+
+The worker is a separate process and does not serve HTTP. It executes one evaluation at a time, renews leases, retries classified transient failures, and recovers expired claims. More worker processes can claim safely, but there is no global provider concurrency cap; use one process for the initial demonstration.
+
+For a complete local smoke test, submit before starting the worker, start it using the command above, then check:
+
+```bash
+.venv/bin/python scripts/smoke_jobs.py submit
+# Start the worker in another terminal, then:
+.venv/bin/python scripts/smoke_jobs.py check
+```
+
+| Route | Behavior |
+|---|---|
+| `POST /queued-runs` | Dataset ID and optional prompt; required `Idempotency-Key` header; HTTP 202 and persisted run ID |
+| `GET /runs/{id}/jobs` | Job states, attempts, retry eligibility, lease expiration and sanitized failure categories |
+| `POST /runs/{id}/cancel` | Cancel active queued jobs; terminal runs remain unchanged; synchronous runs return 409 |
+
+Equivalent queued submissions with the same key return the original run. Conflicts return 409. Keys are installation-wide with no expiry. A transactionally checked cap of 1,000 active jobs rejects overload with 429. Queue submission creates no provider calls itself. Run `execution_mode` distinguishes `sync` and `queued`; RUNNING queued runs may have only PENDING jobs, so inspect the job endpoint for progress.
+
+Queued runs retain successful case results even if other jobs fail or the run is canceled. Result writes are fenced by lease token and expiration. A crash after receiving an external response can repeat a paid request; no exactly-once provider execution is promised. The three-attempt default limits automatic retries, not manual submissions with new keys. Live Gemini can cost up to two provider calls per attempt, and API/worker must use matching provider/model configurations.
+
+Read [execution semantics](docs/JOB_EXECUTION_SEMANTICS.md), [reliability checks](docs/RELIABILITY_TESTING.md), and [milestone 3 evidence](docs/MILESTONE_3_EVIDENCE.md). The asynchronous concurrency pool, full outage/shutdown tests and benchmarks remain later milestones.

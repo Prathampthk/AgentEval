@@ -40,7 +40,9 @@ async def db(pg_url):
     database = Database(pg_url)
     async with database.engine.begin() as connection:
         await connection.execute(
-            text("TRUNCATE evaluation_results, evaluation_runs, test_cases, datasets CASCADE")
+            text(
+                "TRUNCATE evaluation_results, evaluation_jobs, evaluation_runs, test_cases, datasets CASCADE"
+            )
         )
     try:
         yield database

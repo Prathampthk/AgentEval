@@ -44,7 +44,8 @@ class RunCreate(StrictModel):
 class RunView(StrictModel):
     id: UUID
     dataset_id: UUID
-    status: Literal["RUNNING", "COMPLETED", "FAILED"]
+    status: Literal["RUNNING", "COMPLETED", "FAILED", "CANCELED"]
+    execution_mode: Literal["sync", "queued"]
     provider: str
     model: str
     rubric_version: Literal["v1"]
@@ -54,3 +55,18 @@ class RunView(StrictModel):
     completed_at: datetime | None
     error_category: str | None
     results: list[EvaluationResult]
+
+
+class JobView(StrictModel):
+    id: UUID
+    run_id: UUID
+    test_case_id: UUID
+    status: Literal["PENDING", "RUNNING", "COMPLETED", "FAILED", "CANCELED"]
+    attempts: int
+    max_attempts: int
+    available_at: datetime
+    created_at: datetime
+    started_at: datetime | None
+    completed_at: datetime | None
+    lease_expires_at: datetime | None
+    last_error: str | None

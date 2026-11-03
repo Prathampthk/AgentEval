@@ -1,4 +1,4 @@
-# Architecture — milestone 2
+# Architecture — milestone 3
 
 ## Current state
 
@@ -36,7 +36,7 @@ Domain code depends on neither FastAPI nor provider SDKs. Application services d
 
 Validate request → transactionally persist immutable run configuration and jobs → return run ID → worker atomically claims eligible work → commit claim → call provider outside transaction → validate evaluation output → transactionally save result if lease token is current → expose results and comparison.
 
-This is the target lifecycle, not existing behavior. The current implementation uses request/response execution (with asynchronous I/O). Persisted /runs records configuration before provider calls, then commits all results and completion together. The /evaluations endpoint remains stateless. Durable background execution is still proposed.
+This is the target lifecycle, not existing behavior. The current implementation uses request/response execution (with asynchronous I/O). Persisted /runs records configuration before provider calls, then commits all results and completion together. The /evaluations endpoint remains stateless. Milestone 3 adds durable /queued-runs and a separate sequential worker in jobs.py and worker.py. Configurable parallel execution remains future work.
 
 ## Three largest risks
 
@@ -53,3 +53,5 @@ Verification: deterministic tests cover valid evaluation, invalid judge output, 
 Learning takeaway: validate what an evaluation means before making its execution durable. A queue can reliably execute a flawed evaluation.
 
 The user approved milestone 1 on 2026-11-03. Durable execution remains a later milestone; seek approval before major architectural changes.
+
+Provider construction now lives in runtime.py so API and worker share configuration without importing HTTP routes into worker logic. Durable queued requests return before provider execution. See ADR 003 for the implemented locking and failure model.

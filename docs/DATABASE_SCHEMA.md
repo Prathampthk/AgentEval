@@ -1,6 +1,6 @@
-# Database schema — milestone 2
+# Database schema — milestone 3
 
-Implemented in `src/agenteval/models.py`, with explicit Alembic revision `0001` under `migrations/versions/`. No application `create_all` or automatic migration-on-start is used.
+Implemented in `src/agenteval/models.py`, with explicit Alembic revisions `0001` and `0002` under `migrations/versions/`. No application `create_all` or automatic migration-on-start is used.
 
 | Table | Keys, constraints, indexes | Relationships and lifecycle |
 |---|---|---|
@@ -19,4 +19,12 @@ A run is committed before provider calls. No database transaction or connection 
 
 The local Docker helper generates protected, ignored configuration under `.local/`, a non-superuser DML application role, and separate development/test databases. Schema administration uses a separate administrative URL. The application role has no migration ownership or superuser permission; administrative credentials are not injected by the runtime `run` helper. This is local development infrastructure, not production credential management. For an external database, set URLs securely; runtime needs `AGENTEVAL_DATABASE_URL`, migrations may use `AGENTEVAL_MIGRATION_DATABASE_URL`.
 
-Jobs, leases, idempotent run submission, recovery, label/document/vector tables and baseline comparisons remain unimplemented. Their designs remain in the roadmap. Store no credentials in dataset/run configuration. Treat stored text as potentially sensitive: use controlled examples, and plan retention before accepting private datasets.
+Jobs, leases, idempotent queued submission and expired-lease recovery are implemented in milestone 3. Label/document/vector tables and baseline comparisons remain in the roadmap. Store no credentials in dataset/run configuration. Treat stored text as potentially sensitive: use controlled examples, and plan retention before accepting private datasets.
+
+## Durable-job schema additions
+
+`evaluation_jobs` adds UUID identity, run/case/dataset composite relationships, unique run/case identity, status/attempt/lease/completion checks, persisted eligibility, timestamps and error categories. Partial indexes support eligible PENDING jobs and expired RUNNING leases. Results optionally reference a job through a unique job ID and a composite foreign key matching its run/case/dataset. Existing synchronous results keep NULL job IDs.
+
+Runs now include execution mode, globally unique nullable submission key and paired payload hash. CANCELED is a valid terminal run state. Migration `0002` preserves existing synchronous runs and results. Its downgrade refuses to discard queued execution history: archive or remove that history explicitly before downgrading. No automated destructive cleanup is performed.
+
+Synchronous run/result transactions retain the milestone 2 behavior. Queued completion commits one guarded job and result plus run aggregate together; completed case results survive failure/cancellation of other cases. See JOB_EXECUTION_SEMANTICS.md for locking, admission and recovery semantics.
