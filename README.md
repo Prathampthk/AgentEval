@@ -1,7 +1,7 @@
 # AgentEval
 
 A new AI evaluation and regression-testing platform, being built incrementally.
-**Milestones 1–3:** a local FastAPI evaluation workflow, PostgreSQL persistence, and a durable job queue with a separate sequential worker. Gemini adapter contracts are tested; live Gemini remains unverified.
+**Milestones 1–4:** a local FastAPI evaluation workflow, PostgreSQL persistence, and a durable job queue with a configurable bounded worker pool. Gemini adapter contracts are tested; live Gemini remains unverified.
 
 ## Run locally
 
@@ -103,7 +103,7 @@ After installing dependencies and applying migrations, keep the API running and 
 AGENTEVAL_PROVIDER=fake .venv/bin/python scripts/local_db.py run .venv/bin/python -m agenteval.worker
 ```
 
-The worker is a separate process and does not serve HTTP. It executes one evaluation at a time, renews leases, retries classified transient failures, and recovers expired claims. More worker processes can claim safely, but there is no global provider concurrency cap; use one process for the initial demonstration.
+The worker is a separate process and does not serve HTTP. By default it executes one evaluation at a time; a fixed pool can run up to 16. It renews leases, retries classified transient failures, and recovers expired claims. More worker processes can claim safely, but there is no global provider concurrency cap; use one process for the initial demonstration.
 
 For a complete local smoke test, submit before starting the worker, start it using the command above, then check:
 
@@ -123,4 +123,22 @@ Equivalent queued submissions with the same key return the original run. Conflic
 
 Queued runs retain successful case results even if other jobs fail or the run is canceled. Result writes are fenced by lease token and expiration. A crash after receiving an external response can repeat a paid request; no exactly-once provider execution is promised. The three-attempt default limits automatic retries, not manual submissions with new keys. Live Gemini can cost up to two provider calls per attempt, and API/worker must use matching provider/model configurations.
 
-Read [execution semantics](docs/JOB_EXECUTION_SEMANTICS.md), [reliability checks](docs/RELIABILITY_TESTING.md), and [milestone 3 evidence](docs/MILESTONE_3_EVIDENCE.md). The asynchronous concurrency pool, full outage/shutdown tests and benchmarks remain later milestones.
+Read [execution semantics](docs/JOB_EXECUTION_SEMANTICS.md), [reliability checks](docs/RELIABILITY_TESTING.md), and [milestone 3 evidence](docs/MILESTONE_3_EVIDENCE.md). The bounded pool and controlled drain/cancellation tests are implemented; full database-outage validation and performance benchmarks remain later milestones.
+
+## Configure worker concurrency
+
+For the fake-provider demonstration, start one worker with:
+
+```bash
+AGENTEVAL_WORKER_CONCURRENCY=16 AGENTEVAL_PROVIDER=fake .venv/bin/python scripts/local_db.py run .venv/bin/python -m agenteval.worker
+```
+
+Do not start this alongside an older worker merely to change its configuration. Stop only the worker process you started, then launch its replacement. The default is 1; accepted values are integers 1–16. Invalid values fail startup. Live-provider concurrency should be chosen against an agreed budget and rate limits.
+
+A worker creates a fixed number of consumer loops; each claims only when ready to execute. The database queue can contain 1,000 active jobs without scheduling one task per job. Provider generation and judgment are sequential within each evaluation, so at most one provider operation per active evaluation is in flight. The five-connection PostgreSQL pool is independent of this setting. API request-based evaluations retain their separate four-active-request limit.
+
+The concurrency cap is **per process**, not installation-wide. Multiple workers, or simultaneous synchronous API evaluations, can exceed 16 combined. To test the intended 16-active limit, use one worker configured to 16 and no competing synchronous evaluation traffic. This does not promise a particular throughput improvement.
+
+SIGTERM/SIGINT stops new loop iterations and uses one shared 50-second drain window for all lanes. Remaining tasks are then canceled; unfinished jobs keep their leases and recover after expiration. A claim already in flight can commit during shutdown, but starts no new provider work after observing the stop signal. Provider cancellation is cooperative and can still incur charges.
+
+Pool start/stop events report configuration and measured process-local active/peak evaluation counts. Counts cover actual evaluation execution, not pending jobs or final database writes; they are not a cost ledger. See [milestone 4 evidence](docs/MILESTONE_4_EVIDENCE.md) for the 120-job correctness test. The planned 1,000-job benchmark remains unrun.

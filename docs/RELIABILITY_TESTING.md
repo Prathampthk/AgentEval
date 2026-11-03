@@ -23,6 +23,10 @@ Tests run without live Gemini and use real PostgreSQL for transactional behavior
 
 These are controlled failure-injection tests, not evidence that all production failure modes are covered. Crash tests deliberately move the lease expiration into the past rather than waiting 60 seconds. The post-response crash window is simulated by withholding persistence; the before-execution test uses a real abrupt process exit. No exactly-once external-call claim follows.
 
-NOT VERIFIED: stopping/restarting PostgreSQL during an active worker attempt, network partitions, long-running shutdown under load, system-wide concurrency limits, live Gemini failures, or sustained reliability at benchmark scale. These remain in the reliability roadmap.
+NOT VERIFIED: stopping/restarting PostgreSQL during an active worker attempt, network partitions, production shutdown/network partitions, system-wide concurrency limits, live Gemini failures, or sustained reliability at benchmark scale. These remain in the reliability roadmap.
 
 Run `.venv/bin/python scripts/local_db.py admin .venv/bin/pytest -q --junitxml=artifacts/tests.xml`. Only a dedicated `*_test` database is permitted: tests truncate data and round-trip migrations. See MILESTONE_3_EVIDENCE.md for the current observed suite result.
+
+## Milestone 4 additions
+
+Controlled tests now verify a 16-active evaluation bound with 120 persisted jobs, bounded task growth, failure/timeout isolation, lane reuse after cancellation, successful two-job drain with unclaimed work retained, forced drain cancellation followed by lease recovery, and shutdown during a committed claim without provider execution. These add controlled shutdown-under-load evidence; they do not verify production network partitions or database restarts. See MILESTONE_4_EVIDENCE.md for the current 84-test suite; milestone 3 reports are historical.

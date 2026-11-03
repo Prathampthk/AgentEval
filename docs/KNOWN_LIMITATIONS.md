@@ -1,6 +1,6 @@
 # Known limitations
 
-- PostgreSQL persistence and durable queued jobs are implemented. The original synchronous /runs path can still leave RUNNING records after a crash; only /queued-runs creates recoverable jobs. The worker currently executes one evaluation at a time per process.
+- PostgreSQL persistence and durable queued jobs are implemented. The original synchronous /runs path can still leave RUNNING records after a crash; only /queued-runs creates recoverable jobs. The worker supports a fixed pool of 1–16 active evaluations per process; the default remains one.
 - No RAG, embeddings, React dashboard, run comparison, regression gate or benchmark yet.
 - No human labels or judge agreement results. No performance or cost claims verified.
 - Gemini adapter is tested against controlled SDK-shaped responses, not a live service. Key, selected model and destination access are still prerequisites for live use.
@@ -13,7 +13,7 @@
 - Synchronous /runs executes up to 20 cases sequentially within one HTTP request; 20 cases can require 40 provider calls. No run-level deadline or retained partial progress yet. Repeating a run submission creates new work.
 
 - Expired queued jobs recover within a finite attempt budget; external calls can repeat. Queued idempotency is installation-wide and has no TTL; changing policy/model under a reused key produces conflict.
-- Configurable concurrency pools, global provider concurrency limits, Retry-After guidance, run-wide deadlines, live database-outage recovery and shutdown-under-load evidence remain future work.
+- Global provider concurrency limits, Retry-After guidance, run-wide deadlines and live database-outage recovery remain future work. Controlled shutdown/drain tests pass; production shutdown/network-partition behavior is not fully validated.
 - Admission uses a serialized PostgreSQL advisory lock; scalability is not benchmarked. Provider/model changes require a matching worker to finish older queued work.
 
 - Stored token usage describes accepted results only; discarded attempts and duplicated external requests are not a complete provider cost ledger.

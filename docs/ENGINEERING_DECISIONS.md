@@ -47,3 +47,19 @@ Verification: real PostgreSQL concurrency and failure tests, actual process exit
 Trade-offs: queue admission is serialized and may become a bottleneck; completion aggregates serialize within a run. Sequential execution intentionally delays throughput work. Provider calls can repeat after failures. Retries repeat generation and judgment together. There is no run-level deadline, Retry-After support, global provider cap or complete outage/shutdown evidence yet. These remain explicit follow-up work.
 
 Learning takeaway: a lease is temporary permission, not permanent ownership. Every final write must prove that permission is still valid.
+
+## ADR 004 — Fixed worker loops for bounded asynchronous execution
+
+Status: implemented under roadmap continuation, 2026-11-03.
+
+Problem: the sequential worker limited overlap, while creating a task for every queued job would make memory and scheduling grow with backlog size.
+
+Decision: launch a fixed number of lane loops plus one recovery loop. Each lane claims one job, evaluates and persists it, then claims again. The existing lease/heartbeat/fenced-write path is reused. `AGENTEVAL_WORKER_CONCURRENCY` accepts 1–16 and defaults to 1. Metrics count current/peak evaluations and started evaluations within one process. No database migration or additional service is required.
+
+Alternatives: create a task per job behind a semaphore (limits active calls but still permits growing task count); claim batches ahead of capacity (leases can expire while waiting locally); introduce a separate scheduler/broker (not needed for the current workload).
+
+Verification: a real PostgreSQL queue holds 120 jobs; a controlled barrier proves 16 evaluations overlap while 104 jobs stay unclaimed. Tests also assert task bounds, successful draining, timeout cancellation/recovery, failure isolation and lane reuse after cancellation. Invalid configuration fails before tasks start.
+
+Trade-offs: polling remains one second by default; it can add queue latency. The five-connection database pool is independent of evaluation concurrency and may become a bottleneck under load. Admission and per-run aggregation still serialize database operations. The cap is per worker process: multiple workers and the API's synchronous endpoints can exceed 16 combined provider calls. The benchmark must use one configured worker and avoid concurrent synchronous evaluations. Shutdown is cooperative, with one shared 50-second drain deadline rather than 50 seconds per lane. Claims already in flight at shutdown can commit; they are left leased without starting provider work.
+
+Learning takeaway: limiting simultaneous work and limiting scheduled work are different requirements. A fixed set of consumers provides both.

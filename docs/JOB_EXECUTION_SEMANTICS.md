@@ -1,6 +1,6 @@
-# Durable job execution — milestone 3
+# Durable job execution — milestone 4
 
-Implemented by `jobs.py`, `worker.py`, and migration `0002`. The worker processes **one job at a time per process**. The configurable asynchronous pool and concurrency-16 proof remain future work.
+Implemented by `jobs.py`, `worker.py`, and migration `0002`. A fixed pool processes 1–16 evaluations per process, configured by AGENTEVAL_WORKER_CONCURRENCY (default 1). A real PostgreSQL test proves overlap, the active bound and bounded task growth. No new schema migration is required for milestone 4.
 
 ## Submission and admission
 
@@ -36,6 +36,12 @@ Successful case results remain visible when other cases fail or the run is cance
 
 Per-provider-operation application timeout: 30 seconds. Whole evaluation attempt deadline: 45 seconds, distinct from its lease. The SDK receives a request timeout; explicit connection-versus-read timeout configuration remains future work. Database connection timeout is five seconds with ten-second command/statement bounds. There is no overall run deadline yet.
 
-SIGINT/SIGTERM stops the worker loop from starting subsequent work. An active attempt may drain for up to 50 seconds, after which cancellation is requested and its lease is left for recovery. This is cooperative shutdown, not a hard process-kill deadline. Database/heartbeat failure prevents unconditional result acceptance; the final database guard is always authoritative. Live database outage recovery and shutdown-under-load remain additional reliability checks for later milestones.
+SIGINT/SIGTERM stops all lanes from starting subsequent work. Active attempts share one 50-second drain deadline, after which cancellation is requested and remaining leases are left for recovery. A claim already in flight may commit during shutdown; provider execution does not start after observing stop. This is cooperative shutdown, not a hard process-kill deadline. Database/heartbeat failure prevents unconditional result acceptance; the final database guard is always authoritative. Controlled shutdown while evaluations are blocked is tested, including successful drain and forced cancellation/recovery. Live database outages and production shutdown/network partitions remain additional reliability checks.
 
 Application transition guards do not prevent privileged manual SQL from violating lifecycle rules. Use supported queue operations; PostgreSQL enforces structural status/lease/count/relationship constraints but no transition-history trigger.
+
+## Concurrency semantics
+
+One process owns a fixed number of lane tasks plus one recovery task. Each occupied lane owns evaluation, heartbeat and lease-watch tasks; no task is scheduled for every database job and no extra job is claimed ahead of lane capacity. Recovery polling is independent of lane execution. Polling defaults to one second. The API's execution slots, number of processes, database connections and provider requests are separate quantities. A worker's database engine retains its five-connection cap, while evaluation concurrency can be 16. Generation and judgment remain sequential within each evaluation. Multiple processes or synchronous API traffic multiply total concurrency; no global provider limiter exists.
+
+WorkerMetrics records active/peak actual evaluations and started evaluations within one event loop; it excludes pending work and final persistence. A shutdown-abandoned claim consumes a persisted attempt but does not increment started-evaluation metrics. Metrics return to zero on success, failure, timeout or cancellation. Metrics are logged on worker shutdown and are not provider usage/cost totals.

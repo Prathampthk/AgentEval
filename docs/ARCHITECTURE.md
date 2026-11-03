@@ -1,4 +1,4 @@
-# Architecture — milestone 3
+# Architecture — milestone 4
 
 ## Current state
 
@@ -36,7 +36,7 @@ Domain code depends on neither FastAPI nor provider SDKs. Application services d
 
 Validate request → transactionally persist immutable run configuration and jobs → return run ID → worker atomically claims eligible work → commit claim → call provider outside transaction → validate evaluation output → transactionally save result if lease token is current → expose results and comparison.
 
-This is the target lifecycle, not existing behavior. The current implementation uses request/response execution (with asynchronous I/O). Persisted /runs records configuration before provider calls, then commits all results and completion together. The /evaluations endpoint remains stateless. Milestone 3 adds durable /queued-runs and a separate sequential worker in jobs.py and worker.py. Configurable parallel execution remains future work.
+This is the target lifecycle, not existing behavior. The current implementation uses request/response execution (with asynchronous I/O). Persisted /runs records configuration before provider calls, then commits all results and completion together. The /evaluations endpoint remains stateless. Milestone 3 adds durable /queued-runs and a separate sequential worker in jobs.py and worker.py. Milestone 4 adds a fixed configurable pool in the same worker entry point, with process-local concurrency and shared shutdown draining.
 
 ## Three largest risks
 
