@@ -1,0 +1,96 @@
+# AgentEval
+
+A new AI evaluation and regression-testing platform, being built incrementally.
+**Milestones 1–2:** a local FastAPI evaluation workflow, Gemini adapter, and PostgreSQL dataset/run/result persistence. Durable job processing is still planned.
+
+## Run locally
+
+Requires Python 3.12+. From the repository root:
+
+```bash
+bash scripts/install.sh
+.venv/bin/pytest -q
+AGENTEVAL_PROVIDER=fake .venv/bin/uvicorn agenteval.api:app --host 127.0.0.1 --port 8000
+```
+
+In another terminal, from the same directory:
+
+```bash
+.venv/bin/python scripts/smoke.py
+```
+
+The stateless smoke test submits a question with `Paris` as supporting context, receives a simulated answer, and checks the result. This stateless path requires no API key, database or paid requests. Interactive API documentation is available at `/docs` on the running server.
+
+`POST /evaluations` accepts dataset name/version, test case ID, question, expected answer, context, optional prompt and optional exact-match requirement. Each request generates an answer and judges it; results are returned directly and are not retained. Generation never receives the expected-answer field. On this stateless endpoint dataset versions remain caller-supplied labels. For persisted immutable versions, use the database workflow below.
+
+The fake provider echoes context and uses a substring check. Its scores demonstrate the workflow only, not AI evaluation quality. Every result identifies its provider/model and whether it is simulated.
+
+## Optional Gemini mode
+
+Securely supply `GEMINI_API_KEY` and explicitly select `AGENTEVAL_MODEL`; then set `AGENTEVAL_PROVIDER=gemini` when starting the server. Do not commit secrets. The configured model is used for both generation and judgment, which can introduce shared-model bias. Each evaluation makes two requests, with SDK retries disabled. Token counts remain null when absent from provider metadata.
+
+Live Gemini access has **NOT BEEN VERIFIED**. Cloud networking must permit `generativelanguage.googleapis.com`, and any key must be securely bound for that destination. Never enter keys in chat. Fake mode is the supported verified default; no live credential requirement was added to the environment draft.
+
+## Checks
+
+```bash
+.venv/bin/ruff check src tests scripts migrations
+.venv/bin/ruff format --check src tests scripts migrations
+.venv/bin/pytest -q --junitxml=artifacts/tests.xml
+.venv/bin/python -m pip check
+```
+
+GitHub Actions defines the same deterministic checks with an isolated PostgreSQL service and no live-provider credentials. The workflow has not run on GitHub yet. It does not implement a quality regression gate yet.
+
+## Operating limits
+
+Local/controlled demonstration only: authentication is not implemented. Bind to loopback; do not expose this API publicly. Request bodies are capped at 32 KiB; fields have individual length limits. Each process admits at most four evaluations and rejects excess requests with HTTP 429. This is not a global worker limit or durable queue. Each provider operation has a 30-second application deadline; two sequential operations may take about 60 seconds. The SDK also receives a request timeout. Separate connection, job, lease and run deadlines belong to later work.
+
+`/health/live` confirms API liveness. `/health/ready` reports provider configuration and checks migration readiness when PostgreSQL is configured; it does **not verify Gemini connectivity**. Provider failures produce sanitized HTTP 502 or 504 errors; poor answers produce normal evaluation results with `passed=false`. No automatic application retries are implemented. No request/answer/key content is deliberately logged by application events.
+
+Start with [architecture](docs/ARCHITECTURE.md), [evaluation methodology](docs/EVALUATION_METHODOLOGY.md), [milestone evidence](docs/MILESTONE_1_EVIDENCE.md), and [the implementation plan](docs/IMPLEMENTATION_PLAN.md). No complete target résumé claim is verified; see [the audit](docs/RESUME_CLAIMS_AUDIT.md).
+
+## Persist datasets and evaluation runs
+
+Requires a working local Docker daemon. The helper uses the managed local socket, a digest-pinned PostgreSQL 17 image, loopback port 5432, protected random local credentials, and bind-mounted data under ignored `.local/`. It reuses its own labeled container and refuses unrelated name collisions. If port 5432 is in use, inspect the existing service; do not remove another project's database.
+
+From the repository root:
+
+```bash
+.venv/bin/python scripts/local_db.py start
+.venv/bin/python scripts/local_db.py admin .venv/bin/alembic upgrade head
+AGENTEVAL_PROVIDER=fake .venv/bin/python scripts/local_db.py run .venv/bin/uvicorn agenteval.api:app --host 127.0.0.1 --port 8000
+```
+
+In another terminal:
+
+```bash
+.venv/bin/python scripts/smoke_persistence.py create
+.venv/bin/python scripts/smoke_persistence.py check
+```
+
+`create` saves a small versioned dataset and runs it. Stop and restart only your API process, then run `check` again to verify saved data remains readable. Do not use `create` with live Gemini: the fixture explicitly expects simulated results.
+
+| Route | Behavior |
+|---|---|
+| `POST /datasets` | Save 1–20 cases atomically; HTTP 201 new, 200 equivalent existing, 409 conflicting name/version |
+| `GET /datasets/{id}` | Retrieve the saved version and cases |
+| `POST /runs` | Accept `dataset_id` and optional `prompt`; execute now and persist COMPLETED or FAILED; HTTP 201 means run created, not quality passed |
+| `GET /runs/{id}` | Retrieve configuration, state, results and sanitized failure category |
+| `GET /runs?dataset_id=...&limit=20` | List recent runs for a dataset; limit 1–100 |
+
+Case fields are `external_id`, `question`, `expected_answer`, optional `context` and `exact_match`. The existing body-size cap still applies to the entire dataset. A provider failure records FAILED with no partial results. Successful evaluations can still contain `passed=false` answers. Database errors return sanitized HTTP 503 responses; record lookup errors return 404.
+
+Runs are request-scoped, not queued: up to 20 cases execute sequentially per run, sharing the four-active-request limit with stateless evaluations. Each case can make two paid calls in Gemini mode. Repeated POST /runs creates new work; there is no run-submission idempotency yet. A crash or database outage can leave a RUNNING row. No recovery is claimed.
+
+Run all tests, including real-database tests:
+
+```bash
+.venv/bin/python scripts/local_db.py admin .venv/bin/pytest -q --junitxml=artifacts/tests.xml
+```
+
+Without `AGENTEVAL_TEST_DATABASE_URL`, integration tests are explicitly skipped. The test URL must name a dedicated database ending in `_test`: tests truncate its project tables and test migration downgrade/upgrade. Never point it at development or production data. Unit-only checks can use `.venv/bin/pytest -q -m 'not integration'`.
+
+For external PostgreSQL, securely set `AGENTEVAL_DATABASE_URL` (`postgresql+asyncpg://...`); use a schema-owning `AGENTEVAL_MIGRATION_DATABASE_URL` when runtime has only DML permissions. Run migrations explicitly with `.venv/bin/alembic upgrade head`. Never commit these URLs. The helper's `run` mode injects only local runtime configuration; `admin` additionally injects local migration/test URLs. Existing explicit external URLs are preserved. Local configuration is not production secret management.
+
+See [database schema](docs/DATABASE_SCHEMA.md), [milestone 2 evidence](docs/MILESTONE_2_EVIDENCE.md), and [engineering decisions](docs/ENGINEERING_DECISIONS.md). PostgreSQL startup and application processes must be restored explicitly in future tasks; snapshot restoration itself is not yet verified.
