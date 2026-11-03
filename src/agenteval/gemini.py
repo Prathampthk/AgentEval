@@ -34,10 +34,13 @@ class GeminiProvider:
         self.model = model
 
     async def _request(self, contents: str, config):
+        return await self._sdk_call(
+            "generate_content", model=self.model, contents=contents, config=config
+        )
+
+    async def _sdk_call(self, operation, **kwargs):
         try:
-            return await self.client.aio.models.generate_content(
-                model=self.model, contents=contents, config=config
-            )
+            return await getattr(self.client.aio.models, operation)(**kwargs)
         except errors.APIError as exc:
             code = exc.code
             category = {
@@ -97,3 +100,22 @@ class GeminiProvider:
             )
         except (ValidationError, TypeError):
             raise ProviderError("invalid_output") from None
+
+    @property
+    def embedding_model(self):
+        import os
+
+        return os.getenv("AGENTEVAL_EMBEDDING_MODEL", "gemini-embedding-001")
+
+    async def embed(self, text: str) -> list[float]:
+        response = await self._sdk_call(
+            "embed_content",
+            model=self.embedding_model,
+            contents=text,
+            config=types.EmbedContentConfig(output_dimensionality=768),
+        )
+        if not response.embeddings or len(response.embeddings) != 1:
+            raise ProviderError("invalid_embedding")
+        from agenteval.rag import validate_vector
+
+        return validate_vector(response.embeddings[0].values)

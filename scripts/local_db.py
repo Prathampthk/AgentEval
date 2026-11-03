@@ -19,9 +19,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 LOCAL = ROOT / ".local"
 NAME = "agenteval-postgres"
-IMAGE = (
-    "postgres:17-bookworm@sha256:839fbb5a4942a7758dd93e18b42ea5649807491a0545b5eeeb8f0b8bb11857a5"
-)
+IMAGE = "pgvector/pgvector:pg17-bookworm@sha256:7d0a41464797aeb9862dfdc0bbf1526b82cfd324cdd8036df19e3545f4a9ccb8"
 DOCKER = ["docker", "--host=unix:///var/run/docker.sock"]
 
 

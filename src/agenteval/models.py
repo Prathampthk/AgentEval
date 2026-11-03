@@ -20,6 +20,7 @@ from sqlalchemy import (
 )
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from sqlalchemy.types import UserDefinedType
 
 
 class Base(DeclarativeBase):
@@ -212,3 +213,51 @@ class Job(Base):
     lease_token: Mapped[UUID | None] = mapped_column()
     lease_expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     last_error: Mapped[str | None] = mapped_column(String(100))
+
+
+class Vector768(UserDefinedType):
+    cache_ok = True
+
+    def get_col_spec(self, **kwargs):
+        return "VECTOR(768)"
+
+    def bind_processor(self, dialect):
+        import json
+
+        return lambda value: json.dumps(value)
+
+    def result_processor(self, dialect, coltype):
+        import json
+
+        return lambda value: json.loads(value) if isinstance(value, str) else value
+
+
+class Document(Base):
+    __tablename__ = "documents"
+    __table_args__ = (UniqueConstraint("title", "content_hash", name="uq_document_content"),)
+    id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
+    title: Mapped[str] = mapped_column(String(200))
+    content_hash: Mapped[str] = mapped_column(String(64))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
+class DocumentChunk(Base):
+    __tablename__ = "document_chunks"
+    __table_args__ = (
+        UniqueConstraint(
+            "document_id",
+            "position",
+            "embedding_provider",
+            "embedding_model",
+            name="uq_document_chunk",
+        ),
+    )
+    id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
+    document_id: Mapped[UUID] = mapped_column(
+        ForeignKey("documents.id", ondelete="CASCADE"), index=True
+    )
+    position: Mapped[int] = mapped_column(Integer)
+    content: Mapped[str] = mapped_column(Text)
+    embedding: Mapped[list[float]] = mapped_column(Vector768())
+    embedding_provider: Mapped[str] = mapped_column(String(50))
+    embedding_model: Mapped[str] = mapped_column(String(100))

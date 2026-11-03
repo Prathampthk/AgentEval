@@ -1,0 +1,13 @@
+# Small RAG evaluation target
+
+The pipeline accepts plain text only (no URLs, filesystem paths or arbitrary document parsers), splits it into 100-word chunks with 20-word overlap, embeds chunks, stores 768-dimensional vectors in PostgreSQL/pgvector, retrieves exact cosine-nearest chunks, and constructs context with document/chunk identifiers before generation.
+
+Routes: POST /documents (`title`, `content` up to 6,000 characters); POST /rag/ask (`question`, `k` 1–10); POST /rag/evaluate (also `expected_answer` and `expected_document_ids`). Ingestion allows at most 20 chunks, runs embedding calls sequentially outside a transaction, then inserts document/chunks atomically. Exact duplicate content reuses stored embeddings for the same provider/model; concurrent duplicate ingestion may repeat external calls before the uniqueness constraint resolves insertion.
+
+Fake mode uses normalized hashed word counts, explicitly labeled simulated. It demonstrates storage/retrieval mechanics, not semantic embedding quality. Gemini uses the official SDK and AGENTEVAL_EMBEDDING_MODEL (default gemini-embedding-001), requesting 768 dimensions. Provider and model are stored with every chunk and filtered during retrieval; incompatible embeddings are never mixed. Live embeddings remain unverified and were not executed.
+
+Retrieval returns chunk IDs, source document IDs and cosine distances. Recall@K measures the fraction of expected document IDs found among the top K chunks; Hit Rate@K indicates any match. Multiple chunks may come from the same document. These metrics depend on accurate ground truth and do not measure complete answer correctness. RAG evaluation also applies rubric v1 to the generated response. Expected answers are never passed into generation.
+
+Exact search is intentional for this small controlled corpus; there is no approximate index or scale/performance claim. Retrieved text is untrusted. Prompts request citations, but citation faithfulness is not independently verified. Groundedness scores remain judge opinions. All RAG routes are request-scoped and share the API execution limit; document ingestion and RAG requests are not durable background jobs yet.
+
+Migration 0004 installs the vector extension and creates documents/document_chunks. The local and CI image is digest-pinned pgvector/PostgreSQL 17. On the existing cloud instance the prior container was stopped and retained, and its data bind mount reused by the new container. Never start both containers against the same data directory. Fresh environments use the new image directly. Extension creation needs a migration administrator; the runtime role does not own schema changes.

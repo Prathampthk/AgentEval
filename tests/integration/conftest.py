@@ -41,7 +41,7 @@ async def db(pg_url):
     async with database.engine.begin() as connection:
         await connection.execute(
             text(
-                "TRUNCATE evaluation_results, evaluation_jobs, evaluation_runs, test_cases, datasets CASCADE"
+                "TRUNCATE document_chunks, documents, evaluation_results, evaluation_jobs, evaluation_runs, test_cases, datasets CASCADE"
             )
         )
     try:

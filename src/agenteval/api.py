@@ -23,6 +23,7 @@ from agenteval.persistence_schemas import (
 )
 from agenteval.persistent_runs import execute_run
 from agenteval.providers import Provider, ProviderError
+from agenteval.rag import DocumentCreate, RagEvaluation, RagQuestion, answer, ingest
 from agenteval.runtime import provider_context
 from agenteval.service import evaluate
 
@@ -218,6 +219,37 @@ def create_app(
         except SubmissionConflict:
             raise HTTPException(409, "Only queued runs support cancellation") from None
         return await db.get_run(run_id)
+
+    @app.exception_handler(ProviderError)
+    async def provider_failure(request, exc):
+        return JSONResponse(
+            {"detail": {"category": exc.category, "retryable": exc.retryable}},
+            status_code=504 if exc.category == "timeout" else 502,
+        )
+
+    @app.post("/documents", status_code=201)
+    async def ingest_document(data: DocumentCreate):
+        try:
+            async with evaluation_slot():
+                return await ingest(database(), app.state.provider, data)
+        except ValueError as exc:
+            raise HTTPException(422, str(exc)) from None
+
+    @app.post("/rag/ask")
+    async def rag_answer(data: RagQuestion):
+        try:
+            async with evaluation_slot():
+                return await answer(database(), app.state.provider, data)
+        except ValueError as exc:
+            raise HTTPException(422, str(exc)) from None
+
+    @app.post("/rag/evaluate")
+    async def rag_evaluate(data: RagEvaluation):
+        try:
+            async with evaluation_slot():
+                return await answer(database(), app.state.provider, data, scored=True)
+        except ValueError as exc:
+            raise HTTPException(422, str(exc)) from None
 
     return app
 

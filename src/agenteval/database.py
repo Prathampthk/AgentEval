@@ -51,7 +51,7 @@ class Database:
     async def check_ready(self):
         async with self.sessions() as session:
             version = await session.scalar(text("SELECT version_num FROM alembic_version"))
-            if version != "0003":
+            if version != "0004":
                 raise RuntimeError("Database migrations are not current")
 
     async def create_dataset(self, data: DatasetCreate) -> tuple[DatasetView, bool]:

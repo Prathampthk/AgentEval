@@ -98,3 +98,28 @@ async def test_missing_generated_text_is_invalid_output():
     provider, _ = adapter(types.GenerateContentResponse())
     with pytest.raises(ProviderError, match="invalid_output"):
         await provider.generate(GenerationInput(question="q", context="", prompt="p"))
+
+
+async def test_embedding_sdk_contract():
+    call = AsyncMock(
+        return_value=types.EmbedContentResponse(
+            embeddings=[types.ContentEmbedding(values=[1.0] * 768)]
+        )
+    )
+    provider = GeminiProvider(
+        SimpleNamespace(aio=SimpleNamespace(models=SimpleNamespace(embed_content=call))),
+        "test-model",
+    )
+    vector = await provider.embed("hello")
+    assert len(vector) == 768
+    assert call.await_args.kwargs["config"].output_dimensionality == 768
+
+
+async def test_invalid_embedding_response_rejected():
+    call = AsyncMock(return_value=types.EmbedContentResponse(embeddings=[]))
+    provider = GeminiProvider(
+        SimpleNamespace(aio=SimpleNamespace(models=SimpleNamespace(embed_content=call))),
+        "test-model",
+    )
+    with pytest.raises(ProviderError, match="invalid_embedding"):
+        await provider.embed("hello")

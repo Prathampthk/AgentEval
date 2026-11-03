@@ -26,6 +26,21 @@ class FakeProvider:
     name = "fake"
     model = "context-echo-v1"
     simulated = True
+    embedding_model = "hash-bag-v1-768"
+
+    async def embed(self, text: str) -> list[float]:
+        import hashlib
+        import math
+        import re
+
+        vector = [0.0] * 768
+        for token in re.findall(r"[a-z0-9]+", text.lower()):
+            index = int.from_bytes(hashlib.sha256(token.encode()).digest()[:4], "big") % 768
+            vector[index] += 1
+        length = math.sqrt(sum(v * v for v in vector))
+        if not length:
+            raise ProviderError("empty_embedding_input")
+        return [value / length for value in vector]
 
     async def generate(self, data: GenerationInput) -> TextResponse:
         return TextResponse(text=data.context or "No context supplied.")

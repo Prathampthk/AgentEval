@@ -148,3 +148,9 @@ Pool start/stop events report configuration and measured process-local active/pe
 Queued submissions accept `run_timeout_seconds` (default 900; 1–3600). Expired runs reject new claims and late results, then recovery marks unfinished jobs canceled with `run_timeout`. Earlier results remain available; quality comparison must regard incomplete coverage as inconclusive. Migration 0003 preserves NULL deadlines on old runs. Stop/restart old API and worker processes when applying schema-changing releases.
 
 The isolated PostgreSQL tests now include disabling test-database connections, terminating its backends, and restoring access while a worker is active. Never run these tests against a development database. See [milestone 5 evidence](docs/MILESTONE_5_EVIDENCE.md).
+
+## RAG target
+
+The default database image now includes pgvector; apply migration 0004 with the administrative migration command. Use POST /documents with `title` and plain-text `content`, then POST /rag/ask with `question` and optional `k`. POST /rag/evaluate also accepts `expected_answer` and `expected_document_ids` and returns Recall@K, Hit Rate@K and answer evaluation. Source document/chunk IDs accompany retrieval results.
+
+Fake embeddings are deterministic word hashes, explicitly simulated; Gemini embedding contracts are tested but live embeddings have not run. See [RAG methodology](docs/RAG.md). Existing SQL data was preserved during the local container image change.
