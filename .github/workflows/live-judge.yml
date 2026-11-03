@@ -1,0 +1,36 @@
+name: Optional live judge sample
+on:
+  workflow_dispatch:
+    inputs:
+      run_live:
+        description: Explicitly authorize paid judge requests (maximum 10)
+        type: boolean
+        default: false
+      limit:
+        description: Number of examples, 1–10
+        type: number
+        default: 3
+permissions:
+  contents: read
+jobs:
+  judge:
+    if: inputs.run_live
+    runs-on: ubuntu-latest
+    env:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      AGENTEVAL_MODEL: ${{ vars.AGENTEVAL_MODEL }}
+      AGENTEVAL_PROVIDER: gemini
+      SAMPLE_LIMIT: ${{ inputs.limit }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash scripts/install.sh
+      - run: |
+          .venv/bin/python -c 'import os; n=int(os.environ["SAMPLE_LIMIT"]); assert 1 <= n <= 10; assert os.environ.get("GEMINI_API_KEY"); assert os.environ.get("AGENTEVAL_MODEL")'
+          .venv/bin/python scripts/judge_examples.py --live --limit "$SAMPLE_LIMIT"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: live-judge-predictions
+          path: artifacts/judge_predictions.json

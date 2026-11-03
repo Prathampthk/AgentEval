@@ -154,3 +154,14 @@ The isolated PostgreSQL tests now include disabling test-database connections, t
 The default database image now includes pgvector; apply migration 0004 with the administrative migration command. Use POST /documents with `title` and plain-text `content`, then POST /rag/ask with `question` and optional `k`. POST /rag/evaluate also accepts `expected_answer` and `expected_document_ids` and returns Recall@K, Hit Rate@K and answer evaluation. Source document/chunk IDs accompany retrieval results.
 
 Fake embeddings are deterministic word hashes, explicitly simulated; Gemini embedding contracts are tested but live embeddings have not run. See [RAG methodology](docs/RAG.md). Existing SQL data was preserved during the local container image change.
+
+## Regression checks
+
+POST /comparisons compares stored baseline/candidate run IDs. GET /runs/{id}/comparison-input exports normalized artifacts. The same local/CI checker supports PASS (exit 0), FAIL (exit 1) and INCONCLUSIVE (exit 2):
+
+```
+.venv/bin/python -m agenteval.regression --demo-gate
+.venv/bin/python -m agenteval.regression --baseline baseline.json --candidate candidate.json
+```
+
+Routine CI requires no paid API. See [regression policy](docs/REGRESSION_POLICY.md) for compatibility, thresholds, and the optional manual live sample.

@@ -11,7 +11,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from starlette.responses import JSONResponse
 
 from agenteval.database import Database, DatasetConflict, MissingRecord
-from agenteval.domain import EvaluationRequest, EvaluationResult
+from agenteval.domain import EvaluationRequest, EvaluationResult, StrictModel
 from agenteval.jobs import JobQueue, QueueFull, SubmissionConflict
 from agenteval.persistence_schemas import (
     DatasetCreate,
@@ -24,10 +24,17 @@ from agenteval.persistence_schemas import (
 from agenteval.persistent_runs import execute_run
 from agenteval.providers import Provider, ProviderError
 from agenteval.rag import DocumentCreate, RagEvaluation, RagQuestion, answer, ingest
+from agenteval.regression import RegressionPolicy, compare, comparison_input
 from agenteval.runtime import provider_context
 from agenteval.service import evaluate
 
 logger = logging.getLogger("agenteval")
+
+
+class ComparisonRequest(StrictModel):
+    baseline_run_id: UUID
+    candidate_run_id: UUID
+    policy: RegressionPolicy = RegressionPolicy()
 
 
 class BodyLimit:
@@ -250,6 +257,26 @@ def create_app(
                 return await answer(database(), app.state.provider, data, scored=True)
         except ValueError as exc:
             raise HTTPException(422, str(exc)) from None
+
+    @app.get("/runs/{run_id}/comparison-input")
+    async def export_comparison(run_id: UUID):
+        db = database()
+        run = await db.get_run(run_id)
+        dataset = await db.get_dataset(run.dataset_id)
+        return comparison_input(run, len(dataset.cases))
+
+    @app.post("/comparisons")
+    async def compare_runs(data: ComparisonRequest):
+        db = database()
+        baseline = await db.get_run(data.baseline_run_id)
+        candidate = await db.get_run(data.candidate_run_id)
+        left = await db.get_dataset(baseline.dataset_id)
+        right = await db.get_dataset(candidate.dataset_id)
+        return compare(
+            comparison_input(baseline, len(left.cases)),
+            comparison_input(candidate, len(right.cases)),
+            data.policy,
+        )
 
     return app
 
