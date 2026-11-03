@@ -13,7 +13,7 @@
 - Synchronous /runs executes up to 20 cases sequentially within one HTTP request; 20 cases can require 40 provider calls. No run-level deadline or retained partial progress yet. Repeating a run submission creates new work.
 
 - Expired queued jobs recover within a finite attempt budget; external calls can repeat. Queued idempotency is installation-wide and has no TTL; changing policy/model under a reused key produces conflict.
-- Global provider concurrency limits, Retry-After guidance, run-wide deadlines and live database-outage recovery remain future work. Controlled shutdown/drain tests pass; production shutdown/network-partition behavior is not fully validated.
+- Global provider concurrency limits, Retry-After guidance, broader network-partition and host/storage-failure testing remain future work. Controlled shutdown/drain tests pass; production shutdown/network-partition behavior is not fully validated.
 - Admission uses a serialized PostgreSQL advisory lock; scalability is not benchmarked. Provider/model changes require a matching worker to finish older queued work.
 
 - Stored token usage describes accepted results only; discarded attempts and duplicated external requests are not a complete provider cost ledger.

@@ -1,6 +1,6 @@
 # Prioritized implementation plan
 
-Milestone 1 is implemented and locally validated; live Gemini access remains unverified. Milestone 2 now adds locally verified PostgreSQL persistence and migrations; milestone 3 now adds tested durable jobs and a sequential worker; milestone 4 now adds a verified bounded worker pool and controlled shutdown; milestones 5 onward remain pending. Complete each with tests and matching documentation before advancing. Do not generate the whole project in one step.
+Milestone 1 is implemented and locally validated; live Gemini access remains unverified. Milestone 2 now adds locally verified PostgreSQL persistence and migrations; milestone 3 now adds tested durable jobs and a sequential worker; milestone 4 now adds a verified bounded worker pool and controlled shutdown; milestone 5 now verifies controlled database interruption and overall deadlines; human-study data remains pending in milestone 6. Complete each with tests and matching documentation before advancing. Do not generate the whole project in one step.
 
 | Priority | Milestone | Exit evidence |
 |---|---|---|

@@ -35,6 +35,7 @@ class Database:
             pool_size=5,
             max_overflow=0,
             pool_timeout=5,
+            pool_pre_ping=True,
             hide_parameters=True,
             connect_args={
                 "timeout": 5,
@@ -50,7 +51,7 @@ class Database:
     async def check_ready(self):
         async with self.sessions() as session:
             version = await session.scalar(text("SELECT version_num FROM alembic_version"))
-            if version != "0002":
+            if version != "0003":
                 raise RuntimeError("Database migrations are not current")
 
     async def create_dataset(self, data: DatasetCreate) -> tuple[DatasetView, bool]:
@@ -210,6 +211,7 @@ class Database:
                 configuration=run.configuration,
                 created_at=run.created_at,
                 completed_at=run.completed_at,
+                deadline_at=run.deadline_at,
                 error_category=run.error_category,
                 results=[
                     EvaluationResult(

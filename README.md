@@ -142,3 +142,9 @@ The concurrency cap is **per process**, not installation-wide. Multiple workers,
 SIGTERM/SIGINT stops new loop iterations and uses one shared 50-second drain window for all lanes. Remaining tasks are then canceled; unfinished jobs keep their leases and recover after expiration. A claim already in flight can commit during shutdown, but starts no new provider work after observing the stop signal. Provider cancellation is cooperative and can still incur charges.
 
 Pool start/stop events report configuration and measured process-local active/peak evaluation counts. Counts cover actual evaluation execution, not pending jobs or final database writes; they are not a cost ledger. See [milestone 4 evidence](docs/MILESTONE_4_EVIDENCE.md) for the 120-job correctness test. The planned 1,000-job benchmark remains unrun.
+
+## Overall run deadline and reliability
+
+Queued submissions accept `run_timeout_seconds` (default 900; 1–3600). Expired runs reject new claims and late results, then recovery marks unfinished jobs canceled with `run_timeout`. Earlier results remain available; quality comparison must regard incomplete coverage as inconclusive. Migration 0003 preserves NULL deadlines on old runs. Stop/restart old API and worker processes when applying schema-changing releases.
+
+The isolated PostgreSQL tests now include disabling test-database connections, terminating its backends, and restoring access while a worker is active. Never run these tests against a development database. See [milestone 5 evidence](docs/MILESTONE_5_EVIDENCE.md).

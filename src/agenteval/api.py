@@ -13,7 +13,14 @@ from starlette.responses import JSONResponse
 from agenteval.database import Database, DatasetConflict, MissingRecord
 from agenteval.domain import EvaluationRequest, EvaluationResult
 from agenteval.jobs import JobQueue, QueueFull, SubmissionConflict
-from agenteval.persistence_schemas import DatasetCreate, DatasetView, JobView, RunCreate, RunView
+from agenteval.persistence_schemas import (
+    DatasetCreate,
+    DatasetView,
+    JobView,
+    QueuedRunCreate,
+    RunCreate,
+    RunView,
+)
 from agenteval.persistent_runs import execute_run
 from agenteval.providers import Provider, ProviderError
 from agenteval.runtime import provider_context
@@ -178,14 +185,18 @@ def create_app(
 
     @app.post("/queued-runs", response_model=RunView, status_code=202)
     async def submit_queued_run(
-        data: RunCreate, idempotency_key: str = Header(min_length=1, max_length=200)
+        data: QueuedRunCreate, idempotency_key: str = Header(min_length=1, max_length=200)
     ):
         if not idempotency_key.strip():
             raise HTTPException(422, "Idempotency-Key must not be blank")
         db = database()
         try:
             run_id = await JobQueue(db).submit(
-                data, app.state.provider, idempotency_key, provider_timeout=timeout_seconds
+                data,
+                app.state.provider,
+                idempotency_key,
+                provider_timeout=timeout_seconds,
+                run_timeout=data.run_timeout_seconds,
             )
         except SubmissionConflict:
             raise HTTPException(

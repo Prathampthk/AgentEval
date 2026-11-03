@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from datetime import timedelta
 from uuid import UUID, uuid4
 
-from sqlalchemy import func, select, text, update
+from sqlalchemy import func, or_, select, text, update
 
 from agenteval.database import Database, MissingRecord
 from agenteval.domain import EvaluationRequest, EvaluationResult
@@ -56,17 +56,21 @@ class JobQueue:
         max_attempts: int = 3,
         provider_timeout: float = 30,
         job_timeout: float = 45,
+        run_timeout: float = 900,
     ) -> UUID:
         if not 1 <= len(key) <= 200 or not key.strip():
             raise ValueError("Idempotency key must contain 1–200 characters")
         if not 1 <= max_attempts <= 10 or capacity < 1:
             raise ValueError("Invalid queue policy")
-        if not all(math.isfinite(t) and t > 0 for t in (provider_timeout, job_timeout)):
+        if not all(
+            math.isfinite(t) and t > 0 for t in (provider_timeout, job_timeout, run_timeout)
+        ):
             raise ValueError("Timeouts must be positive and finite")
         config = {
             "prompt": data.prompt,
             "provider_timeout_seconds": provider_timeout,
             "job_timeout_seconds": job_timeout,
+            "run_timeout_seconds": run_timeout,
             "max_attempts": max_attempts,
             "temperature": 0 if not provider.simulated else None,
             "generation_max_output_tokens": 1024 if not provider.simulated else None,
@@ -113,6 +117,7 @@ class JobQueue:
                 execution_mode="queued",
                 submission_key=key,
                 request_hash=digest,
+                deadline_at=func.clock_timestamp() + timedelta(seconds=run_timeout),
             )
             session.add(run)
             await session.flush()
@@ -139,6 +144,8 @@ class JobQueue:
                 .join(Run, Run.id == Job.run_id)
                 .where(
                     Job.status == "PENDING",
+                    Run.status == "RUNNING",
+                    or_(Run.deadline_at.is_(None), Run.deadline_at > func.clock_timestamp()),
                     Job.available_at <= func.clock_timestamp(),
                     Run.provider == provider.name,
                     Run.model == provider.model,
@@ -190,6 +197,12 @@ class JobQueue:
     def _owned(claim):
         return (
             Job.id == claim.id,
+            Job.run_id.in_(
+                select(Run.id).where(
+                    Run.status == "RUNNING",
+                    or_(Run.deadline_at.is_(None), Run.deadline_at > func.clock_timestamp()),
+                )
+            ),
             Job.status == "RUNNING",
             Job.lease_owner == claim.owner,
             Job.lease_token == claim.token,
@@ -307,6 +320,7 @@ class JobQueue:
             await self._summarize(session, run)
 
     async def recover(self, limit: int = 100) -> int:
+        await self.expire_runs(limit)
         async with self.db.sessions() as session:
             expired = (
                 await session.execute(
@@ -375,3 +389,36 @@ class JobQueue:
                 JobView(**{name: getattr(job, name) for name in JobView.model_fields})
                 for job in jobs
             ]
+
+    async def expire_runs(self, limit=100):
+        async with self.db.sessions() as session:
+            ids = (
+                await session.scalars(
+                    select(Run.id)
+                    .where(
+                        Run.execution_mode == "queued",
+                        Run.status == "RUNNING",
+                        Run.deadline_at <= func.clock_timestamp(),
+                    )
+                    .limit(limit)
+                )
+            ).all()
+        for run_id in ids:
+            async with self.db.sessions.begin() as session:
+                run = await self._run_lock(session, run_id)
+                if run.status != "RUNNING":
+                    continue
+                await session.execute(
+                    update(Job)
+                    .where(Job.run_id == run_id, Job.status.in_(("PENDING", "RUNNING")))
+                    .values(
+                        status="CANCELED",
+                        completed_at=func.clock_timestamp(),
+                        lease_owner=None,
+                        lease_token=None,
+                        lease_expires_at=None,
+                        last_error="run_timeout",
+                    )
+                )
+                run.status, run.error_category = "CANCELED", "run_timeout"
+                run.completed_at = func.clock_timestamp()

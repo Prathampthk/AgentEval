@@ -33,3 +33,5 @@ Claim 2 remains MISSING: no 16-active benchmark, 1,000-job report or cache evide
 Claim 1 remains PARTIAL as a broad workload reliability claim: fixed-size asynchronous execution is now implemented, with an independently measured peak of 16 active evaluations and bounded task growth in a controlled 120-job PostgreSQL workload. Cancellation/failure frees capacity, and controlled shutdown preserves pending/leased work. Broader outage and workload-scale reliability remain for milestone 5.
 
 Claim 2 remains MISSING as a quantitative performance claim: no 1,000-job benchmark, speedup, P95 latency or cache result has been measured. Concurrency correctness is not throughput evidence. Claim 3 remains PARTIAL; controlled failure tests exist, but no human labeling/judge report or quality regression gate is complete. Evidence: `docs/MILESTONE_4_EVIDENCE.md`, worker pool tests and current-run XML.
+
+Milestone 5: controlled test-database connection refusal/termination and restoration now pass with automatic recovery. Overall deadlines fence late writes. See MILESTONE_5_EVIDENCE.md. Host/storage failures and arbitrary network partitions remain outside verified scope.

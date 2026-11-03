@@ -74,6 +74,7 @@ class Run(Base):
     id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
     dataset_id: Mapped[UUID] = mapped_column(ForeignKey("datasets.id", ondelete="RESTRICT"))
     execution_mode: Mapped[str] = mapped_column(String(16), server_default="sync")
+    deadline_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     submission_key: Mapped[str | None] = mapped_column(String(200))
     request_hash: Mapped[str | None] = mapped_column(String(64))
     status: Mapped[str] = mapped_column(String(16), default="RUNNING")

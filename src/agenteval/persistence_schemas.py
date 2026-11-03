@@ -41,6 +41,10 @@ class RunCreate(StrictModel):
     prompt: str = Field(default="Answer the question using the supplied context.", max_length=2000)
 
 
+class QueuedRunCreate(RunCreate):
+    run_timeout_seconds: int = Field(default=900, ge=1, le=3600)
+
+
 class RunView(StrictModel):
     id: UUID
     dataset_id: UUID
@@ -53,6 +57,7 @@ class RunView(StrictModel):
     configuration: dict
     created_at: datetime
     completed_at: datetime | None
+    deadline_at: datetime | None
     error_category: str | None
     results: list[EvaluationResult]
 
