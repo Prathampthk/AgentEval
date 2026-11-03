@@ -426,6 +426,10 @@ function App() {
                         version,
                         cases: JSON.parse(caseText),
                       });
+                      setDatasets((current) => [
+                        { ...result, case_count: JSON.parse(caseText).length },
+                        ...current.filter((entry) => entry.id !== result.id),
+                      ]);
                       choose(result.id);
                       setNotice("Dataset saved");
                     })

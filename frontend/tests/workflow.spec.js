@@ -13,6 +13,9 @@ test("dataset to run details comparison and honest judge-study status", async ({
     .fill("Browser smoke " + Date.now());
   await page.getByRole("button", { name: "Save dataset", exact: true }).click();
   await expect(page.getByRole("status")).toHaveText("Dataset saved");
+  await expect(
+    page.getByLabel("Dataset version", { exact: true }),
+  ).not.toHaveValue("");
   const dataset = await page
     .getByLabel("Dataset version", { exact: true })
     .inputValue();
