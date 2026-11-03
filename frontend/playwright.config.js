@@ -13,7 +13,7 @@ export default defineConfig({
   webServer: [
     {
       command:
-        "AGENTEVAL_PROVIDER=fake .venv/bin/python scripts/local_db.py run .venv/bin/uvicorn agenteval.api:app --host 127.0.0.1 --port 8010",
+        "AGENTEVAL_PROVIDER=fake .venv/bin/python scripts/local_db.py demo .venv/bin/uvicorn agenteval.api:app --host 127.0.0.1 --port 8010",
       cwd: "..",
       url: "http://127.0.0.1:8010/health/live",
       reuseExistingServer: false,

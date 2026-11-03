@@ -1,7 +1,7 @@
 # AgentEval
 
-A new AI evaluation and regression-testing platform, being built incrementally.
-**Milestones 1–4:** a local FastAPI evaluation workflow, PostgreSQL persistence, and a durable job queue with a configurable bounded worker pool. Gemini adapter contracts are tested; live Gemini remains unverified.
+A local AI evaluation and regression-testing platform with durable PostgreSQL jobs, bounded workers, a pgvector RAG target, regression checks and a React dashboard. Live-provider and human-study validation remain explicitly pending.
+**Core stack:** a local FastAPI evaluation workflow, PostgreSQL persistence, and a durable job queue with a configurable bounded worker pool. Gemini adapter contracts are tested; live Gemini remains unverified.
 
 ## Run locally
 
@@ -184,3 +184,9 @@ Checks: `npm run format:check --prefix frontend`, `npm run build --prefix fronte
 The committed 1,000-job benchmark compares concurrency 1 and 16 across three repetitions through the actual PostgreSQL queue. Mean completion times were 40.40 s and 13.07 s respectively: **3.09×** ratio of mean times, with all 6,000 accepted evaluations completed and 11 injected retries per variant. This is simulated-provider throughput, not live Gemini throughput; caching is disabled.
 
 See [benchmark methodology](docs/BENCHMARK_METHODOLOGY.md), [measured report](docs/BENCHMARK_REPORT.md), and raw `reports/benchmark.json`. Run only in the separate `_benchmark` database using the documented command.
+
+## Complete environment setup
+
+`bash scripts/setup_environment.sh` installs the pinned Python and frontend dependencies, builds the dashboard, starts the owned local pgvector database (unless an external app URL is configured), and applies migrations. Read [the demonstration steps](docs/DEMO.md) and [final review](docs/FINAL_REVIEW.md). Processes still need explicit startup; setup does not publish the environment.
+
+Remaining external work: securely configure a replacement GEMINI_API_KEY and a supported AGENTEVAL_MODEL for the authorized sample (at most 10 live evaluations), and supply actual human labels using the prepared template. The checked-in human report remains BLOCKED; live performance/accuracy is not claimed.

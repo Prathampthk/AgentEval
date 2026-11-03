@@ -3,6 +3,7 @@
 import argparse
 import asyncio
 import json
+import math
 from pathlib import Path
 from typing import Literal
 
@@ -78,6 +79,10 @@ def comparison_input(run, expected_cases):
     )
 
 
+def exceeds(value, limit):
+    return value > limit and not math.isclose(value, limit, rel_tol=1e-12, abs_tol=1e-12)
+
+
 def compare(baseline, candidate, policy=None):
     policy = policy or RegressionPolicy()
     incompatible = [
@@ -133,18 +138,22 @@ def compare(baseline, candidate, policy=None):
         metrics["baseline_tokens"] = sum(r.tokens for r in left.values()) / n
         metrics["candidate_tokens"] = sum(r.tokens for r in right.values()) / n
     failures = []
-    if metrics["baseline_pass_rate"] - metrics["candidate_pass_rate"] > policy.max_pass_rate_drop:
+    if exceeds(
+        metrics["baseline_pass_rate"] - metrics["candidate_pass_rate"], policy.max_pass_rate_drop
+    ):
         failures.append("Pass-rate regression")
-    if (
-        metrics["baseline_correctness"] - metrics["candidate_correctness"]
-        > policy.max_correctness_drop
+    if exceeds(
+        metrics["baseline_correctness"] - metrics["candidate_correctness"],
+        policy.max_correctness_drop,
     ):
         failures.append("Correctness regression")
     for name, ratio in [
         ("latency_ms", policy.max_latency_ratio),
         ("tokens", policy.max_token_ratio),
     ]:
-        if ratio is not None and metrics["candidate_" + name] > metrics["baseline_" + name] * ratio:
+        if ratio is not None and exceeds(
+            metrics["candidate_" + name], metrics["baseline_" + name] * ratio
+        ):
             failures.append(name + " regression")
     output.update(outcome="FAIL" if failures else "PASS", reasons=failures, metrics=metrics)
     return output

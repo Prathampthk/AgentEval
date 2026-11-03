@@ -13,3 +13,5 @@ Default thresholds allow at most 0.05 absolute pass-rate loss and 0.25 mean corr
 The deterministic CI gate runs the actual evaluation service with three controlled fake-provider facts and compares it to explicit expected fixture outcomes. Command: `.venv/bin/python -m agenteval.regression --demo-gate`. This is a simulated application regression gate, not a live Gemini quality study. GitHub Actions also runs unit/database tests and uploads machine-readable reports. Its hosted execution is not verified from this environment.
 
 The separate workflow_dispatch live-judge workflow is opt-in, validates a 1–10 example limit, requires repository secret GEMINI_API_KEY and variable AGENTEVAL_MODEL, and never runs on fork pull requests. Cloud environment secrets do not automatically configure GitHub repository secrets. No paid calls were made in routine verification.
+
+Threshold comparisons tolerate only 1e-12 floating-point rounding at an equality boundary; this is numerical hygiene, not a statistical margin. A 20-case suite with exactly one allowed failure at a 0.05 loss threshold passes rather than failing from binary-float representation.

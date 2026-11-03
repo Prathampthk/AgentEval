@@ -225,10 +225,14 @@ def start():
     print("Local PostgreSQL is ready; development and test databases are separate")
 
 
-def run(command, administrative=False):
+def run(command, administrative=False, local_only=False):
     env = os.environ.copy()
     settings_path = LOCAL / "database.json"
     settings = json.loads(settings_path.read_text()) if settings_path.exists() else {}
+    if local_only:
+        if not settings.get("AGENTEVAL_DATABASE_URL"):
+            raise RuntimeError("Start the local demonstration database before browser tests")
+        env["AGENTEVAL_DATABASE_URL"] = settings["AGENTEVAL_DATABASE_URL"]
     external_database = bool(
         env.get("AGENTEVAL_DATABASE_URL") or env.get("AGENTEVAL_MIGRATION_DATABASE_URL")
     )
@@ -253,7 +257,7 @@ def run(command, administrative=False):
 if __name__ == "__main__":
     if sys.argv[1:] == ["start"]:
         start()
-    elif len(sys.argv) > 2 and sys.argv[1] in ("run", "admin"):
-        run(sys.argv[2:], administrative=sys.argv[1] == "admin")
+    elif len(sys.argv) > 2 and sys.argv[1] in ("run", "admin", "demo"):
+        run(sys.argv[2:], administrative=sys.argv[1] == "admin", local_only=sys.argv[1] == "demo")
     else:
         raise SystemExit("Usage: local_db.py start | run COMMAND [ARG...] | admin COMMAND [ARG...]")

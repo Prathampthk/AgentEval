@@ -1,4 +1,4 @@
-# Database schema — milestone 3
+# Database schema — migrations 0001–0004
 
 Implemented in `src/agenteval/models.py`, with explicit Alembic revisions `0001` and `0002` under `migrations/versions/`. No application `create_all` or automatic migration-on-start is used.
 
@@ -28,3 +28,7 @@ Jobs, leases, idempotent queued submission and expired-lease recovery are implem
 Runs now include execution mode, globally unique nullable submission key and paired payload hash. CANCELED is a valid terminal run state. Migration `0002` preserves existing synchronous runs and results. Its downgrade refuses to discard queued execution history: archive or remove that history explicitly before downgrading. No automated destructive cleanup is performed.
 
 Synchronous run/result transactions retain the milestone 2 behavior. Queued completion commits one guarded job and result plus run aggregate together; completed case results survive failure/cancellation of other cases. See JOB_EXECUTION_SEMANTICS.md for locking, admission and recovery semantics.
+
+## Subsequent migrations
+
+0003 adds nullable run deadline_at; new queued submissions populate it and older NULL-deadline runs retain previous semantics. 0004 installs pgvector and adds documents (UUID, title/content hash uniqueness) and chunks (document FK/index, position/provider/model uniqueness, 768-dimensional vectors). Exact cosine retrieval filters by embedding provider/model. Document deletion cascades to chunks; no retention/deletion endpoint is exposed. See RAG.md for boundaries.

@@ -320,8 +320,14 @@ def create_app(
                     )
                 )
             ).one()
-            simulated = await session.scalar(select(func.count()).select_from(Run).where(Run.simulated))
-            latest = (await session.execute(select(Run.id, Run.status).order_by(Run.created_at.desc()).limit(1))).first()
+            simulated = await session.scalar(
+                select(func.count()).select_from(Run).where(Run.simulated)
+            )
+            latest = (
+                await session.execute(
+                    select(Run.id, Run.status).order_by(Run.created_at.desc()).limit(1)
+                )
+            ).first()
             return {
                 "simulated_runs": simulated,
                 "latest_run": {"id": str(latest.id), "status": latest.status} if latest else None,

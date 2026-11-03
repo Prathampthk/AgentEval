@@ -71,7 +71,7 @@ def agreement(examples, labels, judgments):
         "example_count": len(source),
         "human_labeled": sum(r["human_pass"] is not None for r in human.values()),
         "paired_count": len(matched),
-        "simulated_judge": any(r.get("simulated", False) for r in ai.values()),
+        "simulated_judge": any(r.get("simulated", False) for r in ai.values()) if ai else None,
         "confusion_matrix": {"tp": tp, "tn": tn, "fp": fp, "fn": fn},
         "agreement": ratio(tp + tn, len(matched)),
         "precision": ratio(tp, tp + fp),

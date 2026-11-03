@@ -5,7 +5,7 @@
 - The human study has prepared examples and analysis tooling, but zero actual human labels. Agreement, false-positive and false-negative rates are unmeasured; reports explicitly say BLOCKED.
 - Only /queued-runs is durable; synchronous /runs, /evaluations and RAG requests can be interrupted without automatic resumption. Old migrated runs with NULL deadlines retain earlier timeout semantics.
 - Fenced persistence does not prevent duplicate external calls after crashes or uncertainty. Stored token usage covers accepted results, not discarded attempts or a complete cost ledger.
-- Concurrency is limited per worker process (1–16), not globally. Multiple workers and synchronous API requests multiply traffic. Provider Retry-After guidance is not yet consumed; full-jitter backoff and finite budgets are implemented.
+- Concurrency is limited per worker process (1–16), not globally. Multiple workers and synchronous API requests multiply traffic. Valid Retry-After guidance is respected within the supported retry budget; full-jitter backoff and finite budgets are implemented.
 - Controlled database connection refusal, backend termination, crashes, leases and shutdown are tested. Arbitrary network partitions, host/storage loss and production deployment reliability are not guaranteed.
 - Dataset immutability and terminal transitions are enforced through supported application operations; privileged direct SQL can bypass transition history. Structural constraints remain database-enforced.
 - The RAG corpus is deliberately small; exact cosine search has no scale claim. Fake embeddings are word hashes, not semantic model evidence. RAG routes are not background jobs. Citation faithfulness is not independently calibrated.

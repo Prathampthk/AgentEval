@@ -45,3 +45,19 @@ def test_missing_usage_does_not_pass_token_gate():
 async def test_demo_gate_runs_the_real_evaluation_service():
     result = await demo_gate()
     assert result["outcome"] == "PASS" and result["paired_cases"] == 3 and result["simulated"]
+
+
+def test_exact_pass_rate_threshold_is_allowed_despite_binary_float_rounding():
+    baseline = run(
+        expected_cases=20,
+        results=[
+            dict(test_case_id=str(i), passed=True, correctness=2, latency_ms=0) for i in range(20)
+        ],
+    )
+    candidate = run(
+        expected_cases=20,
+        results=[
+            dict(test_case_id=str(i), passed=i != 0, correctness=2, latency_ms=0) for i in range(20)
+        ],
+    )
+    assert compare(baseline, candidate)["outcome"] == "PASS"

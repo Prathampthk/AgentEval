@@ -110,6 +110,10 @@ async def run_once(
             category = exc.category if isinstance(exc, ProviderError) else "job_timeout"
             retryable = exc.retryable if isinstance(exc, ProviderError) else True
             delay = random.uniform(0, min(60, 2 ** (claim.attempt - 1)))
+            if isinstance(exc, ProviderError) and exc.retry_after_seconds is not None:
+                delay = max(delay, exc.retry_after_seconds)
+                if delay > 3600:
+                    category, retryable, delay = "retry_after_exceeds_budget", False, 0
             await queue.fail(claim, category, retryable=retryable, delay_seconds=delay)
             event("job_attempt_failed", claim, category=category, retry_delay_seconds=delay)
         except Exception:

@@ -404,3 +404,24 @@ async def test_worker_retries_transient_failure_with_persisted_budget(db, monkey
     assert await run_once(JobQueue(db), provider, "second")
     assert (await db.get_run(run_id)).status == "COMPLETED"
     assert (await queue.list_jobs(run_id))[0].attempts == 2
+
+
+async def test_worker_honors_provider_retry_after_and_stops_over_budget_hint(db):
+    class Limited(FakeProvider):
+        delay = 60
+
+        async def generate(self, data):
+            raise ProviderError("rate_limit", True, self.delay)
+
+    queue, run_id = await submitted(db)
+    provider = Limited()
+    assert await run_once(queue, provider, "retry-after")
+    job = (await queue.list_jobs(run_id))[0]
+    assert job.status == "PENDING"
+    assert await queue.claim("too-early", provider) is None
+    await queue.cancel(run_id)
+    queue, run_id = await submitted(db)
+    provider.delay = 7200
+    assert await run_once(queue, provider, "over-budget")
+    job = (await queue.list_jobs(run_id))[0]
+    assert job.status == "FAILED" and job.last_error == "retry_after_exceeds_budget"

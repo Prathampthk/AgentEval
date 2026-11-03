@@ -6,9 +6,12 @@ from agenteval.domain import GenerationInput, JudgeInput, JudgeResponse, Judgmen
 
 
 class ProviderError(Exception):
-    def __init__(self, category: str, retryable: bool = False):
+    def __init__(
+        self, category: str, retryable: bool = False, retry_after_seconds: float | None = None
+    ):
         self.category = category
         self.retryable = retryable
+        self.retry_after_seconds = retry_after_seconds
         super().__init__(category)
 
 

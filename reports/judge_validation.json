@@ -4,7 +4,7 @@
   "example_count": 50,
   "human_labeled": 0,
   "paired_count": 0,
-  "simulated_judge": false,
+  "simulated_judge": null,
   "confusion_matrix": {
     "tp": 0,
     "tn": 0,

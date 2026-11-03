@@ -23,6 +23,8 @@ async def main():
         parser.error("limit must be 1–50")
     if os.getenv("AGENTEVAL_PROVIDER", "fake") != "fake" and not args.live:
         parser.error("Live provider calls require --live and an agreed budget")
+    if os.getenv("AGENTEVAL_PROVIDER", "fake") != "fake" and args.limit > 10:
+        parser.error("The currently authorized live sample is capped at 10 judge calls")
     examples = json.loads(Path("examples/judge_study.json").read_text())[: args.limit]
     rows = []
     async with provider_context() as provider:

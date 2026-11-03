@@ -1,6 +1,6 @@
 # Prioritized implementation plan
 
-Milestone 1 is implemented and locally validated; live Gemini access remains unverified. Milestone 2 now adds locally verified PostgreSQL persistence and migrations; milestone 3 now adds tested durable jobs and a sequential worker; milestone 4 now adds a verified bounded worker pool and controlled shutdown; milestone 5 now verifies controlled database interruption and overall deadlines; human-study data remains pending in milestone 6. Complete each with tests and matching documentation before advancing. Do not generate the whole project in one step.
+Milestones 1–5 and 7–10 are implemented and locally verified. Milestone 6 software and labeling materials are prepared, but the human study is BLOCKED on actual human labels and live-judge predictions. Milestone 11 review and demonstration documentation are complete for the local/simulated scope; live Gemini validation remains blocked on secure credentials/model. Work was committed and pushed in milestone increments; no results were fabricated.
 
 | Priority | Milestone | Exit evidence |
 |---|---|---|

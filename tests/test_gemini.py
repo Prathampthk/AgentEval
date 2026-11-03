@@ -123,3 +123,36 @@ async def test_invalid_embedding_response_rejected():
     )
     with pytest.raises(ProviderError, match="invalid_embedding"):
         await provider.embed("hello")
+
+
+def test_retry_after_guidance_is_parsed_safely():
+    from agenteval.gemini import retry_after
+
+    assert retry_after("12") == 12
+    assert retry_after("nan") is None
+    assert retry_after("invalid") is None
+    assert retry_after("Wed, 01 Jan 2020 00:00:00 GMT") == 0
+
+
+async def test_retry_after_header_preserved_without_error_content():
+    response = httpx.Response(429, headers={"retry-after": "3"})
+    provider, _ = adapter(error=errors.APIError(429, {"message": "secret content"}, response))
+    with pytest.raises(ProviderError) as caught:
+        await provider.generate(GenerationInput(question="q", context="", prompt="p"))
+    assert caught.value.retry_after_seconds == 3 and "secret" not in str(caught.value)
+
+
+async def test_connection_and_pool_timeout_are_separate_from_read_timeout():
+    from agenteval.runtime import connection_timeout_bounds
+
+    observed = {}
+
+    def handler(request):
+        observed.update(request.extensions["timeout"])
+        return httpx.Response(200, json={})
+
+    async with httpx.AsyncClient(
+        transport=httpx.MockTransport(handler), event_hooks={"request": [connection_timeout_bounds]}
+    ) as client:
+        await client.get("https://example.test", timeout=30)
+    assert observed == dict(connect=5, read=30, write=30, pool=5)
