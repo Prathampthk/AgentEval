@@ -178,3 +178,9 @@ npm run build --prefix frontend
 Restart the API after building; it serves the dashboard at its `/dashboard/` path. For frontend development, `npm run dev --prefix frontend` proxies API calls to the local API. Do not expose the unauthenticated demonstration publicly.
 
 Checks: `npm run format:check --prefix frontend`, `npm run build --prefix frontend`, and `npm run test:e2e --prefix frontend`. The browser test starts dedicated API/frontend ports and uses the current local development database with clearly named browser-smoke datasets. It uses installed Chromium when available; otherwise install Playwright Chromium. No paid provider calls occur.
+
+## Measured simulated performance
+
+The committed 1,000-job benchmark compares concurrency 1 and 16 across three repetitions through the actual PostgreSQL queue. Mean completion times were 40.40 s and 13.07 s respectively: **3.09×** ratio of mean times, with all 6,000 accepted evaluations completed and 11 injected retries per variant. This is simulated-provider throughput, not live Gemini throughput; caching is disabled.
+
+See [benchmark methodology](docs/BENCHMARK_METHODOLOGY.md), [measured report](docs/BENCHMARK_REPORT.md), and raw `reports/benchmark.json`. Run only in the separate `_benchmark` database using the documented command.

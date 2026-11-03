@@ -22,3 +22,5 @@ During milestone 1, add dependency configuration, local install/run commands, de
 For each milestone, explain problem, alternatives, decision, implementation, verification, trade-offs and learning takeaway. Seek approval before major architectural changes. Keep implementation work reviewable and the application working at each completed stage.
 
 Milestone 6 tooling increment: 50 unlabeled examples, a strict human-label template, optional judge runner and tested agreement analysis exist. The actual human study remains BLOCKED; independent RAG/regression/dashboard work continues without inventing labels.
+
+Milestones 7–10 are implemented: pgvector RAG target, compatible-run regression checker/CI definitions, tested React dashboard, and completed 1,000-job simulated benchmark with three repetitions per configuration. Human-study measurements and live-provider checks remain external prerequisites, not fabricated completed milestones. Final security/architecture review is documented in FINAL_REVIEW.md.

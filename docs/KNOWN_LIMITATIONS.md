@@ -1,19 +1,16 @@
-# Known limitations
+# Known limitations and evidence boundaries
 
-- PostgreSQL persistence and durable queued jobs are implemented. The original synchronous /runs path can still leave RUNNING records after a crash; only /queued-runs creates recoverable jobs. The worker supports a fixed pool of 1–16 active evaluations per process; the default remains one.
-- No RAG, embeddings, React dashboard, run comparison, regression gate or benchmark yet.
-- No human labels or judge agreement results. No performance or cost claims verified.
-- Gemini adapter is tested against controlled SDK-shaped responses, not a live service. Key, selected model and destination access are still prerequisites for live use.
-- No authentication; local/controlled demonstration only. Execution limits are process-local; the persistent queue cap is database-wide. These do not protect a public deployment from abuse or slow clients.
-- Synchronous request-scoped execution can be lost when the process exits. Client disconnect is not a durable cancellation mechanism.
-- The persisted dataset API enforces version immutability; privileged direct SQL is not protected by immutability triggers. Stateless /evaluations still accepts caller-provided version labels. Rubric pass thresholds are provisional.
-- Current Starlette emits a deprecation warning for its httpx-based test client. Tests pass; dependency modernization can be handled in a separate reviewed change.
-- Requirements are exact version pins for the tested Python 3.12 Linux environment, without a cross-platform hashed lock. Package TLS verification remains enabled.
-
-- Synchronous /runs executes up to 20 cases sequentially within one HTTP request; 20 cases can require 40 provider calls. No run-level deadline or retained partial progress yet. Repeating a run submission creates new work.
-
-- Expired queued jobs recover within a finite attempt budget; external calls can repeat. Queued idempotency is installation-wide and has no TTL; changing policy/model under a reused key produces conflict.
-- Global provider concurrency limits, Retry-After guidance, broader network-partition and host/storage-failure testing remain future work. Controlled shutdown/drain tests pass; production shutdown/network-partition behavior is not fully validated.
-- Admission uses a serialized PostgreSQL advisory lock; scalability is not benchmarked. Provider/model changes require a matching worker to finish older queued work.
-
-- Stored token usage describes accepted results only; discarded attempts and duplicated external requests are not a complete provider cost ledger.
+- Local/controlled demonstration only: no authentication or multi-tenancy. Do not expose submission endpoints publicly. Process-local limits and queue admission are not public abuse prevention.
+- Live Gemini generation/judgment and embeddings remain unverified until credentials/model are securely configured and budgeted calls succeed. SDK contract tests and fake-provider results do not establish live quality.
+- The human study has prepared examples and analysis tooling, but zero actual human labels. Agreement, false-positive and false-negative rates are unmeasured; reports explicitly say BLOCKED.
+- Only /queued-runs is durable; synchronous /runs, /evaluations and RAG requests can be interrupted without automatic resumption. Old migrated runs with NULL deadlines retain earlier timeout semantics.
+- Fenced persistence does not prevent duplicate external calls after crashes or uncertainty. Stored token usage covers accepted results, not discarded attempts or a complete cost ledger.
+- Concurrency is limited per worker process (1–16), not globally. Multiple workers and synchronous API requests multiply traffic. Provider Retry-After guidance is not yet consumed; full-jitter backoff and finite budgets are implemented.
+- Controlled database connection refusal, backend termination, crashes, leases and shutdown are tested. Arbitrary network partitions, host/storage loss and production deployment reliability are not guaranteed.
+- Dataset immutability and terminal transitions are enforced through supported application operations; privileged direct SQL can bypass transition history. Structural constraints remain database-enforced.
+- The RAG corpus is deliberately small; exact cosine search has no scale claim. Fake embeddings are word hashes, not semantic model evidence. RAG routes are not background jobs. Citation faithfulness is not independently calibrated.
+- Regression thresholds are configurable demonstration policies, not statistical significance tests. Different judge models/datasets are incompatible. Shared generation/judge models may correlate errors.
+- Simulated benchmark results are not live Gemini throughput. Caching is disabled in the benchmark. No live monetary-cost estimate is fabricated. Peak RSS is process-wide/cumulative, not isolated per variant.
+- Frontend end-to-end testing covers a core Chromium workflow; it is not exhaustive cross-browser accessibility testing. A pre-existing Starlette test-client deprecation warning remains.
+- Dependency versions are pinned for tested Linux/Python 3.12 and Node 24. There is no cross-platform hashed Python lock or claim of a comprehensive third-party security audit.
+- Hosted GitHub Actions execution has not been inspected here; local equivalent checks are verified. Optional live workflows need separate GitHub repository secret/variable configuration.

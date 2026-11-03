@@ -144,6 +144,31 @@ def start():
     ).stdout.strip()
     if not exists:
         docker("exec", NAME, "createdb", "-U", "postgres", "agenteval_test")
+    bench_exists = docker(
+        "exec",
+        NAME,
+        "psql",
+        "-U",
+        "postgres",
+        "-d",
+        "agenteval",
+        "-Atc",
+        "SELECT 1 FROM pg_database WHERE datname='agenteval_benchmark'",
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    if not bench_exists:
+        docker("exec", NAME, "createdb", "-U", "postgres", "agenteval_benchmark")
+    from sqlalchemy.engine import make_url
+
+    settings = json.loads(settings_path.read_text())
+    if "AGENTEVAL_BENCHMARK_DATABASE_URL" not in settings:
+        settings["AGENTEVAL_BENCHMARK_DATABASE_URL"] = (
+            make_url(settings["AGENTEVAL_MIGRATION_DATABASE_URL"])
+            .set(database="agenteval_benchmark")
+            .render_as_string(hide_password=False)
+        )
+        settings_path.write_text(json.dumps(settings))
     role_exists = docker(
         "exec",
         NAME,
@@ -217,6 +242,10 @@ def run(command, administrative=False):
             )
         if settings.get("AGENTEVAL_TEST_DATABASE_URL"):
             env.setdefault("AGENTEVAL_TEST_DATABASE_URL", settings["AGENTEVAL_TEST_DATABASE_URL"])
+        if settings.get("AGENTEVAL_BENCHMARK_DATABASE_URL"):
+            env.setdefault(
+                "AGENTEVAL_BENCHMARK_DATABASE_URL", settings["AGENTEVAL_BENCHMARK_DATABASE_URL"]
+            )
     os.chdir(ROOT)
     os.execvpe(command[0], command, env)
 

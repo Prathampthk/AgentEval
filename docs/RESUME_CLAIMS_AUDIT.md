@@ -39,3 +39,9 @@ Milestone 5: controlled test-database connection refusal/termination and restora
 Milestone 6 tooling: four analysis tests pass with explicitly synthetic fixtures. There are 50 unlabeled examples and zero actual human labels. reports/judge_validation.json is BLOCKED with null agreement; no human-accuracy résumé claim is verified.
 
 Milestone 7: real pgvector storage/retrieval and controlled simulated RAG evaluation are verified by 102 passing tests. Live Gemini embedding quality remains NOT VERIFIED. No new performance claim follows.
+
+## Milestone 10 measured benchmark
+
+The controlled PostgreSQL benchmark completed 1,000 jobs per configuration across three repetitions (6,000 accepted results). Mean completion: 40.401 s at concurrency 1 and 13.070 s at concurrency 16, ratio **3.091×**. Every variant recorded 11 injected retries and no exhausted jobs. Full distributions and raw records: reports/benchmark.json; method/report: BENCHMARK_METHODOLOGY.md and BENCHMARK_REPORT.md.
+
+Do not copy the original 2.8×/caching target literally: caching was disabled, billable token usage was absent and no live Gemini throughput was measured. An evidence-supported alternative is: “Benchmarked a PostgreSQL-backed evaluation worker on repeated 1,000-job simulated workloads, measuring 3.09× mean completion-time speedup at concurrency 16 while recording latency distributions and retries.” Human-validation claims remain blocked on actual labels. Live Gemini behavior remains unverified.
