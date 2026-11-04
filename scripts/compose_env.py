@@ -2,6 +2,7 @@
 
 import os
 import secrets
+import shutil
 from pathlib import Path
 
 root = Path(__file__).resolve().parents[1]
@@ -13,4 +14,12 @@ if not path.exists():
         file.write(
             f"POSTGRES_PASSWORD={secrets.token_hex(24)}\nAPP_DB_PASSWORD={secrets.token_hex(24)}\nLOCAL_UID={os.getuid()}\nLOCAL_GID={os.getgid()}\n"
         )
-print("Protected .local/compose.env is ready; existing values preserved")
+# Buildx Bake may forbid reading secrets outside its workspace. This public
+# trust bundle is copied into ignored local state and mounted only at build time.
+ca_source = Path(os.getenv("AGENTEVAL_BUILD_CA", "/etc/ssl/certs/ca-certificates.crt"))
+ca_target = folder / "build-ca.crt"
+if ca_source.resolve() != ca_target.resolve():
+    shutil.copyfile(ca_source, ca_target)
+print(
+    "Protected Compose credentials and local build trust bundle are ready; existing credentials preserved"
+)

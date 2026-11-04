@@ -88,4 +88,4 @@ volumes:
   postgres-data:
 secrets:
   proxy_ca:
-    file: ${AGENTEVAL_BUILD_CA:-/etc/ssl/certs/ca-certificates.crt}
+    file: ${AGENTEVAL_BUILD_CA:-.local/build-ca.crt}
