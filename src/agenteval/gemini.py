@@ -113,7 +113,7 @@ class GeminiProvider:
             types.GenerateContentConfig(
                 system_instruction=RUBRIC,
                 response_mime_type="application/json",
-                response_schema=Judgment,
+                response_json_schema=Judgment.model_json_schema(),
                 temperature=0,
                 max_output_tokens=2048,
             ),
