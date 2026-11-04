@@ -10,8 +10,27 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - uses: docker/setup-buildx-action@v3
+      - run: docker version && docker compose version && docker buildx version
       - run: python scripts/compose_env.py
-      - run: docker compose --env-file .local/compose.env build api tests
+      - name: Build containers
+        run: |
+          set -o pipefail
+          docker compose --env-file .local/compose.env build api tests 2>&1 | tee "$RUNNER_TEMP/agenteval-build.log"
+      - name: Surface build errors
+        if: failure()
+        run: |
+          python - <<'PYCODE'
+          import os
+          from pathlib import Path
+          path = Path(os.environ["RUNNER_TEMP"]) / "agenteval-build.log"
+          if path.exists():
+              for line in path.read_text().splitlines()[-15:]:
+                  # Never copy URLs (which can contain credentials) into annotations.
+                  if "://" not in line:
+                      value = line.replace("%", "%25").replace("\r", "%0D")
+                      print("::error title=Container build::" + value)
+          PYCODE
       - run: docker compose --env-file .local/compose.env up -d --wait api worker
       - run: python scripts/compose_smoke.py
       - run: docker compose --env-file .local/compose.env --profile verification run --rm tests
