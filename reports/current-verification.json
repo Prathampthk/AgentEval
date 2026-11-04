@@ -35,5 +35,32 @@
     "Container XML was on tmpfs and unavailable after exit; counts above were observed in stdout, not parsed from XML.",
     "Full suite includes real PostgreSQL lock-graph/statement-timeout test; historical spontaneous timeout root cause remains unresolved.",
     "Running Compose API/worker were preserved."
-  ]
+  ],
+  "portfolio_increment": {
+    "verified_at_utc": "2026-11-04T22:15:16.474066+00:00",
+    "scope": "non-root Linux Python 3.12 with dedicated PostgreSQL test database",
+    "counts": {
+      "tests": "140",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "18.232"
+    },
+    "warnings": 1,
+    "xml": "artifacts/portfolio-tests.xml",
+    "xml_sha256": "14f5d6d316fb39eff7e1b556498bad39f68fed42f383b4394535d262f6e27698",
+    "source_sha256": {
+      "scripts/portfolio_demo.py": "7b289ee629ae56d80b8eac2c7ceef36c766a20720602b45e20520859cc36e506",
+      "tests/test_portfolio_demo.py": "a9f85091a53c0cc574b4a0c30632f24b8ea76677d8bf01c6ee206ed7add1a4bc"
+    },
+    "ruff_lint": "PASS",
+    "ruff_format": "PASS (62 files)",
+    "demo": "PASS; four accepted simulated results; reports/portfolio-demo.json",
+    "regression_demo_gate": "PASS",
+    "live_calls": 0,
+    "intermediate_failures": [
+      "Initial demo test import could not resolve scripts namespace; switched to path-based loading.",
+      "Ruff requested formatting of the new files; formatted and rechecked."
+    ]
+  }
 }

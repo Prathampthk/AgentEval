@@ -1,0 +1,51 @@
+{
+  "status": "PASS",
+  "recorded_at_utc": "2026-11-04T22:12:33.151210+00:00",
+  "simulated": true,
+  "live_provider_calls": 0,
+  "dataset_id": "d58b67e4-054c-4f00-b863-8b68d94b5716",
+  "runs": [
+    {
+      "label": "baseline",
+      "run_id": "e2e8ddcb-933e-4eed-8e8a-c9c3bbba0dd0",
+      "accepted_results": 2
+    },
+    {
+      "label": "candidate",
+      "run_id": "59bfd3de-1f17-4dd0-a7c9-f022e0ec17d2",
+      "accepted_results": 2
+    }
+  ],
+  "comparison": {
+    "outcome": "PASS",
+    "paired_cases": 2,
+    "reasons": [],
+    "policy": {
+      "max_pass_rate_drop": 0.05,
+      "max_correctness_drop": 0.25,
+      "min_cases": 1,
+      "max_latency_ratio": null,
+      "max_token_ratio": null
+    },
+    "simulated": true,
+    "metrics": {
+      "baseline_pass_rate": 1.0,
+      "candidate_pass_rate": 1.0,
+      "baseline_correctness": 2.0,
+      "candidate_correctness": 2.0,
+      "baseline_latency_ms": 0.03770800049096579,
+      "candidate_latency_ms": 0.03547950018401025
+    }
+  },
+  "checks": [
+    "fake-provider preflight",
+    "idempotent replay",
+    "queued completion",
+    "comparison"
+  ],
+  "limits": [
+    "Four accepted simulated results; not accuracy or throughput evidence.",
+    "Repeated demos retain their own runs; no data is deleted.",
+    "Human labels, live RAG, crash recovery and public safeguards are separate evidence."
+  ]
+}

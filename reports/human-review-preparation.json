@@ -1,0 +1,20 @@
+{
+  "status": "READY_FOR_HUMAN_REVIEW",
+  "verified_at_utc": "2026-11-04T22:14:02.246813+00:00",
+  "examples": 50,
+  "actual_human_labels": 0,
+  "labels_generated": 0,
+  "rubric_version": "v1",
+  "packet": "artifacts/human_review_packet.json",
+  "labels": "artifacts/human_labels.json",
+  "packet_sha256": "ec3ea2a0a0a53c4e3b3a79320b4bf32a2cdaae2010e9f7540201b8b8781a81ec",
+  "checks": [
+    "IDs match between packet and blank labels",
+    "category hints omitted",
+    "all human_pass and labeler values remain null"
+  ],
+  "limits": [
+    "Ten distinct questions with five variants each; convenience sample only.",
+    "No AI predictions were generated; human accuracy report remains BLOCKED."
+  ]
+}
