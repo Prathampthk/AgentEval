@@ -41,3 +41,27 @@ Every hosted job step conclusion was checked through the public GitHub web UI be
 ## Next decisions
 
 Keep the existing bounded default; do not claim sixteen processes are optimal. Before changing locking, reproduce a prolonged holder while capturing the graph and correlate root-backend waits with client event-loop lag and storage/fsync telemetry on controlled hardware. Consider reducing same-run write serialization only if that experiment establishes a concrete bottleneck and cancellation/aggregate invariants remain tested. The existing RAG context/error-mapping issues were corrected in the next follow-up; see RAG.md. Two live generation/judgment smoke evaluations are now recorded in `reports/live-gemini-smoke.json`; they do not validate embeddings/RAG or explain database lock contention. Human labeling and deployment safeguards remain separate work. Both hosted workflows also passed at `da60690`; current step/artifact metadata is in `reports/hosted-ci-current.json`.
+
+## Local checkout follow-up — 2026-11-04
+
+A separate Docker/Linux aarch64 capture completed 1,000 simulated jobs at each of 4 and 16 independent single-lane processes, one repetition each. Both variants recorded exactly eleven planned retries, all 1,000 accepted results and no captured SQL errors. Source fingerprints match this checkout. The compressed raw report retains both variants; its decompressed SHA-256 is recorded in [the summary](../reports/lock-followup-summary.json). This adds 2,000 diagnostic jobs; it does not replace or pool with the original benchmark or four-variant capture.
+
+| Processes | Seconds | Run-lock P99 ms | Maximum run-lock call ms | Observed peak evaluations |
+|---|---|---|---|---|
+| 4 | 4.832 | 2.93 | 14.60 | 4 |
+| 16 | 3.213 | 70.60 | 89.12 | 10 |
+
+The 16-process capture sampled root blockers in client-read/idle-in-transaction, active and WALWrite states; maximum sampled root transaction age was 0.064 s. The 4-process sampler observed no blockers, which does not mean no locks waited. Environment: Python 3.12.16, PostgreSQL 17.11, Docker Linux aarch64, ten reported logical CPUs. The existing fake API/worker remained running against the separate application database; shared PostgreSQL resource use was not isolated. One repetition, different hardware and diagnostic overhead preclude a comparative performance conclusion.
+
+Command used with the existing local Compose database:
+
+```bash
+docker compose --env-file .local/compose.env --profile benchmark run --rm --no-deps benchmark python -m agenteval.platform_benchmark --jobs 1000 --repetitions 1 --workers 4 16 --diagnostics --skip-recovery --output reports/lock-followup-raw.json
+.venv/bin/python scripts/summarize_lock_diagnostics.py --input reports/lock-followup-raw.json --archive reports/lock-followup.json.gz --output reports/lock-followup-summary.json
+```
+
+The benchmark image must contain the checkout being measured; build it before a future run. The raw JSON was moved into ignored `artifacts/` after verifying the gzip round-trip and all source fingerprints. Do not overwrite committed reports for a new experiment; select new output/archive names.
+
+The full container suite also passed the controlled PostgreSQL lock-graph/statement-timeout test ([current verification](../reports/current-verification.json)). That forced 1.5-second timeout validates attribution, not the cause of the historical spontaneous ten-second timeout. No queue policy, retry, lease or timeout was changed.
+
+Next useful experiment: on the original environment or comparable controlled hardware, collect per-process event-loop scheduling lag and lock-acquired-to-transaction-end timing alongside the existing numeric backend graph and storage/fsync telemetry. Distinguish client stalls while holding the run lock from server commit waits. Use a controlled delayed holder as a positive control, retain failures and all repetitions, then repeat without induced delays. None of these extra telemetry correlations has been measured yet. The historical root cause remains **unresolved**; more process counts or a higher timeout would not resolve that gap.
