@@ -4,7 +4,7 @@ Latest platform evidence: [engineering review](PLATFORM_REVIEW.md), [verificatio
 
 | Deliverable | Status | Evidence |
 |---|---|---|
-| Backend and evaluation engine | VERIFIED locally with simulation | 127 passing backend tests; domain/service/API |
+| Backend and evaluation engine | VERIFIED locally with simulation | 134 passing backend tests locally; prior 127 container suite retained as historical evidence; domain/service/API |
 | PostgreSQL migrations and persistence | VERIFIED | Migrations 0001–0004; real PostgreSQL integration tests |
 | Durable worker / idempotency / leases / recovery | VERIFIED in controlled scenarios | JOB_EXECUTION_SEMANTICS.md; RELIABILITY_TESTING.md |
 | Bounded concurrency | VERIFIED process-local | 16 active evaluations, bounded tasks, cancellation/drain tests |
@@ -13,7 +13,7 @@ Latest platform evidence: [engineering review](PLATFORM_REVIEW.md), [verificatio
 | Regression checker | VERIFIED locally | PASS/FAIL/INCONCLUSIVE tests and deterministic demo gate |
 | GitHub Actions | VERIFIED on cb28a72; new diagnostic revision pending | Deterministic tests/build/gate; optional budget-capped manual live workflow |
 | React dashboard | VERIFIED core Chromium flow | Production build, dataset/run/details/comparison/study browser test |
-| Automated suite | VERIFIED | 127 backend tests on host and container plus 1 browser workflow |
+| Automated suite | VERIFIED | 134 backend tests locally; prior 127-test container suite and 1 browser workflow retained as historical evidence |
 | Reliability evidence | VERIFIED, scoped | Real process exit, database connection interruption, fencing, rollback, cancellation and shutdown |
 | Benchmark runner and report | VERIFIED simulated | 12,000 accepted process-sweep jobs; 1,000 per variant, 3 repetitions at 1/4/8/16 processes; PLATFORM_BENCHMARK_REPORT.md. Historical async-lane report retained separately |
 | Human-vs-AI judge report | BLOCKED on actual labels and live predictions | 50 unlabeled examples; report explicitly BLOCKED and accuracy null |

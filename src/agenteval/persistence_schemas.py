@@ -6,14 +6,14 @@ from uuid import UUID
 
 from pydantic import Field, model_validator
 
-from agenteval.domain import EvaluationResult, StrictModel
+from agenteval.domain import MAX_CONTEXT_CHARACTERS, EvaluationResult, StrictModel
 
 
 class DatasetCase(StrictModel):
     external_id: str = Field(min_length=1, max_length=100)
     question: str = Field(min_length=1, max_length=4000)
     expected_answer: str = Field(min_length=1, max_length=4000)
-    context: str = Field(default="", max_length=12000)
+    context: str = Field(default="", max_length=MAX_CONTEXT_CHARACTERS)
     exact_match: bool = False
 
 

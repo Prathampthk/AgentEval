@@ -21,3 +21,22 @@ async def test_simulated_embeddings_are_normalized_and_repeatable():
     vector = await provider.embed("Paris France")
     assert vector == await provider.embed("Paris France")
     assert sum(x * x for x in vector) == pytest.approx(1)
+
+
+def test_rag_context_budget_preserves_citation_headers_and_discloses_partial_chunk():
+    from agenteval.domain import MAX_CONTEXT_CHARACTERS
+    from agenteval.rag import bounded_context
+
+    rows = [dict(document_id=str(i), chunk_id=str(i), content="x" * 6000) for i in range(3)]
+    context, ids, truncated = bounded_context(rows)
+    assert len(context) == MAX_CONTEXT_CHARACTERS
+    assert ids == ["0", "1"] and truncated
+    assert "[document=0 chunk=0]" in context and "[document=1 chunk=1]" in context
+    assert "[document=2" not in context
+
+
+def test_rag_context_under_budget_is_unchanged():
+    from agenteval.rag import bounded_context
+
+    rows = [dict(document_id="d", chunk_id="c", content="Paris")]
+    assert bounded_context(rows) == ("[document=d chunk=c] Paris", ["c"], False)

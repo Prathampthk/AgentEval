@@ -11,3 +11,13 @@ Retrieval returns chunk IDs, source document IDs and cosine distances. Recall@K 
 Exact search is intentional for this small controlled corpus; there is no approximate index or scale/performance claim. Retrieved text is untrusted. Prompts request citations, but citation faithfulness is not independently verified. Groundedness scores remain judge opinions. All RAG routes are request-scoped and share the API execution limit; document ingestion and RAG requests are not durable background jobs yet.
 
 Migration 0004 installs the vector extension and creates documents/document_chunks. The local and CI image is digest-pinned pgvector/PostgreSQL 17. On the existing cloud instance the prior container was stopped and retained, and its data bind mount reused by the new container. Never start both containers against the same data directory. Fresh environments use the new image directly. Extension creation needs a migration administrator; the runtime role does not own schema changes.
+
+## Context and timeout correction
+
+Previously, valid retrieved chunks could assemble more than the evaluation contract's 12,000-character limit: asking worked while evaluating the same retrieval failed validation. Both paths now use a shared character budget. Context retains complete citation headers and, when needed, a prefix of the final included chunk. Responses add `context_chunk_ids`, `context_characters` and `context_truncated` so callers can identify the evidence actually supplied. Existing `retrieved` still describes the full ranked top-K retrieval; Recall@K/Hit Rate@K measure that retrieval, not whether all facts fit in generation context.
+
+Truncation can omit decisive facts and affect correctness/groundedness; it is disclosed rather than silently presented as complete evidence. This is a character bound, not a tokenizer or universal model context limit. Rejecting all oversized retrievals would break useful existing asks; increasing the contract limit would increase resource/cost exposure. A shared budget preserves bounded behavior and aligns ask/evaluate contracts.
+
+Unscored generation now uses the same provider timeout wrapper as embeddings. A provider timeout returns HTTP 504 with category `timeout` and `retryable=true`, matching the scored path; it no longer falls through to the generic database-unavailable handler. Database timeouts still retain database error handling.
+
+Verification covers oversized real-pgvector retrieval through both HTTP paths, identical supplied evidence, intact citation headers, unchanged small contexts and controlled generation timeouts. No paid provider calls or new AI feature was introduced.

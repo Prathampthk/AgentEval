@@ -14,7 +14,7 @@ Review baseline: commit `264f683e01518920b68709b8b1b7675a970e66f6`. This update 
 | Medium, benchmark corrected | Historical 3.091× was sometimes described as sixteen active workers | It is the ratio of mean completion times (40.401/13.070 s) for one process configured with 1 vs 16 async lanes; measured concurrent peak was **5** | Configuration is not observation |
 | Medium, remaining | Direct SQL in routes and one large frontend component increase change surface | Extract cohesive services/components when relevant behavior changes justify it; no framework rewrite | Prefer measured simplification |
 | Medium, remaining | Admission serialization, run-summary locks and historical storage can constrain scale | Keep correct transactions, measure contention, introduce retention/aggregation changes only with evidence | Optimize verified bottlenecks |
-| Medium, remaining | RAG assembled context can exceed evaluation limit; broad timeout handler misclassifies some failures | Align context budgets and error categories in a separate existing-functionality fix | Preserve error meaning across boundaries |
+| Medium, fixed in follow-up | RAG assembled context could exceed evaluation limit; generation timeouts were misclassified | Shared context budget, disclosed truncation and provider-specific HTTP 504; HTTP/pgvector regression tests | Preserve error meaning across boundaries |
 
 ## Historical benchmark review
 
@@ -38,7 +38,7 @@ SQL uses parameter binding; body sizes, schema lengths, provider/job/run deadlin
 
 1. Before public use: authentication/TLS/ingress and provider budgets, backup/restore exercise, resource sizing and hosted CI verification.
 2. Diagnose prolonged run-row lock holds and extra 16-process retries with captured worker events and transaction/lock profiling. Server logs verify ten run-lock SELECT timeouts, but not the full causal chain; do not tune production from this outlier.
-3. Correct existing RAG context/error-mapping issues; retain endpoint regression tests.
+3. RAG context/error-mapping issues are now corrected with endpoint regression tests; inspect truncation metadata when evaluating evidence completeness.
 4. Validate live provider behavior with securely configured credentials and a small budget. Add a global limiter if multiple paid workers require one.
 5. Operational soak/outage tests, retention policy, migration rollout/rollback and monitoring thresholds. Do not infer these from local process tests.
 6. Optional maintainability: extract route services/frontend components incrementally; improve human-study diversity; optimize only measured contention.

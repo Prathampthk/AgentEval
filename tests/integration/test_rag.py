@@ -95,3 +95,81 @@ async def test_rag_http_target(db, pg_url):
                 },
             )
             assert response.status_code == 200 and response.json()["recall_at_k"] == 1
+
+
+async def test_large_retrieval_uses_same_bounded_evidence_for_ask_and_evaluate(db, pg_url):
+    import httpx
+
+    from agenteval.api import create_app
+    from agenteval.domain import MAX_CONTEXT_CHARACTERS
+
+    class Capture(FakeProvider):
+        contexts = []
+
+        async def generate(self, data):
+            self.contexts.append(data.context)
+            return await super().generate(data)
+
+    provider = Capture()
+    ids = []
+    for i in range(3):
+        result = await ingest(
+            db,
+            provider,
+            DocumentCreate(title=f"large-{i}", content=("Paris" + "x" * 995 + " ") * 5),
+        )
+        ids.append(result["id"])
+    app = create_app(provider, database_url=pg_url)
+    async with app.router.lifespan_context(app):
+        async with httpx.AsyncClient(
+            transport=httpx.ASGITransport(app=app), base_url="http://test"
+        ) as client:
+            ask = await client.post("/rag/ask", json={"question": "Paris?", "k": 3})
+            scored = await client.post(
+                "/rag/evaluate",
+                json={
+                    "question": "Paris?",
+                    "k": 3,
+                    "expected_answer": "Paris",
+                    "expected_document_ids": ids,
+                },
+            )
+    assert ask.status_code == scored.status_code == 200
+    assert provider.contexts[0] == provider.contexts[1]
+    for response in (ask, scored):
+        data = response.json()
+        assert data["context_truncated"] and data["context_characters"] <= MAX_CONTEXT_CHARACTERS
+        assert data["context_chunk_ids"]
+    assert scored.json()["recall_at_k"] == 1  # Ranked retrieval, distinct from context selection.
+
+
+async def test_rag_generation_timeout_is_provider_504_for_both_paths(db, pg_url):
+    import httpx
+
+    from agenteval.api import create_app
+
+    class Timeout(FakeProvider):
+        async def generate(self, data):
+            raise TimeoutError()
+
+    provider = Timeout()
+    document = await ingest(db, provider, DocumentCreate(title="France", content="Paris"))
+    app = create_app(provider, database_url=pg_url)
+    async with app.router.lifespan_context(app):
+        async with httpx.AsyncClient(
+            transport=httpx.ASGITransport(app=app), base_url="http://test"
+        ) as client:
+            for path, body in [
+                ("/rag/ask", {"question": "Paris?"}),
+                (
+                    "/rag/evaluate",
+                    {
+                        "question": "Paris?",
+                        "expected_answer": "Paris",
+                        "expected_document_ids": [document["id"]],
+                    },
+                ),
+            ]:
+                response = await client.post(path, json=body)
+                assert response.status_code == 504
+                assert response.json()["detail"] == {"category": "timeout", "retryable": True}

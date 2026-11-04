@@ -4,6 +4,8 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
+MAX_CONTEXT_CHARACTERS = 12000
+
 
 class StrictModel(BaseModel):
     model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
@@ -15,7 +17,7 @@ class EvaluationRequest(StrictModel):
     test_case_id: str = Field(min_length=1, max_length=100)
     question: str = Field(min_length=1, max_length=4000)
     expected_answer: str = Field(min_length=1, max_length=4000)
-    context: str = Field(default="", max_length=12000)
+    context: str = Field(default="", max_length=MAX_CONTEXT_CHARACTERS)
     prompt: str = Field(default="Answer the question using the supplied context.", max_length=2000)
     exact_match: bool = False
 

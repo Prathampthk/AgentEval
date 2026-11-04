@@ -1,0 +1,17 @@
+{
+  "tests": 134,
+  "passed": 134,
+  "errors": 0,
+  "failures": 0,
+  "skipped": 0,
+  "warnings": 1,
+  "elapsed_seconds": 32.887,
+  "junit_sha256": "7e65167a33bc95c89affbb034818de7645cf0153103e9483a08bf3853c6fad17",
+  "command": ".venv/bin/python scripts/local_db.py admin .venv/bin/pytest -q --tb=short --junitxml=artifacts/rag-fixes-tests.xml",
+  "behavior_verified": [
+    "shared bounded context for ask/evaluate through pgvector HTTP",
+    "citation-preserving truncation and explicit evidence metadata",
+    "provider generation timeout is 504 for both paths"
+  ],
+  "live_provider_calls": 0
+}
