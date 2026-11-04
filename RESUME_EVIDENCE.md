@@ -1,6 +1,6 @@
 # AgentEval — evidence-backed engineering achievements
 
-**Latest follow-up:** 134 local tests passed after fixing the existing RAG context/timeout bugs ([verification](reports/rag-fixes-verification.json)). The preceding diagnostic milestone had 130 passing tests; 4,000 instrumented jobs completed with no SQL errors or unexpected retries. Both hosted workflows passed on `cb28a72`; artifact metadata was observed, contents not downloaded. Historical lock timeouts did not recur and their full cause remains unresolved. See [lock/CI review](docs/LOCK_CONTENTION_REVIEW.md), [hosted evidence](reports/hosted-ci-verification.json) and [diagnostic test record](reports/diagnostic-verification.json). Earlier measurements below retain their original scope.
+**Latest follow-up:** 134 local tests passed after fixing the existing RAG context/timeout bugs ([verification](reports/rag-fixes-verification.json)). The preceding diagnostic milestone had 130 passing tests; 4,000 instrumented jobs completed with no SQL errors or unexpected retries. Both hosted workflows passed on `cb28a72` and application revision `0b84e4d`; artifact metadata was observed, contents not downloaded. Historical lock timeouts did not recur and their full cause remains unresolved. See [lock/CI review](docs/LOCK_CONTENTION_REVIEW.md), [hosted evidence](reports/hosted-ci-verification.json) and [diagnostic test record](reports/diagnostic-verification.json). Earlier measurements below retain their original scope.
 
 Scope: controlled local PostgreSQL tests, independent worker processes, simulated providers and reproducible reports. This is not a production-readiness certification. No exactly-once external execution, live Gemini throughput, fabricated human labels or caching achievement is claimed.
 
@@ -47,7 +47,14 @@ Evidence-supported résumé wording: “Built a PostgreSQL-backed leased job que
 - Public production deployment: authentication/TLS/ingress protection, provider quotas, backups/restore, HA and operational soak/outage verification remain required.
 - Live Gemini behavior and costs: NOT VERIFIED; secure key/model configuration and allowed outbound provider access are required. No key from chat was copied into source or images.
 - Human judge validation: zero actual human labels. The fifty-row template is prepared, not a completed human study.
-- Hosted GitHub Actions: both workflows subsequently passed on `cb28a72`; artifact metadata is verified, artifact downloads are not. New diagnostic source is validated locally and awaits its own hosted result.
+- Hosted GitHub Actions: both workflows subsequently passed on `cb28a72`; artifact metadata is verified, artifact downloads are not. The diagnostic and RAG application revision `0b84e4d` also passed both hosted workflows.
 - Historical 3.091× result: ratio of mean completion times for a simulated single-process 1-vs-configured-16-lane experiment; observed concurrent peak was five. It is not evidence of sixteen simultaneously active workers, caching or live-provider speedup.
 
 See [prioritized engineering review](docs/PLATFORM_REVIEW.md) and [claims audit](docs/RESUME_CLAIMS_AUDIT.md).
+
+
+## Controlled restore and labeling preparation
+
+A real local pg_dump/pg_restore drill passed on generated fake work: completed results, pending jobs and submission idempotency survived restoration; the restored pending job then produced one accepted result. Temporary drill databases were removed. See [drill evidence](reports/backup-restore-drill.json) and deployment instructions. This does not prove host-loss/HA/PITR recovery, production RPO/RTO, offsite storage, encryption or a scheduled backup policy.
+
+A deterministic shuffled human review packet without category hints and a separate blank label file are prepared locally. Zero labels were generated or supplied; human-judge accuracy remains unmeasured. See [human instructions](docs/HUMAN_LABELING.md).

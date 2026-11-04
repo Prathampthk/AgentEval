@@ -37,3 +37,13 @@ Docker statistics are optional container-wide samples, not isolated per-query ac
 The deterministic workflow uses real PostgreSQL without paid providers. The container workflow additionally builds both images, migrates, runs the HTTP smoke workflow with restricted runtime credentials, and executes the PostgreSQL suite. These definitions still require a successful hosted run: registry access, runner capacity, image builds, service DNS and artifact permissions can differ from this workspace. Optional live judge workflow is separate and must not expose credentials to untrusted forks.
 
 The packaged Uvicorn command caps concurrent connections/tasks at 64 with backlog 128; the ASGI body limit is 32 KiB. These supplement the durable queue cap and four synchronous evaluation slots. Reverse-proxy connection/read timeouts and distributed rate/cost limits are still needed for public ingress. Configuration must be consistent across replicas.
+
+## Controlled backup/restore drill
+
+```bash
+.venv/bin/python scripts/local_db.py admin .venv/bin/python scripts/backup_restore_drill.py
+```
+
+The local-only helper creates two uniquely named temporary databases in `agenteval-postgres`, migrates the source, inserts generated fake completed/pending work, takes a custom-format `pg_dump`, and restores it using `pg_restore --exit-on-error`. It verifies result identity, pending work, idempotency replay and execution after restoration, then drops only its drill databases. The dump is retained with mode 0600 under ignored `.local/backups`; the credential URL is never printed or passed on a command line. The script refuses non-local/non-test database configuration.
+
+`reports/backup-restore-drill.json` records the actual successful controlled drill. This is an idle-source local snapshot exercise, not host-loss, corruption, PITR, HA or production RPO/RTO evidence. Production still needs encrypted offsite backups, scheduling, retention, access control and restoration exercises against the real deployment. Do not restore this generated test dump into an existing application database.

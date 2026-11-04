@@ -16,3 +16,11 @@ Gemini mode additionally requires securely configured credentials/model, an agre
 The analysis defines quality_pass as positive and reports paired sample size, agreement, TP/TN/FP/FN, precision, recall, false-positive and false-negative rates, and disagreement identifiers/categories. Undefined ratios are null, not zero. Unknown/duplicate IDs and incompatible rubrics are rejected. Labels and AI predictions remain separate files.
 
 reports/judge_validation.json currently reports BLOCKED, 50 available examples, zero human labels and no measured accuracy. This is the honest study status. The analysis implementation is tested using explicitly synthetic unit fixtures; those fixtures are not human-study evidence.
+
+To prepare a category-blinded review packet and a separate writable label template:
+
+```bash
+.venv/bin/python scripts/prepare_human_review.py
+```
+
+Review `artifacts/human_review_packet.json` against this rubric and enter your decisions in `artifacts/human_labels.json`. The packet uses a deterministic shuffled order and omits category hints; IDs remain intact for matching. The script never fills a label or overwrites existing files. Both outputs are ignored local files. The original ten-question convenience-sample limitation remains; shuffling does not make it representative. Read neither AI predictions nor category hints before labeling, and keep ambiguous cases in notes.

@@ -78,3 +78,6 @@ The full local suite now passes **130 tests**, including controlled PostgreSQL l
 
 
 RAG follow-up: the full local suite now passes **134 tests**, zero failures/errors/skips, one dependency warning. Shared citation-preserving context bounds and provider HTTP 504 timeout handling correct the two known endpoint defects. Evidence: reports/rag-fixes-verification.json and RAG.md. No live-provider accuracy, token-cost or human-label claim follows.
+
+
+Hosted follow-through: both workflows passed at application revision `0b84e4d` (runs 41768068596 and 41768068502); every step conclusion and artifact metadata was observed, artifact downloads were not. A controlled local dump/restore drill also passed for generated completed/pending jobs and idempotency state; it does not verify production disaster recovery or an RPO/RTO SLA. No human labels or live provider measurements were created.

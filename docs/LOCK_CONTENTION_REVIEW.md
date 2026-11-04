@@ -36,7 +36,7 @@ Commands:
 
 Both workflows passed on commit `cb28a72`: [deterministic checks](https://github.com/Prathampthk/AgentEval/actions/runs/41766710226) and [container deployment checks](https://github.com/Prathampthk/AgentEval/actions/runs/41766710274). The failed build was traced through hosted annotations to Bake refusing an out-of-workspace CA read. Copying the public CA into ignored local state fixed it; TLS verification remains enabled and the CA remains a build-secret mount.
 
-Every hosted job step conclusion was checked through the public GitHub web UI because the API is forbidden by this environment. GitHub lists `test-results` and `platform-process-smoke` artifacts with digests; their contents were not downloaded. The Node action-runtime deprecation warnings remain maintenance work. This verified run precedes the new diagnostic source; its hosted result will be recorded separately after push. See [hosted evidence](../reports/hosted-ci-verification.json).
+Every hosted job step conclusion was checked through the public GitHub web UI because the API is forbidden by this environment. GitHub lists `test-results` and `platform-process-smoke` artifacts with digests; their contents were not downloaded. The Node action-runtime deprecation warnings remain maintenance work. The subsequent diagnostic and RAG source revision `0b84e4d` also passed both hosted workflows: runs 41768068596 and 41768068502, with every step conclusion checked. Artifact names/digests were observed; downloads remain unverified. See [hosted evidence](../reports/hosted-ci-verification.json).
 
 ## Next decisions
 

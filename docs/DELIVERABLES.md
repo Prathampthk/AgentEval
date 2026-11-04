@@ -1,6 +1,6 @@
 # Deliverable status
 
-Latest platform evidence: [engineering review](PLATFORM_REVIEW.md), [verification record](../reports/platform-verification.json), [résumé evidence](../RESUME_EVIDENCE.md). Production readiness remains unverified; hosted workflows later passed on cb28a72 (see LOCK_CONTENTION_REVIEW.md); the 16-process benchmark lock-timeout outlier needs further diagnosis.
+Latest platform evidence: [engineering review](PLATFORM_REVIEW.md), [verification record](../reports/platform-verification.json), [résumé evidence](../RESUME_EVIDENCE.md). Production readiness remains unverified; hosted workflows later passed on cb28a72 and 0b84e4d (see LOCK_CONTENTION_REVIEW.md); the 16-process benchmark lock-timeout outlier needs further diagnosis.
 
 | Deliverable | Status | Evidence |
 |---|---|---|
@@ -11,7 +11,7 @@ Latest platform evidence: [engineering review](PLATFORM_REVIEW.md), [verificatio
 | Gemini generation/judgment/embeddings adapter | CONTRACT TESTED; live BLOCKED | SDK tests; no secure key/model binding active |
 | RAG target | VERIFIED with simulated embeddings | pgvector ingestion/retrieval/HTTP tests; RAG.md |
 | Regression checker | VERIFIED locally | PASS/FAIL/INCONCLUSIVE tests and deterministic demo gate |
-| GitHub Actions | VERIFIED on cb28a72; new diagnostic revision pending | Deterministic tests/build/gate; optional budget-capped manual live workflow |
+| GitHub Actions | VERIFIED on cb28a72 and application revision 0b84e4d | Deterministic tests/build/gate; optional budget-capped manual live workflow |
 | React dashboard | VERIFIED core Chromium flow | Production build, dataset/run/details/comparison/study browser test |
 | Automated suite | VERIFIED | 134 backend tests locally; prior 127-test container suite and 1 browser workflow retained as historical evidence |
 | Reliability evidence | VERIFIED, scoped | Real process exit, database connection interruption, fencing, rollback, cancellation and shutdown |

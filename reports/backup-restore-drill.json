@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "verified_at_utc": "2026-11-04T03:38:57.647686+00:00",
+  "checks": [
+    "completed result and run identity restored",
+    "pending durable work restored",
+    "submission idempotency survived restoration",
+    "restored pending work executed with one accepted result"
+  ],
+  "backup_bytes": 24170,
+  "temporary_databases_removed": true,
+  "simulated": true,
+  "live_provider_calls": 0,
+  "limitations": [
+    "Controlled local idle-source snapshot; no storage corruption/host loss/HA/PITR proof.",
+    "No production backup scheduling, encryption, retention, offsite storage or RPO/RTO SLA verified.",
+    "Local dump contains only generated drill data and remains in ignored .local/backups."
+  ]
+}
