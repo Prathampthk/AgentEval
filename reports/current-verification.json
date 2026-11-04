@@ -1,0 +1,39 @@
+{
+  "verified_at_utc": "2026-11-04T22:11:00.588824+00:00",
+  "application_revision": "da60690996b6b686ba079fce523be3ae91c5670f",
+  "host_unit_suite": {
+    "scope": "macOS Python 3.14; 57 integration tests deselected",
+    "xml": "artifacts/resume-unit-tests.xml",
+    "xml_sha256": "698810d2eed028bb7886e1e5ccb59d19163960d021a6c21ef8350f2962002e0e",
+    "counts": {
+      "tests": "79",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "3.358"
+    },
+    "warnings": 2
+  },
+  "container_full_suite": {
+    "command": "docker compose --env-file .local/compose.env --profile verification run --name agenteval-resume-verification --no-deps tests",
+    "scope": "non-root Linux Python 3.12; real dedicated PostgreSQL test database",
+    "passed": 136,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "warnings": 1,
+    "duration_seconds": 18.23,
+    "evidence_source": "tool-observed process stdout and exit code 0",
+    "xml_retained": false
+  },
+  "ruff_lint": "PASS",
+  "ruff_format": "PASS (60 files)",
+  "pip_check": "PASS",
+  "live_calls": 0,
+  "notes": [
+    "Virtual environment restored from pinned dependencies; initial sandbox network installation failed, elevated retry passed.",
+    "Container XML was on tmpfs and unavailable after exit; counts above were observed in stdout, not parsed from XML.",
+    "Full suite includes real PostgreSQL lock-graph/statement-timeout test; historical spontaneous timeout root cause remains unresolved.",
+    "Running Compose API/worker were preserved."
+  ]
+}

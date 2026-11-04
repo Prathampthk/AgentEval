@@ -81,3 +81,10 @@ RAG follow-up: the full local suite now passes **134 tests**, zero failures/erro
 
 
 Hosted follow-through: both workflows passed at application revision `0b84e4d` (runs 41768068596 and 41768068502); every step conclusion and artifact metadata was observed, artifact downloads were not. A controlled local dump/restore drill also passed for generated completed/pending jobs and idempotency state; it does not verify production disaster recovery or an RPO/RTO SLA. No human labels or live provider measurements were created.
+
+
+## Current reconciliation — 2026-11-04
+
+This update supersedes historical pending status above without changing historical measurements. Two offline wire-contract checks bring the prior local suite to 136 tests. Gemini judgment now uses `response_json_schema=Judgment.model_json_schema()`. `reports/live-gemini-smoke.json`, committed in `da60690`, records one completed sync and one completed queued `gemini-3.1-flash-lite` evaluation of the same case (queued attempt count one). This verifies a narrow connectivity/structured-output path, not judge accuracy or live throughput. Accepted-result metadata totals 418 input and 126 output tokens; failed/discarded requests are not included and no monetary cost or remaining budget is inferred. More paid calls require budget review.
+
+Both hosted workflows passed at `da60690`; job/step conclusions and artifact metadata were inspected through the GitHub connector. Artifact contents were not downloaded. See `reports/hosted-ci-current.json`. The human study remains BLOCKED with zero supplied labels; live embeddings/RAG and public deployment safeguards remain separate unfinished work. The historical PostgreSQL timeout cause remains unresolved.

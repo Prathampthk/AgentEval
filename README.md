@@ -1,7 +1,7 @@
 # AgentEval
 
-A local AI evaluation and regression-testing platform with durable PostgreSQL jobs, bounded workers, a pgvector RAG target, regression checks and a React dashboard. Live-provider and human-study validation remain explicitly pending.
-**Core stack:** a local FastAPI evaluation workflow, PostgreSQL persistence, and a durable job queue with a configurable bounded worker pool. Gemini adapter contracts are tested; live Gemini remains unverified.
+A local AI evaluation and regression-testing platform with durable PostgreSQL jobs, bounded workers, a pgvector RAG target, regression checks and a React dashboard. Two live Gemini smoke evaluations are recorded; human-study validation and live RAG remain pending.
+**Core stack:** a local FastAPI evaluation workflow, PostgreSQL persistence, and a durable job queue with a configurable bounded worker pool. Gemini adapter contracts and a small live generation/judgment smoke sample are verified.
 
 ## Run locally
 
@@ -29,7 +29,7 @@ The fake provider echoes context and uses a substring check. Its scores demonstr
 
 Securely supply `GEMINI_API_KEY` and explicitly select `AGENTEVAL_MODEL`; then set `AGENTEVAL_PROVIDER=gemini` when starting the server. Do not commit secrets. The configured model is used for both generation and judgment, which can introduce shared-model bias. Each evaluation makes two requests, with SDK retries disabled. Token counts remain null when absent from provider metadata.
 
-Live Gemini access has **NOT BEEN VERIFIED**. Cloud networking must permit `generativelanguage.googleapis.com`, and any key must be securely bound for that destination. Never enter keys in chat. Fake mode is the supported verified default; no live credential requirement was added to the environment draft.
+Local `gemini-3.1-flash-lite` completed one synchronous and one queued evaluation of the same simple case; see [live evidence](reports/live-gemini-smoke.json), committed in `da60690`. The judge uses `response_json_schema=Judgment.model_json_schema()` with two offline wire-contract checks. These two results establish connectivity and structured output only, not accuracy, throughput, embeddings or RAG quality. Accepted-result metadata totals 418 input and 126 output tokens across four generation/judgment responses; it excludes failed/discarded attempts and is not a billing ledger. Ask before expanding paid testing. Never enter keys in chat; fake mode remains the demonstration default.
 
 ## Checks
 
@@ -40,7 +40,7 @@ Live Gemini access has **NOT BEEN VERIFIED**. Cloud networking must permit `gene
 .venv/bin/python -m pip check
 ```
 
-GitHub Actions defines the same deterministic checks with an isolated PostgreSQL service and no live-provider credentials. The workflow has not run on GitHub yet. It does not implement a quality regression gate yet.
+GitHub Actions defines the same deterministic checks with an isolated PostgreSQL service and no live-provider credentials. Both hosted workflows passed on `da60690`; [current hosted evidence](reports/hosted-ci-current.json) records step conclusions and artifact metadata, with contents not downloaded. The deterministic workflow runs the PASS/FAIL/INCONCLUSIVE regression demonstration gate.
 
 ## Operating limits
 
@@ -93,7 +93,7 @@ Without `AGENTEVAL_TEST_DATABASE_URL`, integration tests are explicitly skipped.
 
 For external PostgreSQL, securely set `AGENTEVAL_DATABASE_URL` (`postgresql+asyncpg://...`); use a schema-owning `AGENTEVAL_MIGRATION_DATABASE_URL` when runtime has only DML permissions. Run migrations explicitly with `.venv/bin/alembic upgrade head`. Never commit these URLs. The helper's `run` mode injects only local runtime configuration; `admin` additionally injects local migration/test URLs. Existing explicit external URLs are preserved. Local configuration is not production secret management.
 
-See [database schema](docs/DATABASE_SCHEMA.md), [milestone 2 evidence](docs/MILESTONE_2_EVIDENCE.md), and [engineering decisions](docs/ENGINEERING_DECISIONS.md). PostgreSQL startup and application processes must be restored explicitly in future tasks; snapshot restoration itself is not yet verified.
+See [database schema](docs/DATABASE_SCHEMA.md), [milestone 2 evidence](docs/MILESTONE_2_EVIDENCE.md), and [engineering decisions](docs/ENGINEERING_DECISIONS.md). PostgreSQL startup and application processes must be restored explicitly in future tasks; a controlled generated-data dump/restore drill is recorded in [restore evidence](reports/backup-restore-drill.json), without production recovery guarantees.
 
 ## Durable queued runs
 
@@ -189,11 +189,11 @@ See [benchmark methodology](docs/BENCHMARK_METHODOLOGY.md), [measured report](do
 
 `bash scripts/setup_environment.sh` installs the pinned Python and frontend dependencies, builds the dashboard, starts the owned local pgvector database (unless an external app URL is configured), and applies migrations. Read [the demonstration steps](docs/DEMO.md) and [final review](docs/FINAL_REVIEW.md). Processes still need explicit startup; setup does not publish the environment.
 
-Remaining external work: securely configure a replacement GEMINI_API_KEY and a supported AGENTEVAL_MODEL for the authorized sample (at most 10 live evaluations), and supply actual human labels using the prepared template. The checked-in human report remains BLOCKED; live performance/accuracy is not claimed.
+Remaining external work: supply actual human labels using the prepared template. Further paid calls require a budget review; the two recorded smoke evaluations do not establish the remaining allowance because failed/discarded requests are outside accepted-result usage. The checked-in human report remains BLOCKED; live performance/accuracy is not claimed.
 
 ## Fault-tolerant platform verification
 
 See [container deployment and verification](docs/DEPLOYMENT.md), [delivery semantics](docs/JOB_EXECUTION_SEMANTICS.md) and [résumé evidence](RESUME_EVIDENCE.md) for the current backend upgrade. The new process sweep benchmarks **1, 4, 8 and 16 independent processes**, separately from the historical 1-vs-16 async-lane report above. Active queues have configurable capacity and retry hints; worker execution has fixed per-process bounds. Compose defaults to simulated providers and a loopback-only API. External side effects may repeat after crashes; no exactly-once external execution or public production-readiness claim is made.
 
 
-Latest follow-up: [lock contention investigation and hosted CI](docs/LOCK_CONTENTION_REVIEW.md). The local suite now has 134 passing tests after the subsequent RAG context/timeout corrections. Both hosted workflows passed on `cb28a72` after fixing Bake access to the public CA build secret. The historical lock-timeout outlier remains unresolved; optional diagnostic capture is now available without changing default queue execution.
+Latest follow-up: [lock contention investigation and hosted CI](docs/LOCK_CONTENTION_REVIEW.md). The current non-root container suite has 136 passing tests after adding two Gemini wire-contract checks. Both hosted workflows passed on current source revision `da60690`; earlier Bake recovery evidence is retained. The historical lock-timeout outlier remains unresolved; optional diagnostic capture is now available without changing default queue execution.

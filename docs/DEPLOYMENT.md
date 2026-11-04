@@ -34,7 +34,7 @@ Docker statistics are optional container-wide samples, not isolated per-query ac
 
 ## Hosted checks
 
-The deterministic workflow uses real PostgreSQL without paid providers. The container workflow additionally builds both images, migrates, runs the HTTP smoke workflow with restricted runtime credentials, and executes the PostgreSQL suite. These definitions still require a successful hosted run: registry access, runner capacity, image builds, service DNS and artifact permissions can differ from this workspace. Optional live judge workflow is separate and must not expose credentials to untrusted forks.
+The deterministic workflow uses real PostgreSQL without paid providers. The container workflow additionally builds both images, migrates, runs the HTTP smoke workflow with restricted runtime credentials, and executes the PostgreSQL suite. Both workflows passed at `da60690`; current job/step conclusions and artifact metadata are in `reports/hosted-ci-current.json`. Artifact contents were not downloaded. Future registry access, runner capacity, image builds and service DNS can still differ from this workspace. Optional live judge workflow is separate and must not expose credentials to untrusted forks.
 
 The packaged Uvicorn command caps concurrent connections/tasks at 64 with backlog 128; the ASGI body limit is 32 KiB. These supplement the durable queue cap and four synchronous evaluation slots. Reverse-proxy connection/read timeouts and distributed rate/cost limits are still needed for public ingress. Configuration must be consistent across replicas.
 
