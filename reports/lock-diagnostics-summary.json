@@ -1,0 +1,181 @@
+{
+  "kind": "instrumented-lock-reproduction",
+  "complete": true,
+  "raw_sha256": "73a8674082d545877845bd270c1be1137757448d122fa300dd7739346c34d54b",
+  "archive": "reports/lock-diagnostics.json.gz",
+  "jobs_per_variant": 1000,
+  "repetitions": 2,
+  "source_sha256": {
+    "jobs.py": "8e67455f559a5b932e346e069d75458eb76837396d46f4bc63976d2959c4398b",
+    "worker.py": "23f507ba25780d928822bc64840bf2071298e18bec2b9543fb075e06c711ab21",
+    "platform_actor.py": "65e558c1b8679dcf7da0f3f1b50496e1aa902710eb2ab5c4ce9216f4ce3b5893",
+    "platform_benchmark.py": "5fc3cc8308ce65780b46d823191c12e57c1ea5780d0cb16763428714809fdc1e",
+    "diagnostics.py": "b766030ecad6b8bc7d581ec9925911bb5241070fac94945fd468b3512f971ddd",
+    "database.py": "dc288782aac47078fbed71c91b0aa60b66fe0f569985607b82aad4386121f82c"
+  },
+  "results": [
+    {
+      "worker_processes": 4,
+      "repetition": 1,
+      "jobs_completed": 1000,
+      "duration_seconds": 15.836087509000208,
+      "retry_count": 11,
+      "max_active_evaluations": 3,
+      "workload_sha256": "4b2be038ca36a936ec7126bd8cdd215603f35b28062fe9598836bcb8e6899dfd",
+      "sql_errors": {},
+      "worker_events": {
+        "worker_pool_started": 4,
+        "job_claimed": 1011,
+        "job_attempt_failed": 11,
+        "job_completed": 1000,
+        "worker_pool_stopped": 4
+      },
+      "run_lock_latency_ms": {
+        "count": 1011,
+        "mean": 9.608374907997929,
+        "p50": 6.449413998780074,
+        "p95": 27.789330000814516,
+        "p99": 57.78909999935422
+      },
+      "run_lock_max_ms": 330.8063820004463,
+      "max_sampled_root_blocker_transaction_age_seconds": 0.186978,
+      "sampled_root_blocker_waits": {
+        "idle in transaction:Client:ClientRead": 19,
+        "active:IO:WalSync": 5,
+        "active:None:None": 2
+      },
+      "max_sampled_blocker_transaction_age_seconds": 0.186978,
+      "samples_with_blockers": 26,
+      "sampled_blocker_states": {
+        "idle in transaction": 19,
+        "active": 10
+      }
+    },
+    {
+      "worker_processes": 16,
+      "repetition": 1,
+      "jobs_completed": 1000,
+      "duration_seconds": 27.134896117000608,
+      "retry_count": 11,
+      "max_active_evaluations": 5,
+      "workload_sha256": "4b2be038ca36a936ec7126bd8cdd215603f35b28062fe9598836bcb8e6899dfd",
+      "sql_errors": {},
+      "worker_events": {
+        "worker_pool_started": 16,
+        "job_claimed": 1011,
+        "job_completed": 1000,
+        "job_attempt_failed": 11,
+        "worker_pool_stopped": 16
+      },
+      "run_lock_latency_ms": {
+        "count": 1011,
+        "mean": 261.9841615084654,
+        "p50": 140.36971799941966,
+        "p95": 641.7058919978444,
+        "p99": 3322.9675629991107
+      },
+      "run_lock_max_ms": 5694.850496998697,
+      "max_sampled_root_blocker_transaction_age_seconds": 5.56852,
+      "sampled_root_blocker_waits": {
+        "idle in transaction:Client:ClientRead": 93,
+        "active:Client:ClientRead": 2,
+        "active:LWLock:WALWrite": 7,
+        "active:Lock:transactionid": 2,
+        "active:None:None": 4,
+        "active:IO:WalSync": 13,
+        "idle in transaction:IO:WalSync": 1,
+        "idle in transaction:None:None": 3
+      },
+      "max_sampled_blocker_transaction_age_seconds": 5.56852,
+      "samples_with_blockers": 69,
+      "sampled_blocker_states": {
+        "idle in transaction": 97,
+        "active": 1929
+      }
+    },
+    {
+      "worker_processes": 16,
+      "repetition": 2,
+      "jobs_completed": 1000,
+      "duration_seconds": 17.910699697000382,
+      "retry_count": 11,
+      "max_active_evaluations": 5,
+      "workload_sha256": "4b2be038ca36a936ec7126bd8cdd215603f35b28062fe9598836bcb8e6899dfd",
+      "sql_errors": {},
+      "worker_events": {
+        "worker_pool_started": 16,
+        "job_claimed": 1011,
+        "job_completed": 1000,
+        "worker_pool_stopped": 16,
+        "job_attempt_failed": 11
+      },
+      "run_lock_latency_ms": {
+        "count": 1011,
+        "mean": 160.71189556681745,
+        "p50": 130.16322999828844,
+        "p95": 457.29829700212576,
+        "p99": 824.5966289978242
+      },
+      "run_lock_max_ms": 1518.0617810001422,
+      "max_sampled_root_blocker_transaction_age_seconds": 1.544709,
+      "sampled_root_blocker_waits": {
+        "idle in transaction:Client:ClientRead": 100,
+        "active:Client:ClientRead": 3,
+        "active:None:None": 8,
+        "active:IO:WalSync": 9,
+        "idle in transaction:None:None": 1,
+        "active:LWLock:WALWrite": 2,
+        "active:Lock:transactionid": 1
+      },
+      "max_sampled_blocker_transaction_age_seconds": 1.544709,
+      "samples_with_blockers": 69,
+      "sampled_blocker_states": {
+        "active": 1975,
+        "idle in transaction": 101
+      }
+    },
+    {
+      "worker_processes": 4,
+      "repetition": 2,
+      "jobs_completed": 1000,
+      "duration_seconds": 17.839352715996938,
+      "retry_count": 11,
+      "max_active_evaluations": 4,
+      "workload_sha256": "4b2be038ca36a936ec7126bd8cdd215603f35b28062fe9598836bcb8e6899dfd",
+      "sql_errors": {},
+      "worker_events": {
+        "worker_pool_started": 4,
+        "job_claimed": 1011,
+        "job_completed": 1000,
+        "job_attempt_failed": 11,
+        "worker_pool_stopped": 4
+      },
+      "run_lock_latency_ms": {
+        "count": 1011,
+        "mean": 12.097595060332809,
+        "p50": 5.259050001768628,
+        "p95": 23.26265200099442,
+        "p99": 51.66910700063454
+      },
+      "run_lock_max_ms": 1766.111812001327,
+      "max_sampled_root_blocker_transaction_age_seconds": 1.716246,
+      "sampled_root_blocker_waits": {
+        "idle in transaction:Client:ClientRead": 26,
+        "active:IO:WalSync": 3,
+        "active:None:None": 3,
+        "active:Client:ClientRead": 1
+      },
+      "max_sampled_blocker_transaction_age_seconds": 1.716246,
+      "samples_with_blockers": 33,
+      "sampled_blocker_states": {
+        "idle in transaction": 26,
+        "active": 8
+      }
+    }
+  ],
+  "limitations": [
+    "Diagnostic tracing changes timing; do not replace original performance report.",
+    "Sampled transaction age is not exact lock holding time; short waits can be missed.",
+    "No timeout reproduction does not prove the historical cause resolved."
+  ]
+}

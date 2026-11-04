@@ -194,3 +194,6 @@ Remaining external work: securely configure a replacement GEMINI_API_KEY and a s
 ## Fault-tolerant platform verification
 
 See [container deployment and verification](docs/DEPLOYMENT.md), [delivery semantics](docs/JOB_EXECUTION_SEMANTICS.md) and [résumé evidence](RESUME_EVIDENCE.md) for the current backend upgrade. The new process sweep benchmarks **1, 4, 8 and 16 independent processes**, separately from the historical 1-vs-16 async-lane report above. Active queues have configurable capacity and retry hints; worker execution has fixed per-process bounds. Compose defaults to simulated providers and a loopback-only API. External side effects may repeat after crashes; no exactly-once external execution or public production-readiness claim is made.
+
+
+Latest follow-up: [lock contention investigation and hosted CI](docs/LOCK_CONTENTION_REVIEW.md). The local suite now has 130 passing tests. Both hosted workflows passed on `cb28a72` after fixing Bake access to the public CA build secret. The historical lock-timeout outlier remains unresolved; optional diagnostic capture is now available without changing default queue execution.

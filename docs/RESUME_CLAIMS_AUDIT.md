@@ -68,3 +68,10 @@ The final full suites passed **127 tests on the host and 127 inside the non-root
 | Hosted CI and 50-human-label judge validation | CI definitions and equivalent local checks, failure-injection tests and deterministic regression gate | Hosted execution NOT VERIFIED; zero actual human labels; no live judge accuracy | PARTIAL; human-validation claim BLOCKED |
 
 The historical 3.091× ratio remains valid arithmetic for its single-process async-lane simulation, with configured-16 but observed peak five. The new process sweep is separate; retain all repetitions, including outliers. `RESUME_EVIDENCE.md`, `PLATFORM_REVIEW.md` and `PLATFORM_BENCHMARK_REPORT.md` supersede earlier milestone status summaries without erasing their historical evidence. No exactly-once external execution or production-ready claim is verified.
+
+
+## Lock/CI follow-up
+
+Both hosted workflows passed on `cb28a72` after correcting the public CA build-secret path for newer Bake filesystem policy. Every job step conclusion and artifact name/digest was observed via GitHub web pages; artifact contents were not downloaded. This closes the earlier hosted-execution gap for that source revision. Human labels/live judge quality remain blocked.
+
+The full local suite now passes **130 tests**, including controlled PostgreSQL lock/timeout attribution and diagnostic redaction checks. Four instrumented 1,000-job variants at 4/16 independent processes completed with eleven planned retries each and no SQL errors. Increased run-lock waiting is verified; the original ten-second timeout cause remains unresolved because it did not recur. No execution-policy or exactly-once claim changed. Details and raw evidence: LOCK_CONTENTION_REVIEW.md and reports/lock-diagnostics-summary.json (paths relative to repository root for reports).

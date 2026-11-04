@@ -1,5 +1,7 @@
 # AgentEval — evidence-backed engineering achievements
 
+**Latest follow-up:** 130 local tests passed; 4,000 instrumented jobs completed with no SQL errors or unexpected retries. Both hosted workflows passed on `cb28a72`; artifact metadata was observed, contents not downloaded. Historical lock timeouts did not recur and their full cause remains unresolved. See [lock/CI review](docs/LOCK_CONTENTION_REVIEW.md), [hosted evidence](reports/hosted-ci-verification.json) and [diagnostic test record](reports/diagnostic-verification.json). Earlier measurements below retain their original scope.
+
 Scope: controlled local PostgreSQL tests, independent worker processes, simulated providers and reproducible reports. This is not a production-readiness certification. No exactly-once external execution, live Gemini throughput, fabricated human labels or caching achievement is claimed.
 
 ## Verified implementation
@@ -20,7 +22,7 @@ Source: [`jobs.py`](src/agenteval/jobs.py), [`worker.py`](src/agenteval/worker.p
 - Fresh-volume Compose initialization, migrations, HTTP smoke and restricted runtime privileges passed. No superuser/create-role/create-database/schema-create privilege; job updates allowed and result deletion denied.
 - Failed preliminary checks are disclosed in the [machine-readable verification record](reports/platform-verification.json), including the cold connection timeout and the corrected test-harness connection-lifecycle error. Final suites passed after correction.
 
-Raw logs/XML remain under ignored `artifacts/`; the committed record includes exact counts, test IDs and XML hashes. Equivalent hosted CI execution remains unverified.
+Raw logs/XML remain under ignored `artifacts/`; the committed record includes exact counts, test IDs and XML hashes. Equivalent hosted CI execution was subsequently verified on `cb28a72`; see the latest follow-up above.
 
 ## Measured process benchmark
 
@@ -45,7 +47,7 @@ Evidence-supported résumé wording: “Built a PostgreSQL-backed leased job que
 - Public production deployment: authentication/TLS/ingress protection, provider quotas, backups/restore, HA and operational soak/outage verification remain required.
 - Live Gemini behavior and costs: NOT VERIFIED; secure key/model configuration and allowed outbound provider access are required. No key from chat was copied into source or images.
 - Human judge validation: zero actual human labels. The fifty-row template is prepared, not a completed human study.
-- Hosted GitHub Actions: workflows exist and equivalent local checks pass; hosted execution remains NOT VERIFIED.
+- Hosted GitHub Actions: both workflows subsequently passed on `cb28a72`; artifact metadata is verified, artifact downloads are not. New diagnostic source is validated locally and awaits its own hosted result.
 - Historical 3.091× result: ratio of mean completion times for a simulated single-process 1-vs-configured-16-lane experiment; observed concurrent peak was five. It is not evidence of sixteen simultaneously active workers, caching or live-provider speedup.
 
 See [prioritized engineering review](docs/PLATFORM_REVIEW.md) and [claims audit](docs/RESUME_CLAIMS_AUDIT.md).

@@ -1,0 +1,234 @@
+{
+  "verified_at_utc": "2026-11-04T03:31:06.138830+00:00",
+  "runs": [
+    {
+      "workflow": "container",
+      "run_url": "https://github.com/Prathampthk/AgentEval/actions/runs/41766710274",
+      "job_url": "https://github.com/Prathampthk/AgentEval/actions/runs/41766710274/job/126366650845",
+      "commit": "cb28a72980246d5fd663533ebddefcc2c5b0b43f",
+      "conclusion": "success",
+      "verified_at_utc": "2026-11-04T03:28:04.528536+00:00",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success",
+          "number": "1"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "conclusion": "success",
+          "number": "2"
+        },
+        {
+          "name": "Run actions/setup-python@v5",
+          "conclusion": "success",
+          "number": "3"
+        },
+        {
+          "name": "Run docker/setup-buildx-action@v3",
+          "conclusion": "success",
+          "number": "4"
+        },
+        {
+          "name": "Run docker version && docker compose version && docker buildx version",
+          "conclusion": "success",
+          "number": "5"
+        },
+        {
+          "name": "Run python scripts/compose_env.py",
+          "conclusion": "success",
+          "number": "6"
+        },
+        {
+          "name": "Build containers",
+          "conclusion": "success",
+          "number": "7"
+        },
+        {
+          "name": "Surface build errors",
+          "conclusion": "skipped",
+          "number": "8"
+        },
+        {
+          "name": "Run docker compose --env-file .local/compose.env up -d --wait api worker",
+          "conclusion": "success",
+          "number": "9"
+        },
+        {
+          "name": "Run python scripts/compose_smoke.py",
+          "conclusion": "success",
+          "number": "10"
+        },
+        {
+          "name": "Run docker compose --env-file .local/compose.env --profile verification run --rm tests",
+          "conclusion": "success",
+          "number": "11"
+        },
+        {
+          "name": "Run docker compose --env-file .local/compose.env --profile benchmark run --rm benchmark python -m agenteval.platform_benchmark --jobs 16 --repetitions 1 --workers 1 4 8 16 --output reports/platform-ci-smoke.json",
+          "conclusion": "success",
+          "number": "12"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "conclusion": "success",
+          "number": "13"
+        },
+        {
+          "name": "Run docker compose --env-file .local/compose.env down",
+          "conclusion": "success",
+          "number": "14"
+        },
+        {
+          "name": "Post Run docker/setup-buildx-action@v3",
+          "conclusion": "success",
+          "number": "26"
+        },
+        {
+          "name": "Post Run actions/setup-python@v5",
+          "conclusion": "success",
+          "number": "27"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "conclusion": "success",
+          "number": "28"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success",
+          "number": "29"
+        }
+      ],
+      "source": "public GitHub web UI; API forbidden",
+      "artifact_metadata": {
+        "name": "platform-process-smoke",
+        "size": "10.4 KB",
+        "sha256": "ce855a0d74838075c83eaaa42461a5b589ce6f4b02937383b3e57fc7084e8b91"
+      },
+      "artifact_download_verified": false
+    },
+    {
+      "workflow": "deterministic",
+      "run_url": "https://github.com/Prathampthk/AgentEval/actions/runs/41766710226",
+      "job_url": "https://github.com/Prathampthk/AgentEval/actions/runs/41766710226/job/126366650580",
+      "commit": "cb28a72980246d5fd663533ebddefcc2c5b0b43f",
+      "verified_at_utc": "2026-11-04T03:26:55.343168+00:00",
+      "source": "public GitHub web UI; API access forbidden",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success",
+          "number": "1"
+        },
+        {
+          "name": "Initialize containers",
+          "conclusion": "success",
+          "number": "2"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "conclusion": "success",
+          "number": "3"
+        },
+        {
+          "name": "Run actions/setup-python@v5",
+          "conclusion": "success",
+          "number": "4"
+        },
+        {
+          "name": "Run actions/setup-node@v4",
+          "conclusion": "success",
+          "number": "5"
+        },
+        {
+          "name": "Run bash scripts/install.sh",
+          "conclusion": "success",
+          "number": "6"
+        },
+        {
+          "name": "Run npm ci --prefix frontend",
+          "conclusion": "success",
+          "number": "7"
+        },
+        {
+          "name": "Run npm run format:check --prefix frontend",
+          "conclusion": "success",
+          "number": "8"
+        },
+        {
+          "name": "Run npm run build --prefix frontend",
+          "conclusion": "success",
+          "number": "9"
+        },
+        {
+          "name": "Run .venv/bin/ruff check src tests scripts migrations deploy",
+          "conclusion": "success",
+          "number": "10"
+        },
+        {
+          "name": "Run .venv/bin/ruff format --check src tests scripts migrations deploy",
+          "conclusion": "success",
+          "number": "11"
+        },
+        {
+          "name": "Run .venv/bin/pytest -q --junitxml=artifacts/tests.xml",
+          "conclusion": "success",
+          "number": "12"
+        },
+        {
+          "name": "Run .venv/bin/python -m agenteval.regression --demo-gate",
+          "conclusion": "success",
+          "number": "13"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "conclusion": "success",
+          "number": "14"
+        },
+        {
+          "name": "Post Run actions/setup-node@v4",
+          "conclusion": "success",
+          "number": "25"
+        },
+        {
+          "name": "Post Run actions/setup-python@v5",
+          "conclusion": "success",
+          "number": "26"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "conclusion": "success",
+          "number": "27"
+        },
+        {
+          "name": "Stop containers",
+          "conclusion": "success",
+          "number": "28"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success",
+          "number": "29"
+        }
+      ],
+      "conclusion": "success",
+      "artifact_metadata": {
+        "name": "test-results",
+        "size": "3.1 KB",
+        "sha256": "c44a29ee2f739bfd205876648ba260586116f9a90a51d5a766a5b84c7035c194"
+      },
+      "artifact_download_verified": false
+    }
+  ],
+  "resolved_failure": {
+    "run_url": "https://github.com/Prathampthk/AgentEval/actions/runs/41766474128",
+    "cause": "Docker Bake denied filesystem read of the public CA bundle outside the checkout",
+    "fix_commit": "cb28a72",
+    "fix": "copy public CA to ignored .local/build-ca.crt; preserve TLS and BuildKit secret mount"
+  },
+  "limits": [
+    "API access forbidden; public web step conclusions used.",
+    "Artifact names/digests observed; artifact contents were not downloaded."
+  ]
+}

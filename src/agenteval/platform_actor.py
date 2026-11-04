@@ -3,6 +3,7 @@
 import argparse
 import asyncio
 import json
+import logging
 import os
 import random
 import resource
@@ -14,6 +15,7 @@ from sqlalchemy import text
 from sqlalchemy.engine import make_url
 
 from agenteval.database import Database
+from agenteval.diagnostics import WorkerTrace, instrument_sql
 from agenteval.jobs import JobQueue
 from agenteval.providers import FakeProvider, ProviderError
 from agenteval.worker import serve
@@ -154,6 +156,12 @@ async def main():
     try:
         await database.check_ready()
         with (control / f"trace-{stem}.jsonl").open("a", buffering=1) as trace:
+            if config.get("diagnostics"):
+                logger = logging.getLogger("agenteval.worker")
+                logger.setLevel(logging.INFO)
+                logger.propagate = False
+                logger.addHandler(WorkerTrace(trace))
+                instrument_sql(database, trace)
             provider = ProcessProvider(config, trace)
             queue = ProcessQueue(database, provider, config, trace)
             atomic(control / f"ready-{stem}.json", {"pid": os.getpid()})

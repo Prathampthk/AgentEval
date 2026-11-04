@@ -19,6 +19,7 @@ from sqlalchemy.engine import make_url
 
 from agenteval.benchmark import distribution
 from agenteval.database import Database
+from agenteval.diagnostics import lock_snapshot
 from agenteval.jobs import JobQueue
 from agenteval.models import Job, Result, Run
 from agenteval.persistence_schemas import DatasetCreate, RunCreate
@@ -118,6 +119,7 @@ async def variant(database, args, workers, rep, scenario):
     model = "process-simulation-" + identity
     config = dict(
         model=model,
+        diagnostics=getattr(args, "diagnostics", False),
         seed=args.seed,
         latency=args.latency,
         failure_every=args.failure_every if scenario == "throughput" else 0,
@@ -156,6 +158,7 @@ async def variant(database, args, workers, rep, scenario):
 
     db_samples = []
     docker_samples = []
+    lock_samples = []
     monitor_stop = asyncio.Event()
 
     async def monitor():
@@ -163,6 +166,10 @@ async def variant(database, args, workers, rep, scenario):
         while not monitor_stop.is_set():
             _, sample = await pg_stats(database)
             db_samples.append(sample)
+            if config["diagnostics"]:
+                lock_samples.append(
+                    dict(time=perf_counter(), activity=await lock_snapshot(database))
+                )
             if args.postgres_container and tick % 5 == 0:
                 docker_samples.append(await docker_sample(args.postgres_container))
             tick += 1
@@ -314,6 +321,12 @@ async def variant(database, args, workers, rep, scenario):
             ),
             worker_lifetime_cpu_seconds=sum(e["cpu_seconds"] for e in exits),
             peak_worker_rss_kib=max(e["rss_kib"] for e in exits),
+            diagnostics=dict(
+                enabled=config["diagnostics"],
+                lock_samples=lock_samples,
+                worker_events=[e for e in events if e["kind"] == "worker-event"],
+                sql_operations=[e for e in events if e["kind"] == "sql-operation"],
+            ),
             simulated=True,
             response_cache_enabled=False,
             billable_token_usage=None,
@@ -356,7 +369,14 @@ async def experiment(args, url):
         else None,
         source_sha256={
             name: hashlib.sha256(Path(__file__).with_name(name).read_bytes()).hexdigest()
-            for name in ("jobs.py", "worker.py", "platform_actor.py", "platform_benchmark.py")
+            for name in (
+                "jobs.py",
+                "worker.py",
+                "platform_actor.py",
+                "platform_benchmark.py",
+                "diagnostics.py",
+                "database.py",
+            )
         },
         jobs_per_throughput_variant=args.jobs,
         repetitions=args.repetitions,
@@ -450,6 +470,7 @@ def main():
     parser.add_argument("--failure-every", type=int, default=97)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--skip-recovery", action="store_true")
+    parser.add_argument("--diagnostics", action="store_true")
     parser.add_argument("--postgres-container")
     parser.add_argument("--output", default="reports/platform-benchmark.json")
     args = parser.parse_args()
