@@ -27,12 +27,14 @@ class RunConflict(Exception):
 
 
 class Database:
-    def __init__(self, url: str):
+    def __init__(self, url: str, *, pool_size: int = 5):
         if make_url(url).drivername != "postgresql+asyncpg":
             raise ValueError("Database URL must use postgresql+asyncpg")
+        if type(pool_size) is not int or not 1 <= pool_size <= 32:
+            raise ValueError("Database pool size must be 1–32")
         self.engine = create_async_engine(
             url,
-            pool_size=5,
+            pool_size=pool_size,
             max_overflow=0,
             pool_timeout=5,
             pool_pre_ping=True,

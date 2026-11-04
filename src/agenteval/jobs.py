@@ -8,6 +8,7 @@ from datetime import timedelta
 from uuid import UUID, uuid4
 
 from sqlalchemy import func, or_, select, text, update
+from sqlalchemy.exc import DBAPIError
 
 from agenteval.database import Database, MissingRecord
 from agenteval.domain import EvaluationRequest, EvaluationResult
@@ -17,6 +18,10 @@ from agenteval.providers import Provider
 
 
 class SubmissionConflict(Exception):
+    pass
+
+
+class QueueBusy(Exception):
     pass
 
 
@@ -90,7 +95,13 @@ class JobQueue:
         async with self.db.sessions.begin() as session:
             # All admissions use this installation-wide lock. Concurrent draining can
             # only make the count conservative; it cannot cause over-admission.
-            await session.execute(text("SELECT pg_advisory_xact_lock(8173, 1)"))
+            await session.execute(text("SET LOCAL lock_timeout = '1000ms'"))
+            try:
+                await session.execute(text("SELECT pg_advisory_xact_lock(8173, 1)"))
+            except DBAPIError as exc:
+                if getattr(exc.orig, "sqlstate", None) == "55P03":
+                    raise QueueBusy from None
+                raise
             existing = await session.scalar(select(Run).where(Run.submission_key == key))
             if existing:
                 if existing.request_hash != digest:
@@ -212,12 +223,21 @@ class JobQueue:
     async def renew(self, claim: Claim, lease_seconds: float = 60) -> bool:
         self._duration(lease_seconds)
         async with self.db.sessions.begin() as session:
+            # Acquire the row lock before evaluating volatile database-clock
+            # predicates. UPDATE predicates alone can be checked before a lock wait.
+            await self._job_lock(session, claim.id)
             result = await session.execute(
                 update(Job)
                 .where(*self._owned(claim))
                 .values(lease_expires_at=func.clock_timestamp() + timedelta(seconds=lease_seconds))
             )
             return result.rowcount == 1
+
+    async def _job_lock(self, session, job_id):
+        job = await session.scalar(select(Job).where(Job.id == job_id).with_for_update())
+        if job is None:
+            raise LostLease
+        return job
 
     async def _run_lock(self, session, run_id):
         run = await session.scalar(select(Run).where(Run.id == run_id).with_for_update())
@@ -248,6 +268,7 @@ class JobQueue:
     async def complete(self, claim: Claim, result: EvaluationResult):
         async with self.db.sessions.begin() as session:
             run = await self._run_lock(session, claim.run_id)
+            await self._job_lock(session, claim.id)
             if (
                 result.provider,
                 result.model,
@@ -307,16 +328,23 @@ class JobQueue:
             raise ValueError("Invalid failure category")
         async with self.db.sessions.begin() as session:
             run = await self._run_lock(session, claim.run_id)
-            job = await session.scalar(select(Job).where(*self._owned(claim)).with_for_update())
-            if job is None:
-                raise LostLease
+            job = await self._job_lock(session, claim.id)
             retry = retryable and job.attempts < job.max_attempts
-            job.status = "PENDING" if retry else "FAILED"
-            job.last_error = category
-            job.completed_at = None if retry else func.clock_timestamp()
-            job.available_at = func.clock_timestamp() + timedelta(seconds=delay_seconds)
-            job.lease_owner = job.lease_token = job.lease_expires_at = None
-            await session.flush()
+            updated = await session.execute(
+                update(Job)
+                .where(*self._owned(claim))
+                .values(
+                    status="PENDING" if retry else "FAILED",
+                    last_error=category,
+                    completed_at=None if retry else func.clock_timestamp(),
+                    available_at=func.clock_timestamp() + timedelta(seconds=delay_seconds),
+                    lease_owner=None,
+                    lease_token=None,
+                    lease_expires_at=None,
+                )
+            )
+            if updated.rowcount != 1:
+                raise LostLease
             await self._summarize(session, run)
 
     async def recover(self, limit: int = 100) -> int:

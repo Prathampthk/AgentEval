@@ -1,0 +1,17 @@
+.git
+.venv
+.local
+.env
+.env.*
+artifacts
+reports/audit
+reports/benchmark.json
+reports/platform-benchmark.json
+frontend/node_modules
+frontend/dist
+frontend/test-results
+frontend/playwright-report
+**/__pycache__
+**/*.pyc
+.pytest_cache
+.ruff_cache

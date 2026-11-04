@@ -15,7 +15,7 @@ from starlette.responses import JSONResponse
 
 from agenteval.database import Database, DatasetConflict, MissingRecord
 from agenteval.domain import EvaluationRequest, EvaluationResult, StrictModel
-from agenteval.jobs import JobQueue, QueueFull, SubmissionConflict
+from agenteval.jobs import JobQueue, QueueBusy, QueueFull, SubmissionConflict
 from agenteval.models import Dataset, Job, Result, Run, TestCase
 from agenteval.persistence_schemas import (
     DatasetCreate,
@@ -75,11 +75,22 @@ class BodyLimit:
 
 
 def create_app(
-    provider: Provider | None = None, timeout_seconds: float = 30, database_url: str | None = None
+    provider: Provider | None = None,
+    timeout_seconds: float = 30,
+    database_url: str | None = None,
+    queue_capacity: int | None = None,
 ) -> FastAPI:
     @asynccontextmanager
     async def lifespan(app):
         async with provider_context(provider, timeout_seconds) as selected:
+            capacity = (
+                queue_capacity
+                if queue_capacity is not None
+                else int(os.getenv("AGENTEVAL_QUEUE_CAPACITY", "1000"))
+            )
+            if type(capacity) is not int or not 1 <= capacity <= 100000:
+                raise RuntimeError("AGENTEVAL_QUEUE_CAPACITY must be 1–100000")
+            app.state.queue_capacity = capacity
             app.state.provider = selected
             url = database_url or os.getenv("AGENTEVAL_DATABASE_URL")
             app.state.database = Database(url) if url else None
@@ -116,7 +127,9 @@ def create_app(
         try:
             app.state.slots.get_nowait()
         except asyncio.QueueEmpty:
-            raise HTTPException(429, "Evaluation capacity reached") from None
+            raise HTTPException(
+                429, "Evaluation capacity reached", headers={"Retry-After": "1"}
+            ) from None
         try:
             yield
         finally:
@@ -209,13 +222,22 @@ def create_app(
                 idempotency_key,
                 provider_timeout=timeout_seconds,
                 run_timeout=data.run_timeout_seconds,
+                capacity=app.state.queue_capacity,
             )
         except SubmissionConflict:
             raise HTTPException(
                 409, "Idempotency-Key conflicts with an earlier submission"
             ) from None
         except QueueFull:
-            raise HTTPException(429, "Persistent job queue capacity reached") from None
+            raise HTTPException(
+                429, "Persistent job queue capacity reached", headers={"Retry-After": "5"}
+            ) from None
+        except QueueBusy:
+            raise HTTPException(
+                503,
+                "Queue admission is busy; retry with the same Idempotency-Key",
+                headers={"Retry-After": "1"},
+            ) from None
         return await db.get_run(run_id)
 
     @app.get("/runs/{run_id}/jobs", response_model=list[JobView])
@@ -345,7 +367,11 @@ def create_app(
 
     @app.get("/judge-validation")
     async def judge_report():
-        path = Path(__file__).resolve().parents[2] / "reports" / "judge_validation.json"
+        path = (
+            Path(os.getenv("AGENTEVAL_PROJECT_ROOT", str(Path(__file__).resolve().parents[2])))
+            / "reports"
+            / "judge_validation.json"
+        )
         return (
             json.loads(path.read_text())
             if path.exists()
@@ -355,7 +381,11 @@ def create_app(
     # Serve the built dashboard when present. Source-only API installations remain valid.
     from fastapi.staticfiles import StaticFiles
 
-    dashboard = Path(__file__).resolve().parents[2] / "frontend" / "dist"
+    dashboard = (
+        Path(os.getenv("AGENTEVAL_PROJECT_ROOT", str(Path(__file__).resolve().parents[2])))
+        / "frontend"
+        / "dist"
+    )
     if dashboard.is_dir():
         app.mount("/dashboard", StaticFiles(directory=dashboard, html=True), name="dashboard")
 

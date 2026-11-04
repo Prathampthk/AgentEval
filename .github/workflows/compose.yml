@@ -1,0 +1,25 @@
+name: Container deployment checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  compose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/compose_env.py
+      - run: docker compose --env-file .local/compose.env build api tests
+      - run: docker compose --env-file .local/compose.env up -d --wait api worker
+      - run: python scripts/compose_smoke.py
+      - run: docker compose --env-file .local/compose.env --profile verification run --rm tests
+      - run: docker compose --env-file .local/compose.env --profile benchmark run --rm benchmark python -m agenteval.platform_benchmark --jobs 16 --repetitions 1 --workers 1 4 8 16 --output reports/platform-ci-smoke.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: platform-process-smoke
+          path: reports/platform-ci-smoke.json
+      - if: always()
+        run: docker compose --env-file .local/compose.env down

@@ -37,8 +37,8 @@ jobs:
       - run: npm ci --prefix frontend
       - run: npm run format:check --prefix frontend
       - run: npm run build --prefix frontend
-      - run: .venv/bin/ruff check src tests scripts migrations
-      - run: .venv/bin/ruff format --check src tests scripts migrations
+      - run: .venv/bin/ruff check src tests scripts migrations deploy
+      - run: .venv/bin/ruff format --check src tests scripts migrations deploy
       - run: .venv/bin/pytest -q --junitxml=artifacts/tests.xml
       - run: .venv/bin/python -m agenteval.regression --demo-gate
       - uses: actions/upload-artifact@v4

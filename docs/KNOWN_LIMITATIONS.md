@@ -14,3 +14,12 @@
 - Frontend end-to-end testing covers a core Chromium workflow; it is not exhaustive cross-browser accessibility testing. A pre-existing Starlette test-client deprecation warning remains.
 - Dependency versions are pinned for tested Linux/Python 3.12 and Node 24. There is no cross-platform hashed Python lock or claim of a comprehensive third-party security audit.
 - Hosted GitHub Actions execution has not been inspected here; local equivalent checks are verified. Optional live workflows need separate GitHub repository secret/variable configuration.
+
+## Platform review limits
+
+- Process-local concurrency is not a distributed provider quota. Queue capacity requires consistent configuration across submitting APIs. History storage remains unbounded without retention operations.
+- No authentication/TLS/public ingress abuse protection, HA, host/storage-loss recovery proof or backup-restore drill. Compose is a loopback-only controlled deployment.
+- Fencing controls database acceptance, never already emitted external effects; duplicate provider charges remain possible after crashes or judge-stage retries.
+- Hosted CI success, live Gemini behavior and human judge accuracy remain unverified. Human labels are zero; the prepared set has only ten distinct questions with five variants each and is not representative of all applications.
+- Audit observed RAG context assembly can exceed the evaluation request context limit and raw timeout mapping is overly broad; these existing AI-path issues remain outside the job-platform changes. They must be corrected before claiming all endpoints robust for public use.
+- Runtime dependency vulnerability checks are point-in-time evidence, not security certification. Base images require ongoing updates and scanning.

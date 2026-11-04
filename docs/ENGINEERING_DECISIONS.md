@@ -63,3 +63,27 @@ Verification: a real PostgreSQL queue holds 120 jobs; a controlled barrier prove
 Trade-offs: polling remains one second by default; it can add queue latency. The five-connection database pool is independent of evaluation concurrency and may become a bottleneck under load. Admission and per-run aggregation still serialize database operations. The cap is per worker process: multiple workers and the API's synchronous endpoints can exceed 16 combined provider calls. The benchmark must use one configured worker and avoid concurrent synchronous evaluations. Shutdown is cooperative, with one shared 50-second drain deadline rather than 50 seconds per lane. Claims already in flight at shutdown can commit; they are left leased without starting provider work.
 
 Learning takeaway: limiting simultaneous work and limiting scheduled work are different requirements. A fixed set of consumers provides both.
+
+## ADR — post-lock lease checks and bounded admission
+
+**Context:** PostgreSQL may evaluate a volatile clock predicate before waiting for a row lock. A lease can expire while a result writer waits. Unbounded admission lock waits also hide overload.
+
+**Decision:** Acquire the job row lock before evaluating owner/token/status/deadline/expiry guards. Keep run-before-job ordering for finalization. Bound admission lock waits to one second, expose retry hints, and configure the durable active-job capacity.
+
+**Alternatives:** A more complex single-statement CTE or triggers could enforce guards; an external broker could handle admission. Neither is needed to fix this demonstrated race.
+
+**Trade-offs:** One extra short SQL statement per guarded write; installation-wide admission serialization; run summaries remain serialized. Every submission path must follow the same protocol.
+
+**Consequences:** Tests deliberately block each guarded write past expiry and prove rejection. Capacity rejection creates no partial run. HTTP clients retain their key across retries.
+
+## ADR — independent-process benchmark and deployment isolation
+
+**Context:** Async lane tests do not demonstrate process isolation or measure process-scaling costs. Runtime processes should not need DDL credentials.
+
+**Decision:** Use real independent interpreters, one lane each, at 1/4/8/16, preserve raw reports and separate crash recovery probes. Deploy one-shot migrations separately from restricted runtime roles. Keep the local Compose API loopback-only and simulated by default.
+
+**Alternatives:** Threads or many async lanes are useful but answer a different performance question; an orchestration framework adds unnecessary complexity.
+
+**Trade-offs:** Process startup and memory costs increase (startup excluded from throughput window and stated explicitly); Docker resource samples are container-wide and coarse. No HA or public authentication is added.
+
+**Consequences:** Report throughput and completion latency honestly, including scaling regressions. Production rollout still requires ingress security, backups and operational validation.

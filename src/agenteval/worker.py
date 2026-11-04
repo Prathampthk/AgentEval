@@ -145,6 +145,8 @@ async def serve(
     metrics=None,
 ):
     validate_pool(concurrency, poll_seconds, shutdown_seconds, lease_seconds, heartbeat_seconds)
+    if not owner or len(owner) > 96:
+        raise ValueError("Worker ID must contain 1–96 characters")
     metrics = metrics if metrics is not None else WorkerMetrics()
 
     async def idle():
@@ -169,9 +171,11 @@ async def serve(
                     continue
             except asyncio.CancelledError:
                 raise
-            except Exception:
-                # Leave uncertain work leased for recovery. Other lanes continue.
-                event("worker_iteration_failed", worker_id=lane_owner)
+            except Exception as exc:
+                # Log the exception class, never raw messages/SQL/provider payloads.
+                event(
+                    "worker_iteration_failed", worker_id=lane_owner, error_type=type(exc).__name__
+                )
             await idle()
 
     async def recovery():
@@ -182,8 +186,8 @@ async def serve(
                     event("leases_recovered", count=count)
             except asyncio.CancelledError:
                 raise
-            except Exception:
-                event("recovery_iteration_failed", worker_id=owner)
+            except Exception as exc:
+                event("recovery_iteration_failed", worker_id=owner, error_type=type(exc).__name__)
             await idle()
 
     event(

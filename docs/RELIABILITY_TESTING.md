@@ -30,3 +30,21 @@ Run `.venv/bin/python scripts/local_db.py admin .venv/bin/pytest -q --junitxml=a
 ## Milestone 4 additions
 
 Controlled tests now verify a 16-active evaluation bound with 120 persisted jobs, bounded task growth, failure/timeout isolation, lane reuse after cancellation, successful two-job drain with unclaimed work retained, forced drain cancellation followed by lease recovery, and shutdown during a committed claim without provider execution. These add controlled shutdown-under-load evidence; they do not verify production network partitions or database restarts. See MILESTONE_4_EVIDENCE.md for the current 84-test suite; milestone 3 reports are historical.
+
+## Independent process and post-lock verification
+
+`tests/integration/test_process_guarantees.py` adds eleven real-PostgreSQL scenarios with independent Python interpreters, filesystem barriers and observed PostgreSQL lock waits:
+
+| Scenario | Required observation |
+|---|---|
+| Three concurrent duplicate submissions | Same run ID, one job, three distinct process IDs |
+| Two competing independent claimers | One successful claim |
+| Recovered lease and stale old process | Old completion rejected, replacement can commit |
+| Cancellation with blocked old process | Old completion rejected, canceled result absent |
+| Crash before provider work | Replacement creates one result and one external effect |
+| Crash after response/effect, before acknowledgment | Replacement creates one result and **two** external effects |
+| Crash after commit, before caller acknowledgment | Committed result retained, no redelivery |
+| Completion/failure/renewal blocked past expiry | Database-clock guard rejects after row lock is released |
+| Capacity/lock overload | 429/503 retry hints; duplicate replay retains original run |
+
+Crash tests use `os._exit(86)` and fsync the fake external side-effect record. Lease expiry for recovery assertions is advanced by controlled SQL; the benchmark recovery probe separately waits for a real two-second lease. These tests do not kill the host, corrupt WAL, or prove external-provider cancellation. Run them against the dedicated `_test` database; they truncate only that database and must not share it with another concurrent suite.
