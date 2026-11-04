@@ -1,12 +1,13 @@
 """Check a running Compose deployment without any external provider calls."""
 
 import json
+import os
 import time
 from urllib.request import ProxyHandler, Request, build_opener
 from uuid import uuid4
 
 opener = build_opener(ProxyHandler({}))
-base = "http://127.0.0.1:8011"
+base = os.getenv("AGENTEVAL_SMOKE_URL", "http://127.0.0.1:8011")
 
 
 def request(path, body=None, headers=None):

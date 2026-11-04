@@ -23,3 +23,5 @@
 - Hosted CI success, live Gemini behavior and human judge accuracy remain unverified. Human labels are zero; the prepared set has only ten distinct questions with five variants each and is not representative of all applications.
 - Audit observed RAG context assembly can exceed the evaluation request context limit and raw timeout mapping is overly broad; these existing AI-path issues remain outside the job-platform changes. They must be corrected before claiming all endpoints robust for public use.
 - Runtime dependency vulnerability checks are point-in-time evidence, not security certification. Base images require ongoing updates and scanning.
+
+The process sweep's first 16-worker repetition recovered extra attempts beyond the eleven injected provider failures. Server logs confirm ten run-row SELECT FOR UPDATE statement timeouts. All results were accepted eventually, but the prolonged lock-holder cause is unresolved and the benchmark actor did not capture INFO-level worker events. Investigate transaction/lock timing before increasing process counts in production. Higher process counts increased connection/lock pressure; the shared-host timings are variable.

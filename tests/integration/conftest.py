@@ -1,3 +1,4 @@
+import asyncio
 import os
 
 import pytest
@@ -38,13 +39,26 @@ def pg_url():
 @pytest.fixture
 async def db(pg_url):
     database = Database(pg_url)
-    async with database.engine.begin() as connection:
-        await connection.execute(
-            text(
-                "TRUNCATE document_chunks, documents, evaluation_results, evaluation_jobs, evaluation_runs, test_cases, datasets CASCADE"
-            )
-        )
     try:
+        # Retry only infrastructure connection acquisition before the test starts.
+        # Once connected, test transactions and operations are never retried here.
+        async with asyncio.timeout(30):
+            while True:
+                try:
+                    connection = await database.engine.connect()
+                except (TimeoutError, OSError):
+                    await asyncio.sleep(0.1)
+                else:
+                    break
+        try:
+            async with connection.begin():
+                await connection.execute(
+                    text(
+                        "TRUNCATE document_chunks, documents, evaluation_results, evaluation_jobs, evaluation_runs, test_cases, datasets CASCADE"
+                    )
+                )
+        finally:
+            await connection.close()
         yield database
     finally:
         await database.close()

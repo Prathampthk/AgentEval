@@ -1,0 +1,1709 @@
+{
+  "kind": "postgres-independent-process-worker-sweep",
+  "python": "3.12.16",
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.36",
+  "logical_cpus": 5,
+  "container_cpu_quota": "max 100000",
+  "container_memory_limit": "max",
+  "source_sha256": {
+    "jobs.py": "8e67455f559a5b932e346e069d75458eb76837396d46f4bc63976d2959c4398b",
+    "worker.py": "23f507ba25780d928822bc64840bf2071298e18bec2b9543fb075e06c711ab21",
+    "platform_actor.py": "83c7ac91c1284ece8249f3e7c4c8dbb9ff54acdf32f05dae1967b4afd2121ece",
+    "platform_benchmark.py": "8ccb8cb90f180b5d7f6ecdb40016d9069159c1a142123758daab7f0bdd505f9c"
+  },
+  "jobs_per_throughput_variant": 16,
+  "repetitions": 1,
+  "worker_levels": [
+    1,
+    4,
+    8,
+    16
+  ],
+  "simulated": true,
+  "response_cache_enabled": false,
+  "results": [
+    {
+      "scenario": "throughput",
+      "repetition": 1,
+      "worker_processes": 1,
+      "slots_per_process": 1,
+      "initial_process_ids": [
+        13
+      ],
+      "replaced_processes": 0,
+      "model_tag": "process-simulation-01a91bda4d1f",
+      "jobs_completed": 16,
+      "workload_sha256": "c7d8a34fda8ed20d3030f38baabc9996a068b82e98bf9909704db593b7e31ef1",
+      "duration_seconds": 0.7260817370006407,
+      "throughput_jobs_per_second": 22.036086551486807,
+      "max_active_evaluations": 1,
+      "provider_requests": 33,
+      "retry_count": 1,
+      "terminal_job_error_rate": 0,
+      "recovery_seconds": null,
+      "recovery_clock": "after response/pre-ack crash marker to accepted replacement result",
+      "external_effects_for_crashed_job": null,
+      "completion_latency_ms": {
+        "count": 16,
+        "mean": 436.0224267511512,
+        "p50": 432.5382790011645,
+        "p95": 716.7141320023802,
+        "p99": 716.7141320023802
+      },
+      "execution_latency_ms": {
+        "count": 16,
+        "mean": 10.982016687648866,
+        "p50": 10.810358999151504,
+        "p95": 11.795825001172489,
+        "p99": 11.795825001172489
+      },
+      "claim_latency_from_start_ms": {
+        "count": 16,
+        "mean": 410.01261756332497,
+        "p50": 411.90863700103364,
+        "p95": 693.7559120015067,
+        "p99": 693.7559120015067
+      },
+      "provider_request_latency_ms": {
+        "count": 33,
+        "mean": 5.3598119999206215,
+        "p50": 5.25943199681933,
+        "p95": 5.968990997644141,
+        "p99": 6.2261309976747725
+      },
+      "postgres": {
+        "counter_deltas": {
+          "xact_commit": 37,
+          "xact_rollback": 62,
+          "blks_read": 2,
+          "blks_hit": 3725,
+          "tup_inserted": 16,
+          "tup_updated": 35,
+          "temp_bytes": 0,
+          "deadlocks": 0,
+          "blk_read_time": 1.2150000000000034,
+          "blk_write_time": 0.08499999999999996
+        },
+        "sampled_peak_connections": 4,
+        "sampled_peak_lock_waiters": 0,
+        "samples": 5,
+        "container_samples": []
+      },
+      "worker_lifetime_cpu_seconds": 1.874217,
+      "peak_worker_rss_kib": 65352,
+      "simulated": true,
+      "response_cache_enabled": false,
+      "billable_token_usage": null,
+      "policy": {
+        "model": "process-simulation-01a91bda4d1f",
+        "seed": 42,
+        "latency": 0.005,
+        "failure_every": 97,
+        "scenario": "throughput",
+        "lease_seconds": 60,
+        "heartbeat_seconds": 15
+      },
+      "raw_jobs": [
+        {
+          "kind": "accepted",
+          "job_id": "01512353-3896-423a-920d-d07d7db8ace8",
+          "attempt": 1,
+          "claimed_at": 24105.299024453,
+          "completed_at": 24105.338928231,
+          "evaluation_start": 24105.299172178,
+          "evaluation_end": 24105.310893669,
+          "execution_ms": 11.795825001172489
+        },
+        {
+          "kind": "accepted",
+          "job_id": "075c781e-ec60-40a6-8c1a-56e917bc7d43",
+          "attempt": 1,
+          "claimed_at": 24105.350999293,
+          "completed_at": 24105.373316245,
+          "evaluation_start": 24105.351130307,
+          "evaluation_end": 24105.361761266,
+          "execution_ms": 10.810358999151504
+        },
+        {
+          "kind": "accepted",
+          "job_id": "410cfc8b-c9e8-43a8-ab15-7e56753be29d",
+          "attempt": 1,
+          "claimed_at": 24105.383758158,
+          "completed_at": 24105.411290576,
+          "evaluation_start": 24105.383869627,
+          "evaluation_end": 24105.394481244,
+          "execution_ms": 10.675321002054261
+        },
+        {
+          "kind": "accepted",
+          "job_id": "49efb2ba-b22d-47cc-b892-ec7afc9d005d",
+          "attempt": 1,
+          "claimed_at": 24105.432498586,
+          "completed_at": 24105.457615284,
+          "evaluation_start": 24105.432751329,
+          "evaluation_end": 24105.443120806,
+          "execution_ms": 10.420912003610283
+        },
+        {
+          "kind": "accepted",
+          "job_id": "610c56eb-eb19-43be-8421-c075ed3e5942",
+          "attempt": 1,
+          "claimed_at": 24105.520589314,
+          "completed_at": 24105.551883094,
+          "evaluation_start": 24105.520841056,
+          "evaluation_end": 24105.532230699,
+          "execution_ms": 11.469155000668252
+        },
+        {
+          "kind": "accepted",
+          "job_id": "690e260b-1442-484e-aff4-68bf18ac7ee5",
+          "attempt": 1,
+          "claimed_at": 24105.561564075,
+          "completed_at": 24105.590093138,
+          "evaluation_start": 24105.561718883,
+          "evaluation_end": 24105.572422604,
+          "execution_ms": 10.854838998056948
+        },
+        {
+          "kind": "accepted",
+          "job_id": "6b33b16d-1916-4ff8-ae4c-b72d549efad2",
+          "attempt": 1,
+          "claimed_at": 24105.599033013,
+          "completed_at": 24105.625912217,
+          "evaluation_start": 24105.599157533,
+          "evaluation_end": 24105.609947664,
+          "execution_ms": 10.872761999053182
+        },
+        {
+          "kind": "accepted",
+          "job_id": "7006ab1a-b61f-4d12-964c-5a4dcca0a10c",
+          "attempt": 1,
+          "claimed_at": 24105.640206615,
+          "completed_at": 24105.660836257,
+          "evaluation_start": 24105.640555495,
+          "evaluation_end": 24105.651112046,
+          "execution_ms": 10.616693001793465
+        },
+        {
+          "kind": "accepted",
+          "job_id": "796bf47f-ec3f-4ecf-9f8f-02a48aa37695",
+          "attempt": 1,
+          "claimed_at": 24105.671124508,
+          "completed_at": 24105.703204343,
+          "evaluation_start": 24105.672247781,
+          "evaluation_end": 24105.682859749,
+          "execution_ms": 11.678847000439418
+        },
+        {
+          "kind": "accepted",
+          "job_id": "860fb744-9af6-4f9c-af6a-a5a6b3998819",
+          "attempt": 1,
+          "claimed_at": 24105.717472655,
+          "completed_at": 24105.742839501,
+          "evaluation_start": 24105.71758903,
+          "evaluation_end": 24105.728190954,
+          "execution_ms": 10.672290998627432
+        },
+        {
+          "kind": "accepted",
+          "job_id": "874b5061-f6d8-4d5c-8f32-37e8ce5f551b",
+          "attempt": 1,
+          "claimed_at": 24105.753334644,
+          "completed_at": 24105.775869329,
+          "evaluation_start": 24105.753441254,
+          "evaluation_end": 24105.764452264,
+          "execution_ms": 11.074422000092454
+        },
+        {
+          "kind": "accepted",
+          "job_id": "8a1b6878-bcb7-445c-8de1-d21a323df21a",
+          "attempt": 1,
+          "claimed_at": 24105.785921639,
+          "completed_at": 24105.807148368,
+          "evaluation_start": 24105.786031939,
+          "evaluation_end": 24105.796773635,
+          "execution_ms": 10.803997996845283
+        },
+        {
+          "kind": "accepted",
+          "job_id": "8fd9f3b0-8838-4e75-a2cf-42f1622dcb01",
+          "attempt": 1,
+          "claimed_at": 24105.818213878,
+          "completed_at": 24105.845606319,
+          "evaluation_start": 24105.818536129,
+          "evaluation_end": 24105.829097967,
+          "execution_ms": 10.622761001286563
+        },
+        {
+          "kind": "accepted",
+          "job_id": "ce00eb47-fff1-42d8-8f71-7f7b2bd9bd2a",
+          "attempt": 1,
+          "claimed_at": 24105.865057858,
+          "completed_at": 24105.885858989,
+          "evaluation_start": 24105.865525769,
+          "evaluation_end": 24105.876749151,
+          "execution_ms": 11.613792001298862
+        },
+        {
+          "kind": "accepted",
+          "job_id": "f02c4e8a-bd6f-48ed-bb8b-902d4693b1ff",
+          "attempt": 1,
+          "claimed_at": 24105.89211695,
+          "completed_at": 24105.913712475,
+          "evaluation_start": 24105.892246197,
+          "evaluation_end": 24105.90276134,
+          "execution_ms": 10.573958996246802
+        },
+        {
+          "kind": "accepted",
+          "job_id": "4aeebcbf-9149-4d9e-88c2-3514f70a5a7e",
+          "attempt": 2,
+          "claimed_at": 24105.92205389,
+          "completed_at": 24105.94501211,
+          "evaluation_start": 24105.92233318,
+          "evaluation_end": 24105.932983546,
+          "execution_ms": 11.156331001984654
+        }
+      ]
+    },
+    {
+      "scenario": "throughput",
+      "repetition": 1,
+      "worker_processes": 4,
+      "slots_per_process": 1,
+      "initial_process_ids": [
+        16,
+        17,
+        18,
+        19
+      ],
+      "replaced_processes": 0,
+      "model_tag": "process-simulation-c4027a65a744",
+      "jobs_completed": 16,
+      "workload_sha256": "c7d8a34fda8ed20d3030f38baabc9996a068b82e98bf9909704db593b7e31ef1",
+      "duration_seconds": 0.3714326830013306,
+      "throughput_jobs_per_second": 43.07644623707678,
+      "max_active_evaluations": 3,
+      "provider_requests": 33,
+      "retry_count": 1,
+      "terminal_job_error_rate": 0,
+      "recovery_seconds": null,
+      "recovery_clock": "after response/pre-ack crash marker to accepted replacement result",
+      "external_effects_for_crashed_job": null,
+      "completion_latency_ms": {
+        "count": 16,
+        "mean": 238.97695156256304,
+        "p50": 231.4542630010692,
+        "p95": 335.56463599961717,
+        "p99": 335.56463599961717
+      },
+      "execution_latency_ms": {
+        "count": 16,
+        "mean": 11.150980998763771,
+        "p50": 10.944510002445895,
+        "p95": 12.888864999695215,
+        "p99": 12.888864999695215
+      },
+      "claim_latency_from_start_ms": {
+        "count": 16,
+        "mean": 195.10732318713053,
+        "p50": 201.6228520005825,
+        "p95": 312.77020999914384,
+        "p99": 312.77020999914384
+      },
+      "provider_request_latency_ms": {
+        "count": 33,
+        "mean": 5.458742242670709,
+        "p50": 5.236323002463905,
+        "p95": 6.533592000778299,
+        "p99": 7.376520999969216
+      },
+      "postgres": {
+        "counter_deltas": {
+          "xact_commit": 44,
+          "xact_rollback": 120,
+          "blks_read": 0,
+          "blks_hit": 12769,
+          "tup_inserted": 50,
+          "tup_updated": 35,
+          "temp_bytes": 0,
+          "deadlocks": 0,
+          "blk_read_time": 0.0,
+          "blk_write_time": 0.0
+        },
+        "sampled_peak_connections": 10,
+        "sampled_peak_lock_waiters": 1,
+        "samples": 3,
+        "container_samples": []
+      },
+      "worker_lifetime_cpu_seconds": 7.963662,
+      "peak_worker_rss_kib": 65460,
+      "simulated": true,
+      "response_cache_enabled": false,
+      "billable_token_usage": null,
+      "policy": {
+        "model": "process-simulation-c4027a65a744",
+        "seed": 42,
+        "latency": 0.005,
+        "failure_every": 97,
+        "scenario": "throughput",
+        "lease_seconds": 60,
+        "heartbeat_seconds": 15
+      },
+      "raw_jobs": [
+        {
+          "kind": "accepted",
+          "job_id": "1859c17e-4896-476d-9683-43560ebf22cc",
+          "attempt": 1,
+          "claimed_at": 24108.797883365,
+          "completed_at": 24108.838507226,
+          "evaluation_start": 24108.798090894,
+          "evaluation_end": 24108.809715957,
+          "execution_ms": 12.00271799825714
+        },
+        {
+          "kind": "accepted",
+          "job_id": "53e2dba7-b96e-4a80-9808-690e9eea5da6",
+          "attempt": 1,
+          "claimed_at": 24108.862261238,
+          "completed_at": 24108.916958267,
+          "evaluation_start": 24108.86276106,
+          "evaluation_end": 24108.873800759,
+          "execution_ms": 11.137343997688731
+        },
+        {
+          "kind": "accepted",
+          "job_id": "aa679946-5fb8-43f0-8bee-8574f2dc67fc",
+          "attempt": 1,
+          "claimed_at": 24108.936975133,
+          "completed_at": 24108.977583327,
+          "evaluation_start": 24108.937121313,
+          "evaluation_end": 24108.947582559,
+          "execution_ms": 10.542079999140697
+        },
+        {
+          "kind": "accepted",
+          "job_id": "e994840f-b313-46c7-a3d7-ebfbaa86759f",
+          "attempt": 1,
+          "claimed_at": 24108.993866129,
+          "completed_at": 24109.020893058,
+          "evaluation_start": 24108.993975576,
+          "evaluation_end": 24109.004856934,
+          "execution_ms": 10.947428996587405
+        },
+        {
+          "kind": "accepted",
+          "job_id": "1c310460-297e-4baa-a76d-3618cde39f9f",
+          "attempt": 1,
+          "claimed_at": 24108.781484842,
+          "completed_at": 24108.816145939,
+          "evaluation_start": 24108.781744012,
+          "evaluation_end": 24108.793373405,
+          "execution_ms": 11.726779994205572
+        },
+        {
+          "kind": "accepted",
+          "job_id": "4f93be1d-4611-4b77-a848-b0e27589c848",
+          "attempt": 1,
+          "claimed_at": 24108.822448824,
+          "completed_at": 24108.896241274,
+          "evaluation_start": 24108.822571623,
+          "evaluation_end": 24108.833194225,
+          "execution_ms": 10.697580997657496
+        },
+        {
+          "kind": "accepted",
+          "job_id": "98d0d51c-cf5d-4221-b359-7c1eb2ca9b8e",
+          "attempt": 1,
+          "claimed_at": 24108.905869595,
+          "completed_at": 24108.935701006,
+          "evaluation_start": 24108.905989957,
+          "evaluation_end": 24108.916739002,
+          "execution_ms": 10.813470998982666
+        },
+        {
+          "kind": "accepted",
+          "job_id": "cde2ccf5-0a04-4445-bd5c-9c33093f4cc9",
+          "attempt": 1,
+          "claimed_at": 24108.942611786,
+          "completed_at": 24108.989942282,
+          "evaluation_start": 24108.942757006,
+          "evaluation_end": 24108.953132256,
+          "execution_ms": 10.434809995786054
+        },
+        {
+          "kind": "accepted",
+          "job_id": "eb5b3185-8f3a-41d5-8035-cd765323c93f",
+          "attempt": 1,
+          "claimed_at": 24109.002791261,
+          "completed_at": 24109.027361619,
+          "evaluation_start": 24109.002930022,
+          "evaluation_end": 24109.013432314,
+          "execution_ms": 10.57839100030833
+        },
+        {
+          "kind": "accepted",
+          "job_id": "33c188fc-ff16-44f1-87b4-34580ee7b29a",
+          "attempt": 1,
+          "claimed_at": 24108.798619672,
+          "completed_at": 24108.855913897,
+          "evaluation_start": 24108.798855094,
+          "evaluation_end": 24108.809612462,
+          "execution_ms": 10.986724995746044
+        },
+        {
+          "kind": "accepted",
+          "job_id": "6c06ed21-c2b9-4d12-b579-2142e1266c80",
+          "attempt": 1,
+          "claimed_at": 24108.87261992,
+          "completed_at": 24108.928738807,
+          "evaluation_start": 24108.872787921,
+          "evaluation_end": 24108.885597118,
+          "execution_ms": 12.888864999695215
+        },
+        {
+          "kind": "accepted",
+          "job_id": "dc611341-fc5e-4d7b-aaed-b964122e7c3a",
+          "attempt": 1,
+          "claimed_at": 24108.979084298,
+          "completed_at": 24109.012154673,
+          "evaluation_start": 24108.979250216,
+          "evaluation_end": 24108.989771876,
+          "execution_ms": 10.603772003378253
+        },
+        {
+          "kind": "accepted",
+          "job_id": "18757dce-138e-4036-911a-3618db244a59",
+          "attempt": 1,
+          "claimed_at": 24108.807576178,
+          "completed_at": 24108.887593886,
+          "evaluation_start": 24108.807875871,
+          "evaluation_end": 24108.819104255,
+          "execution_ms": 11.327675001666648
+        },
+        {
+          "kind": "accepted",
+          "job_id": "88d5429c-a1c3-4f72-8929-7593e8c920ac",
+          "attempt": 1,
+          "claimed_at": 24108.9070513,
+          "completed_at": 24108.945930156,
+          "evaluation_start": 24108.907371491,
+          "evaluation_end": 24108.919522739,
+          "execution_ms": 12.241483000252629
+        },
+        {
+          "kind": "accepted",
+          "job_id": "d30a9aae-ab96-433d-87d9-a06a326a2dcc",
+          "attempt": 1,
+          "claimed_at": 24108.961504565,
+          "completed_at": 24109.002102317,
+          "evaluation_start": 24108.96162336,
+          "evaluation_end": 24108.972089963,
+          "execution_ms": 10.542061998421559
+        },
+        {
+          "kind": "accepted",
+          "job_id": "c2a1d728-62c1-47f6-8d7a-26b9bc147b55",
+          "attempt": 2,
+          "claimed_at": 24109.017016953,
+          "completed_at": 24109.039811379,
+          "evaluation_start": 24109.017134798,
+          "evaluation_end": 24109.027954205,
+          "execution_ms": 10.944510002445895
+        }
+      ]
+    },
+    {
+      "scenario": "throughput",
+      "repetition": 1,
+      "worker_processes": 8,
+      "slots_per_process": 1,
+      "initial_process_ids": [
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35
+      ],
+      "replaced_processes": 0,
+      "model_tag": "process-simulation-3a0137971b8d",
+      "jobs_completed": 16,
+      "workload_sha256": "c7d8a34fda8ed20d3030f38baabc9996a068b82e98bf9909704db593b7e31ef1",
+      "duration_seconds": 0.9572808819975762,
+      "throughput_jobs_per_second": 16.71400766576733,
+      "max_active_evaluations": 4,
+      "provider_requests": 33,
+      "retry_count": 1,
+      "terminal_job_error_rate": 0,
+      "recovery_seconds": null,
+      "recovery_clock": "after response/pre-ack crash marker to accepted replacement result",
+      "external_effects_for_crashed_job": null,
+      "completion_latency_ms": {
+        "count": 16,
+        "mean": 398.09213431135504,
+        "p50": 388.43128100052127,
+        "p95": 948.52121599979,
+        "p99": 948.52121599979
+      },
+      "execution_latency_ms": {
+        "count": 16,
+        "mean": 35.20301106186707,
+        "p50": 11.412031002691947,
+        "p95": 376.5575760007778,
+        "p99": 376.5575760007778
+      },
+      "claim_latency_from_start_ms": {
+        "count": 16,
+        "mean": 229.60479918606325,
+        "p50": 162.72436899816967,
+        "p95": 548.5324319997744,
+        "p99": 548.5324319997744
+      },
+      "provider_request_latency_ms": {
+        "count": 33,
+        "mean": 12.932973757856278,
+        "p50": 5.350793002435239,
+        "p95": 11.733871000615181,
+        "p99": 233.43047100206604
+      },
+      "postgres": {
+        "counter_deltas": {
+          "xact_commit": 63,
+          "xact_rollback": 299,
+          "blks_read": 0,
+          "blks_hit": 21927,
+          "tup_inserted": 50,
+          "tup_updated": 35,
+          "temp_bytes": 0,
+          "deadlocks": 0,
+          "blk_read_time": 0.0,
+          "blk_write_time": 0.14600000000000013
+        },
+        "sampled_peak_connections": 18,
+        "sampled_peak_lock_waiters": 6,
+        "samples": 7,
+        "container_samples": []
+      },
+      "worker_lifetime_cpu_seconds": 17.24016,
+      "peak_worker_rss_kib": 65460,
+      "simulated": true,
+      "response_cache_enabled": false,
+      "billable_token_usage": null,
+      "policy": {
+        "model": "process-simulation-3a0137971b8d",
+        "seed": 42,
+        "latency": 0.005,
+        "failure_every": 97,
+        "scenario": "throughput",
+        "lease_seconds": 60,
+        "heartbeat_seconds": 15
+      },
+      "raw_jobs": [
+        {
+          "kind": "accepted",
+          "job_id": "1d286ae7-f428-4b91-b97a-f2aabdb3efe9",
+          "attempt": 1,
+          "claimed_at": 24114.021019719,
+          "completed_at": 24114.220506996,
+          "evaluation_start": 24114.021646047,
+          "evaluation_end": 24114.036048437,
+          "execution_ms": 14.592408002499724
+        },
+        {
+          "kind": "accepted",
+          "job_id": "e0044ace-b096-415f-adba-043cc9c722b1",
+          "attempt": 1,
+          "claimed_at": 24114.261066243,
+          "completed_at": 24114.360776545,
+          "evaluation_start": 24114.26124416,
+          "evaluation_end": 24114.271753965,
+          "execution_ms": 10.596675998385763
+        },
+        {
+          "kind": "accepted",
+          "job_id": "4b6dffe3-8d15-46c5-926c-652d9fc29740",
+          "attempt": 1,
+          "claimed_at": 24114.012588418,
+          "completed_at": 24114.145172428,
+          "evaluation_start": 24114.013244917,
+          "evaluation_end": 24114.024396813,
+          "execution_ms": 11.235606994887348
+        },
+        {
+          "kind": "accepted",
+          "job_id": "9877dbd3-f6ad-412d-8a39-e815c52e3c11",
+          "attempt": 1,
+          "claimed_at": 24114.158427762,
+          "completed_at": 24114.328249837,
+          "evaluation_start": 24114.158569209,
+          "evaluation_end": 24114.169379774,
+          "execution_ms": 10.889706998568727
+        },
+        {
+          "kind": "accepted",
+          "job_id": "6c2d641c-a2a4-4159-a954-34f697f66c81",
+          "attempt": 1,
+          "claimed_at": 24114.032295619,
+          "completed_at": 24114.293293922,
+          "evaluation_start": 24114.032522145,
+          "evaluation_end": 24114.049584879,
+          "execution_ms": 17.148191000160296
+        },
+        {
+          "kind": "accepted",
+          "job_id": "be195f34-f7a9-4a3c-97a0-52515b68e0d3",
+          "attempt": 2,
+          "claimed_at": 24114.418103682,
+          "completed_at": 24114.818092466,
+          "evaluation_start": 24114.418277347,
+          "evaluation_end": 24114.794664988,
+          "execution_ms": 376.5575760007778
+        },
+        {
+          "kind": "accepted",
+          "job_id": "0d047c83-8b7b-4971-bdb0-4c801db2ea54",
+          "attempt": 1,
+          "claimed_at": 24113.958589862,
+          "completed_at": 24114.068991694,
+          "evaluation_start": 24113.958786262,
+          "evaluation_end": 24113.969388993,
+          "execution_ms": 10.690973002056126
+        },
+        {
+          "kind": "accepted",
+          "job_id": "8609c2a6-1446-4cf3-b9c9-5c19219ff572",
+          "attempt": 1,
+          "claimed_at": 24114.094372087,
+          "completed_at": 24114.30586169,
+          "evaluation_start": 24114.094942069,
+          "evaluation_end": 24114.106117191,
+          "execution_ms": 11.412031002691947
+        },
+        {
+          "kind": "accepted",
+          "job_id": "065a1c75-0978-4c70-93ff-dba47bbb7530",
+          "attempt": 1,
+          "claimed_at": 24113.950381901,
+          "completed_at": 24113.995439652,
+          "evaluation_start": 24113.951509573,
+          "evaluation_end": 24113.962210893,
+          "execution_ms": 10.785911996208597
+        },
+        {
+          "kind": "accepted",
+          "job_id": "81dca5c0-567b-41a1-b906-e247eaede610",
+          "attempt": 1,
+          "claimed_at": 24114.021364758,
+          "completed_at": 24114.160795959,
+          "evaluation_start": 24114.021601172,
+          "evaluation_end": 24114.034336659,
+          "execution_ms": 12.83036200038623
+        },
+        {
+          "kind": "accepted",
+          "job_id": "ba0cd34a-4092-4f9d-9264-f38401467953",
+          "attempt": 1,
+          "claimed_at": 24114.175828277,
+          "completed_at": 24114.338199258,
+          "evaluation_start": 24114.176080912,
+          "evaluation_end": 24114.186556659,
+          "execution_ms": 10.617258998536272
+        },
+        {
+          "kind": "accepted",
+          "job_id": "7a610068-ce60-421c-929b-f78e3c503f53",
+          "attempt": 1,
+          "claimed_at": 24114.023060485,
+          "completed_at": 24114.187842252,
+          "evaluation_start": 24114.023378707,
+          "evaluation_end": 24114.035563023,
+          "execution_ms": 13.039944002230186
+        },
+        {
+          "kind": "accepted",
+          "job_id": "64079727-c81b-4759-83b3-9cfcd32b15ad",
+          "attempt": 1,
+          "claimed_at": 24114.040735691,
+          "completed_at": 24114.258002531,
+          "evaluation_start": 24114.040960966,
+          "evaluation_end": 24114.056910999,
+          "execution_ms": 16.04571799543919
+        },
+        {
+          "kind": "accepted",
+          "job_id": "e779bf3e-a704-477d-87ea-0e7a04e03ef6",
+          "attempt": 1,
+          "claimed_at": 24114.283040146,
+          "completed_at": 24114.377723569,
+          "evaluation_start": 24114.283242334,
+          "evaluation_end": 24114.295300939,
+          "execution_ms": 12.145468997914577
+        },
+        {
+          "kind": "accepted",
+          "job_id": "5a96a85c-ab03-4c10-b0d2-7ac1faef0393",
+          "attempt": 1,
+          "claimed_at": 24113.999584226,
+          "completed_at": 24114.106901032,
+          "evaluation_start": 24113.999845475,
+          "evaluation_end": 24114.013406288,
+          "execution_ms": 13.665450998814777
+        },
+        {
+          "kind": "accepted",
+          "job_id": "8dc57de6-2213-4fce-9722-1ec40e26e297",
+          "attempt": 1,
+          "claimed_at": 24114.136357911,
+          "completed_at": 24114.316764318,
+          "evaluation_start": 24114.136504635,
+          "evaluation_end": 24114.147408258,
+          "execution_ms": 10.994893000315642
+        }
+      ]
+    },
+    {
+      "scenario": "throughput",
+      "repetition": 1,
+      "worker_processes": 16,
+      "slots_per_process": 1,
+      "initial_process_ids": [
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67
+      ],
+      "replaced_processes": 0,
+      "model_tag": "process-simulation-c6c3531ec68b",
+      "jobs_completed": 16,
+      "workload_sha256": "c7d8a34fda8ed20d3030f38baabc9996a068b82e98bf9909704db593b7e31ef1",
+      "duration_seconds": 0.990496203998191,
+      "throughput_jobs_per_second": 16.153519756476747,
+      "max_active_evaluations": 3,
+      "provider_requests": 33,
+      "retry_count": 1,
+      "terminal_job_error_rate": 0,
+      "recovery_seconds": null,
+      "recovery_clock": "after response/pre-ack crash marker to accepted replacement result",
+      "external_effects_for_crashed_job": null,
+      "completion_latency_ms": {
+        "count": 16,
+        "mean": 702.6892954995674,
+        "p50": 698.0416539990983,
+        "p95": 990.0002059985127,
+        "p99": 990.0002059985127
+      },
+      "execution_latency_ms": {
+        "count": 16,
+        "mean": 15.799353624743162,
+        "p50": 13.719371996558039,
+        "p95": 36.507016000541626,
+        "p99": 36.507016000541626
+      },
+      "claim_latency_from_start_ms": {
+        "count": 16,
+        "mean": 387.665502249547,
+        "p50": 322.25176700012526,
+        "p95": 884.3815609980084,
+        "p99": 884.3815609980084
+      },
+      "provider_request_latency_ms": {
+        "count": 33,
+        "mean": 7.596035545826783,
+        "p50": 6.356458001391729,
+        "p95": 13.654405000124825,
+        "p99": 30.89246699892101
+      },
+      "postgres": {
+        "counter_deltas": {
+          "xact_commit": 102,
+          "xact_rollback": 550,
+          "blks_read": 0,
+          "blks_hit": 38253,
+          "tup_inserted": 16,
+          "tup_updated": 35,
+          "temp_bytes": 0,
+          "deadlocks": 0,
+          "blk_read_time": 0.0,
+          "blk_write_time": 0.0
+        },
+        "sampled_peak_connections": 34,
+        "sampled_peak_lock_waiters": 12,
+        "samples": 10,
+        "container_samples": []
+      },
+      "worker_lifetime_cpu_seconds": 36.231031,
+      "peak_worker_rss_kib": 65460,
+      "simulated": true,
+      "response_cache_enabled": false,
+      "billable_token_usage": null,
+      "policy": {
+        "model": "process-simulation-c6c3531ec68b",
+        "seed": 42,
+        "latency": 0.005,
+        "failure_every": 97,
+        "scenario": "throughput",
+        "lease_seconds": 60,
+        "heartbeat_seconds": 15
+      },
+      "raw_jobs": [
+        {
+          "kind": "accepted",
+          "job_id": "5b9388e1-99c0-42b8-a810-c0ff2a6e399d",
+          "attempt": 1,
+          "claimed_at": 24125.556753449,
+          "completed_at": 24125.937423,
+          "evaluation_start": 24125.55697486,
+          "evaluation_end": 24125.56959028,
+          "execution_ms": 12.71071700102766
+        },
+        {
+          "kind": "accepted",
+          "job_id": "b15d1807-4632-4cdd-9a64-45c135610df9",
+          "attempt": 1,
+          "claimed_at": 24125.711081298,
+          "completed_at": 24126.009480597,
+          "evaluation_start": 24125.711279152,
+          "evaluation_end": 24125.72290553,
+          "execution_ms": 11.719189998984803
+        },
+        {
+          "kind": "accepted",
+          "job_id": "586fc514-6f1b-413e-ac18-9906f38ce7c6",
+          "attempt": 1,
+          "claimed_at": 24125.487964364,
+          "completed_at": 24125.798054541,
+          "evaluation_start": 24125.491046637,
+          "evaluation_end": 24125.508153336,
+          "execution_ms": 17.20274300168967
+        },
+        {
+          "kind": "accepted",
+          "job_id": "e38c6f2f-0817-490f-be9b-231aee86de57",
+          "attempt": 1,
+          "claimed_at": 24125.709028748,
+          "completed_at": 24126.052575261,
+          "evaluation_start": 24125.709237277,
+          "evaluation_end": 24125.721445622,
+          "execution_ms": 12.32129800337134
+        },
+        {
+          "kind": "accepted",
+          "job_id": "9c2b7060-a286-4b21-bcd0-1b67ad25fbda",
+          "attempt": 1,
+          "claimed_at": 24125.731103686,
+          "completed_at": 24126.19032043,
+          "evaluation_start": 24125.731428711,
+          "evaluation_end": 24125.750165565,
+          "execution_ms": 19.32452399705653
+        },
+        {
+          "kind": "accepted",
+          "job_id": "d25bece3-2751-4438-9157-16aee5a38d29",
+          "attempt": 1,
+          "claimed_at": 24125.735847427,
+          "completed_at": 24126.149208959,
+          "evaluation_start": 24125.73605857,
+          "evaluation_end": 24125.755363184,
+          "execution_ms": 19.426550999924075
+        },
+        {
+          "kind": "accepted",
+          "job_id": "4fb55043-2abc-471e-bb8d-55bad6878bc9",
+          "attempt": 1,
+          "claimed_at": 24125.516467191,
+          "completed_at": 24125.841028049,
+          "evaluation_start": 24125.516781791,
+          "evaluation_end": 24125.527429717,
+          "execution_ms": 10.731012000178453
+        },
+        {
+          "kind": "accepted",
+          "job_id": "0512b336-b1db-4ba4-965a-4d13f5053508",
+          "attempt": 1,
+          "claimed_at": 24125.39525862,
+          "completed_at": 24125.765536964,
+          "evaluation_start": 24125.395733551,
+          "evaluation_end": 24125.410416848,
+          "execution_ms": 14.819472999079153
+        },
+        {
+          "kind": "accepted",
+          "job_id": "4621aaae-2525-4e36-91b3-fdc855cbdfc2",
+          "attempt": 1,
+          "claimed_at": 24125.549565022,
+          "completed_at": 24125.86852575,
+          "evaluation_start": 24125.549816196,
+          "evaluation_end": 24125.562537576,
+          "execution_ms": 12.823151002521627
+        },
+        {
+          "kind": "accepted",
+          "job_id": "66a5dd74-566b-452f-b6ca-10869276e2ee",
+          "attempt": 1,
+          "claimed_at": 24125.523440252,
+          "completed_at": 24125.906496699,
+          "evaluation_start": 24125.523620312,
+          "evaluation_end": 24125.560048015,
+          "execution_ms": 36.507016000541626
+        },
+        {
+          "kind": "accepted",
+          "job_id": "62827276-dd3b-4996-9e04-08cb88c7aeb5",
+          "attempt": 1,
+          "claimed_at": 24125.561633113,
+          "completed_at": 24125.676717206,
+          "evaluation_start": 24125.561957964,
+          "evaluation_end": 24125.576619788,
+          "execution_ms": 14.78196899915929
+        },
+        {
+          "kind": "accepted",
+          "job_id": "69326bfd-49b2-4b24-909b-6c1ff091978d",
+          "attempt": 1,
+          "claimed_at": 24125.721976735,
+          "completed_at": 24126.115655146,
+          "evaluation_start": 24125.722201086,
+          "evaluation_end": 24125.73583023,
+          "execution_ms": 13.719371996558039
+        },
+        {
+          "kind": "accepted",
+          "job_id": "3fd807cd-5ba4-4b96-9f1a-5c73ea3025e3",
+          "attempt": 1,
+          "claimed_at": 24125.398839154,
+          "completed_at": 24125.592642592,
+          "evaluation_start": 24125.399096996,
+          "evaluation_end": 24125.41413462,
+          "execution_ms": 15.189466997981071
+        },
+        {
+          "kind": "accepted",
+          "job_id": "ccad63dc-f1d6-472d-8743-51f70f2501f7",
+          "attempt": 1,
+          "claimed_at": 24125.650111819,
+          "completed_at": 24125.980816975,
+          "evaluation_start": 24125.650255511,
+          "evaluation_end": 24125.666796361,
+          "execution_ms": 16.630151996650966
+        },
+        {
+          "kind": "accepted",
+          "job_id": "dfb6b976-4029-4730-800e-17a2f14fec51",
+          "attempt": 2,
+          "claimed_at": 24126.123762907,
+          "completed_at": 24126.229381552,
+          "evaluation_start": 24126.123963842,
+          "evaluation_end": 24126.136590066,
+          "execution_ms": 12.709352999081602
+        },
+        {
+          "kind": "accepted",
+          "job_id": "a5814640-732d-4832-931c-3bbaca21ec48",
+          "attempt": 1,
+          "claimed_at": 24125.659915787,
+          "completed_at": 24125.959266543,
+          "evaluation_start": 24125.660723397,
+          "evaluation_end": 24125.672779517,
+          "execution_ms": 12.173670002084691
+        }
+      ]
+    },
+    {
+      "scenario": "recovery",
+      "repetition": 1,
+      "worker_processes": 1,
+      "slots_per_process": 1,
+      "initial_process_ids": [
+        100
+      ],
+      "replaced_processes": 1,
+      "model_tag": "process-simulation-4c2a58ca5be7",
+      "jobs_completed": 2,
+      "workload_sha256": "9ec875042721bc88b3d71d9d24bdbd02994a646a36fbd9fb627a378fa5bbbb49",
+      "duration_seconds": 2.27856707400133,
+      "throughput_jobs_per_second": 0.8777446241632264,
+      "max_active_evaluations": 1,
+      "provider_requests": 6,
+      "retry_count": 1,
+      "terminal_job_error_rate": 0,
+      "recovery_seconds": 2.146216730998276,
+      "recovery_clock": "after response/pre-ack crash marker to accepted replacement result",
+      "external_effects_for_crashed_job": 2,
+      "completion_latency_ms": {
+        "count": 2,
+        "mean": 1161.440779998884,
+        "p50": 77.75961999868741,
+        "p95": 2245.1219399990805,
+        "p99": 2245.1219399990805
+      },
+      "execution_latency_ms": {
+        "count": 2,
+        "mean": 14.381260998561629,
+        "p50": 13.320490998012247,
+        "p95": 15.442030999111012,
+        "p99": 15.442030999111012
+      },
+      "claim_latency_from_start_ms": {
+        "count": 2,
+        "mean": 1127.830460000041,
+        "p50": 45.384498000203166,
+        "p95": 2210.276421999879,
+        "p99": 2210.276421999879
+      },
+      "provider_request_latency_ms": {
+        "count": 6,
+        "mean": 6.6803705000590226,
+        "p50": 5.314384001394501,
+        "p95": 9.94375200025388,
+        "p99": 9.94375200025388
+      },
+      "postgres": {
+        "counter_deltas": {
+          "xact_commit": 21,
+          "xact_rollback": 162,
+          "blks_read": 0,
+          "blks_hit": 5251,
+          "tup_inserted": 8,
+          "tup_updated": 7,
+          "temp_bytes": 0,
+          "deadlocks": 0,
+          "blk_read_time": 0.0,
+          "blk_write_time": 0.0
+        },
+        "sampled_peak_connections": 4,
+        "sampled_peak_lock_waiters": 0,
+        "samples": 12,
+        "container_samples": []
+      },
+      "worker_lifetime_cpu_seconds": 1.225846,
+      "peak_worker_rss_kib": 65744,
+      "simulated": true,
+      "response_cache_enabled": false,
+      "billable_token_usage": null,
+      "policy": {
+        "model": "process-simulation-4c2a58ca5be7",
+        "seed": 42,
+        "latency": 0.005,
+        "failure_every": 0,
+        "scenario": "recovery",
+        "lease_seconds": 2,
+        "heartbeat_seconds": 0.5
+      },
+      "raw_jobs": [
+        {
+          "kind": "accepted",
+          "job_id": "9a6d9f5f-bf72-4a5b-b9e6-4a242f529297",
+          "attempt": 2,
+          "claimed_at": 24130.793734109,
+          "completed_at": 24130.828579627,
+          "evaluation_start": 24130.7938899,
+          "evaluation_end": 24130.809262577,
+          "execution_ms": 15.442030999111012
+        },
+        {
+          "kind": "accepted",
+          "job_id": "2ec323ec-fd34-46a0-99b8-16d20f429f05",
+          "attempt": 1,
+          "claimed_at": 24128.628842185,
+          "completed_at": 24128.661217307,
+          "evaluation_start": 24128.628974964,
+          "evaluation_end": 24128.642229284,
+          "execution_ms": 13.320490998012247
+        }
+      ]
+    },
+    {
+      "scenario": "recovery",
+      "repetition": 1,
+      "worker_processes": 4,
+      "slots_per_process": 1,
+      "initial_process_ids": [
+        105,
+        106,
+        107,
+        108
+      ],
+      "replaced_processes": 1,
+      "model_tag": "process-simulation-39bb8060fd5e",
+      "jobs_completed": 4,
+      "workload_sha256": "a2f1259d172bc037c927756ecd960d3c1dd5f7ed8931bacf2a3cde0525db5f4a",
+      "duration_seconds": 2.1622744020023674,
+      "throughput_jobs_per_second": 1.8499039697717425,
+      "max_active_evaluations": 4,
+      "provider_requests": 10,
+      "retry_count": 1,
+      "terminal_job_error_rate": 0,
+      "recovery_seconds": 2.06768471399846,
+      "recovery_clock": "after response/pre-ack crash marker to accepted replacement result",
+      "external_effects_for_crashed_job": 2,
+      "completion_latency_ms": {
+        "count": 4,
+        "mean": 635.9896807516634,
+        "p50": 123.80380100148614,
+        "p95": 2149.737069001276,
+        "p99": 2149.737069001276
+      },
+      "execution_latency_ms": {
+        "count": 4,
+        "mean": 14.512565500808705,
+        "p50": 14.609232002840145,
+        "p95": 15.669134998461232,
+        "p99": 15.669134998461232
+      },
+      "claim_latency_from_start_ms": {
+        "count": 4,
+        "mean": 583.6476010008482,
+        "p50": 70.8158600027673,
+        "p95": 2119.8197300000174,
+        "p99": 2119.8197300000174
+      },
+      "provider_request_latency_ms": {
+        "count": 10,
+        "mean": 7.535615101369331,
+        "p50": 7.3830210021696985,
+        "p95": 11.882839000463719,
+        "p99": 11.882839000463719
+      },
+      "postgres": {
+        "counter_deltas": {
+          "xact_commit": 80,
+          "xact_rollback": 441,
+          "blks_read": 0,
+          "blks_hit": 11690,
+          "tup_inserted": 14,
+          "tup_updated": 11,
+          "temp_bytes": 0,
+          "deadlocks": 0,
+          "blk_read_time": 0.0,
+          "blk_write_time": 0.0
+        },
+        "sampled_peak_connections": 10,
+        "sampled_peak_lock_waiters": 0,
+        "samples": 13,
+        "container_samples": []
+      },
+      "worker_lifetime_cpu_seconds": 7.1791339999999995,
+      "peak_worker_rss_kib": 65716,
+      "simulated": true,
+      "response_cache_enabled": false,
+      "billable_token_usage": null,
+      "policy": {
+        "model": "process-simulation-39bb8060fd5e",
+        "seed": 42,
+        "latency": 0.005,
+        "failure_every": 0,
+        "scenario": "recovery",
+        "lease_seconds": 2,
+        "heartbeat_seconds": 0.5
+      },
+      "raw_jobs": [
+        {
+          "kind": "accepted",
+          "job_id": "a94b78d8-eaf5-4069-b2ac-e1923b1044de",
+          "attempt": 1,
+          "claimed_at": 24132.962296093,
+          "completed_at": 24133.017234118,
+          "evaluation_start": 24132.962614979,
+          "evaluation_end": 24132.977151667,
+          "execution_ms": 14.609232002840145
+        },
+        {
+          "kind": "accepted",
+          "job_id": "b122babf-097b-4cf2-927c-522b790616ec",
+          "attempt": 1,
+          "claimed_at": 24132.968519355,
+          "completed_at": 24133.055372643,
+          "evaluation_start": 24132.968807162,
+          "evaluation_end": 24132.983567341,
+          "execution_ms": 14.833746001386316
+        },
+        {
+          "kind": "accepted",
+          "job_id": "aedf0fb9-89a3-4a81-b6ee-da87162bb973",
+          "attempt": 1,
+          "claimed_at": 24132.964246177,
+          "completed_at": 24133.001905844,
+          "evaluation_start": 24132.964420505,
+          "evaluation_end": 24132.97998649,
+          "execution_ms": 15.669134998461232
+        },
+        {
+          "kind": "accepted",
+          "job_id": "6d7fe492-499f-4878-92ea-4878fc82d601",
+          "attempt": 2,
+          "claimed_at": 24135.013250047,
+          "completed_at": 24135.043167386,
+          "evaluation_start": 24135.013577845,
+          "evaluation_end": 24135.026440039,
+          "execution_ms": 12.938149000547128
+        }
+      ]
+    },
+    {
+      "scenario": "recovery",
+      "repetition": 1,
+      "worker_processes": 8,
+      "slots_per_process": 1,
+      "initial_process_ids": [
+        119,
+        120,
+        121,
+        122,
+        123,
+        124,
+        125,
+        126
+      ],
+      "replaced_processes": 1,
+      "model_tag": "process-simulation-6c33c1d34d34",
+      "jobs_completed": 8,
+      "workload_sha256": "17c40a37be681007b166c22e45ba9dff2b21b3b8982a4ff0abe5baece910f9d2",
+      "duration_seconds": 2.209546145000786,
+      "throughput_jobs_per_second": 3.6206530549725877,
+      "max_active_evaluations": 3,
+      "provider_requests": 18,
+      "retry_count": 1,
+      "terminal_job_error_rate": 0,
+      "recovery_seconds": 2.058648682999774,
+      "recovery_clock": "after response/pre-ack crash marker to accepted replacement result",
+      "external_effects_for_crashed_job": 2,
+      "completion_latency_ms": {
+        "count": 8,
+        "mean": 469.90272587618165,
+        "p50": 233.94677599935676,
+        "p95": 2196.2741850002203,
+        "p99": 2196.2741850002203
+      },
+      "execution_latency_ms": {
+        "count": 8,
+        "mean": 15.381307251118415,
+        "p50": 13.787728999886895,
+        "p95": 20.310097999754362,
+        "p99": 20.310097999754362
+      },
+      "claim_latency_from_start_ms": {
+        "count": 8,
+        "mean": 394.1516403760943,
+        "p50": 145.96010700188344,
+        "p95": 2153.9807699991798,
+        "p99": 2153.9807699991798
+      },
+      "provider_request_latency_ms": {
+        "count": 18,
+        "mean": 8.528482777870117,
+        "p50": 5.678293000528356,
+        "p95": 26.45616500012693,
+        "p99": 26.45616500012693
+      },
+      "postgres": {
+        "counter_deltas": {
+          "xact_commit": 168,
+          "xact_rollback": 845,
+          "blks_read": 0,
+          "blks_hit": 22367,
+          "tup_inserted": 26,
+          "tup_updated": 19,
+          "temp_bytes": 0,
+          "deadlocks": 0,
+          "blk_read_time": 0.0,
+          "blk_write_time": 0.0
+        },
+        "sampled_peak_connections": 18,
+        "sampled_peak_lock_waiters": 2,
+        "samples": 13,
+        "container_samples": []
+      },
+      "worker_lifetime_cpu_seconds": 15.137626,
+      "peak_worker_rss_kib": 65844,
+      "simulated": true,
+      "response_cache_enabled": false,
+      "billable_token_usage": null,
+      "policy": {
+        "model": "process-simulation-6c33c1d34d34",
+        "seed": 42,
+        "latency": 0.005,
+        "failure_every": 0,
+        "scenario": "recovery",
+        "lease_seconds": 2,
+        "heartbeat_seconds": 0.5
+      },
+      "raw_jobs": [
+        {
+          "kind": "accepted",
+          "job_id": "a73f6b06-5032-4266-802d-3ec89d5f3351",
+          "attempt": 1,
+          "claimed_at": 24139.315193347,
+          "completed_at": 24139.414456314,
+          "evaluation_start": 24139.315433591,
+          "evaluation_end": 24139.330942931,
+          "execution_ms": 15.594959000736708
+        },
+        {
+          "kind": "accepted",
+          "job_id": "7ab0ceb6-eda1-4567-8fc1-6aedf8a4251a",
+          "attempt": 1,
+          "claimed_at": 24139.249722404,
+          "completed_at": 24139.331188697,
+          "evaluation_start": 24139.249921391,
+          "evaluation_end": 24139.270146422,
+          "execution_ms": 20.310097999754362
+        },
+        {
+          "kind": "accepted",
+          "job_id": "91fe68e4-e339-41f7-8854-6496d9da0fda",
+          "attempt": 1,
+          "claimed_at": 24139.27477662,
+          "completed_at": 24139.362763289,
+          "evaluation_start": 24139.274981181,
+          "evaluation_end": 24139.288636497,
+          "execution_ms": 13.787728999886895
+        },
+        {
+          "kind": "accepted",
+          "job_id": "2dd0bb46-a6a7-4b3d-87f1-902e8ae90190",
+          "attempt": 2,
+          "claimed_at": 24141.282797283,
+          "completed_at": 24141.325090698,
+          "evaluation_start": 24141.282992686,
+          "evaluation_end": 24141.295114185,
+          "execution_ms": 12.37671700437204
+        },
+        {
+          "kind": "accepted",
+          "job_id": "be0ecce9-39fe-420a-804a-a2291cfcd65b",
+          "attempt": 1,
+          "claimed_at": 24139.29496395,
+          "completed_at": 24139.39082507,
+          "evaluation_start": 24139.295343081,
+          "evaluation_end": 24139.310385807,
+          "execution_ms": 15.122283999517094
+        },
+        {
+          "kind": "accepted",
+          "job_id": "ac3c843d-efdb-47f7-9b53-6026eedac950",
+          "attempt": 1,
+          "claimed_at": 24139.325495047,
+          "completed_at": 24139.435791995,
+          "evaluation_start": 24139.325743182,
+          "evaluation_end": 24139.33917004,
+          "execution_ms": 13.50755700332229
+        },
+        {
+          "kind": "accepted",
+          "job_id": "0181f7c4-21a0-4f48-9066-8d030aeb53e0",
+          "attempt": 1,
+          "claimed_at": 24139.188185344,
+          "completed_at": 24139.233761746,
+          "evaluation_start": 24139.188467835,
+          "evaluation_end": 24139.201425511,
+          "execution_ms": 13.03889100017841
+        },
+        {
+          "kind": "accepted",
+          "job_id": "95f12dab-12e8-4c6d-8b19-4197335ec7e2",
+          "attempt": 1,
+          "claimed_at": 24139.252611232,
+          "completed_at": 24139.295876102,
+          "evaluation_start": 24139.252896197,
+          "evaluation_end": 24139.2721358,
+          "execution_ms": 19.312223001179518
+        }
+      ]
+    },
+    {
+      "scenario": "recovery",
+      "repetition": 1,
+      "worker_processes": 16,
+      "slots_per_process": 1,
+      "initial_process_ids": [
+        145,
+        146,
+        147,
+        148,
+        149,
+        150,
+        151,
+        152,
+        153,
+        154,
+        155,
+        156,
+        157,
+        158,
+        159,
+        160
+      ],
+      "replaced_processes": 1,
+      "model_tag": "process-simulation-a99b2a1ff049",
+      "jobs_completed": 16,
+      "workload_sha256": "c7d8a34fda8ed20d3030f38baabc9996a068b82e98bf9909704db593b7e31ef1",
+      "duration_seconds": 2.4682925480010454,
+      "throughput_jobs_per_second": 6.482213793076372,
+      "max_active_evaluations": 4,
+      "provider_requests": 34,
+      "retry_count": 1,
+      "terminal_job_error_rate": 0,
+      "recovery_seconds": 2.0019094070012216,
+      "recovery_clock": "after response/pre-ack crash marker to accepted replacement result",
+      "external_effects_for_crashed_job": 2,
+      "completion_latency_ms": {
+        "count": 16,
+        "mean": 851.8040530011604,
+        "p50": 709.8096910012828,
+        "p95": 2422.9703640012303,
+        "p99": 2422.9703640012303
+      },
+      "execution_latency_ms": {
+        "count": 16,
+        "mean": 28.614555499643757,
+        "p50": 21.22447799774818,
+        "p95": 61.23794100130908,
+        "p99": 61.23794100130908
+      },
+      "claim_latency_from_start_ms": {
+        "count": 16,
+        "mean": 473.62767256390725,
+        "p50": 341.4154830024927,
+        "p95": 2367.192896002962,
+        "p99": 2367.192896002962
+      },
+      "provider_request_latency_ms": {
+        "count": 34,
+        "mean": 13.998133764449877,
+        "p50": 8.66474899885361,
+        "p95": 45.581747999676736,
+        "p99": 51.51093499807757
+      },
+      "postgres": {
+        "counter_deltas": {
+          "xact_commit": 278,
+          "xact_rollback": 1455,
+          "blks_read": 0,
+          "blks_hit": 42089,
+          "tup_inserted": 50,
+          "tup_updated": 37,
+          "temp_bytes": 0,
+          "deadlocks": 0,
+          "blk_read_time": 0.0,
+          "blk_write_time": 0.33299999999999974
+        },
+        "sampled_peak_connections": 33,
+        "sampled_peak_lock_waiters": 8,
+        "samples": 17,
+        "container_samples": []
+      },
+      "worker_lifetime_cpu_seconds": 35.85234,
+      "peak_worker_rss_kib": 65844,
+      "simulated": true,
+      "response_cache_enabled": false,
+      "billable_token_usage": null,
+      "policy": {
+        "model": "process-simulation-a99b2a1ff049",
+        "seed": 42,
+        "latency": 0.005,
+        "failure_every": 0,
+        "scenario": "recovery",
+        "lease_seconds": 2,
+        "heartbeat_seconds": 0.5
+      },
+      "raw_jobs": [
+        {
+          "kind": "accepted",
+          "job_id": "787c4ba9-6b0d-42f7-aaaf-ce5ace403323",
+          "attempt": 1,
+          "claimed_at": 24151.153978376,
+          "completed_at": 24151.534291112,
+          "evaluation_start": 24151.154169426,
+          "evaluation_end": 24151.212601028,
+          "execution_ms": 58.51375400015968
+        },
+        {
+          "kind": "accepted",
+          "job_id": "d6941b3b-5ceb-49a1-a90c-4dc7e1664b57",
+          "attempt": 1,
+          "claimed_at": 24151.13406146,
+          "completed_at": 24151.364222697,
+          "evaluation_start": 24151.13429174,
+          "evaluation_end": 24151.161523906,
+          "execution_ms": 27.352258999599144
+        },
+        {
+          "kind": "accepted",
+          "job_id": "4183aac7-0ce2-4915-9e1e-72ed41d849c0",
+          "attempt": 1,
+          "claimed_at": 24151.008417118,
+          "completed_at": 24151.159495604,
+          "evaluation_start": 24151.008688,
+          "evaluation_end": 24151.057791403,
+          "execution_ms": 49.206153002160136
+        },
+        {
+          "kind": "accepted",
+          "job_id": "de8a991b-fe92-467b-9ba0-2d80ce6be085",
+          "attempt": 1,
+          "claimed_at": 24151.224090639,
+          "completed_at": 24151.721916032,
+          "evaluation_start": 24151.224310827,
+          "evaluation_end": 24151.243310514,
+          "execution_ms": 19.095445997663774
+        },
+        {
+          "kind": "accepted",
+          "job_id": "4a36f07f-7dd0-424b-b261-c94934dafd14",
+          "attempt": 1,
+          "claimed_at": 24151.054314643,
+          "completed_at": 24151.286294621,
+          "evaluation_start": 24151.054654219,
+          "evaluation_end": 24151.0802019,
+          "execution_ms": 25.64240699939546
+        },
+        {
+          "kind": "accepted",
+          "job_id": "90b05ed2-bfa8-4c54-a76f-436e57ef4956",
+          "attempt": 2,
+          "claimed_at": 24153.159838873,
+          "completed_at": 24153.215616341,
+          "evaluation_start": 24153.16033114,
+          "evaluation_end": 24153.172933746,
+          "execution_ms": 12.695905999862589
+        },
+        {
+          "kind": "accepted",
+          "job_id": "390f9059-6047-462d-ae7a-b98ef21b6da5",
+          "attempt": 1,
+          "claimed_at": 24151.014151294,
+          "completed_at": 24151.463017155,
+          "evaluation_start": 24151.017790337,
+          "evaluation_end": 24151.050088448,
+          "execution_ms": 61.23794100130908
+        },
+        {
+          "kind": "accepted",
+          "job_id": "8cb06b87-1e5c-4446-b66e-2ec4d95eaf8b",
+          "attempt": 1,
+          "claimed_at": 24151.249841458,
+          "completed_at": 24151.885151512,
+          "evaluation_start": 24151.250074606,
+          "evaluation_end": 24151.269718834,
+          "execution_ms": 19.73519799867063
+        },
+        {
+          "kind": "accepted",
+          "job_id": "6bf0c28f-98e1-4419-ad44-53bc2e1e8b1c",
+          "attempt": 1,
+          "claimed_at": 24151.109363595,
+          "completed_at": 24151.407405713,
+          "evaluation_start": 24151.109616612,
+          "evaluation_end": 24151.124112944,
+          "execution_ms": 14.618333996622823
+        },
+        {
+          "kind": "accepted",
+          "job_id": "6e7d4c6f-3f2c-493f-82e4-5123cdb712d3",
+          "attempt": 1,
+          "claimed_at": 24151.012457103,
+          "completed_at": 24151.258005351,
+          "evaluation_start": 24151.012792375,
+          "evaluation_end": 24151.033843744,
+          "execution_ms": 21.19410399973276
+        },
+        {
+          "kind": "accepted",
+          "job_id": "6bf5352d-0377-4e43-ab34-ffb6d53bc4b9",
+          "attempt": 1,
+          "claimed_at": 24151.115327745,
+          "completed_at": 24151.502455668,
+          "evaluation_start": 24151.115618059,
+          "evaluation_end": 24151.161372126,
+          "execution_ms": 45.91404799793963
+        },
+        {
+          "kind": "accepted",
+          "job_id": "cd4c178f-2ab8-438b-8b81-d0fe181337cd",
+          "attempt": 1,
+          "claimed_at": 24151.226878488,
+          "completed_at": 24151.817872575,
+          "evaluation_start": 24151.227071859,
+          "evaluation_end": 24151.249227116,
+          "execution_ms": 22.3100240000349
+        },
+        {
+          "kind": "accepted",
+          "job_id": "436daf31-183c-4ad3-bc19-c6f6363f30c6",
+          "attempt": 1,
+          "claimed_at": 24151.098989113,
+          "completed_at": 24151.310893624,
+          "evaluation_start": 24151.09930444,
+          "evaluation_end": 24151.120450988,
+          "execution_ms": 21.22447799774818
+        },
+        {
+          "kind": "accepted",
+          "job_id": "ba552c38-0fbc-4cf3-8abc-25c6c13e6541",
+          "attempt": 1,
+          "claimed_at": 24151.201514844,
+          "completed_at": 24151.613733013,
+          "evaluation_start": 24151.201823195,
+          "evaluation_end": 24151.217938275,
+          "execution_ms": 16.201903999899514
+        },
+        {
+          "kind": "accepted",
+          "job_id": "c303584c-ddf4-4ce9-b87e-b36682789729",
+          "attempt": 1,
+          "claimed_at": 24151.217740921,
+          "completed_at": 24151.703987139,
+          "evaluation_start": 24151.218052604,
+          "evaluation_end": 24151.235755527,
+          "execution_ms": 17.886688001453876
+        },
+        {
+          "kind": "accepted",
+          "job_id": "d92cadc2-434b-42e5-b75e-09f7d55efd2b",
+          "attempt": 1,
+          "claimed_at": 24151.279412723,
+          "completed_at": 24152.066842323,
+          "evaluation_start": 24151.279618838,
+          "evaluation_end": 24151.304509048,
+          "execution_ms": 25.004244002047926
+        }
+      ]
+    }
+  ],
+  "postgresql": "PostgreSQL 17.11 (Debian 17.11-1.pgdg12+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit",
+  "track_io_timing": "on",
+  "summary": {
+    "1": {
+      "mean_duration_seconds": 0.7260817370006407,
+      "mean_throughput": 22.036086551486807
+    },
+    "4": {
+      "mean_duration_seconds": 0.3714326830013306,
+      "mean_throughput": 43.07644623707678
+    },
+    "8": {
+      "mean_duration_seconds": 0.9572808819975762,
+      "mean_throughput": 16.71400766576733
+    },
+    "16": {
+      "mean_duration_seconds": 0.990496203998191,
+      "mean_throughput": 16.153519756476747
+    }
+  },
+  "complete": true
+}

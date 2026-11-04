@@ -1,5 +1,7 @@
 # Simulated PostgreSQL benchmark report
 
+This historical experiment uses one process with 1 versus 16 configured async lanes. Observed peak active evaluations in configured-16 variants was **five**, not sixteen. For actual 1/4/8/16 independent processes, see [the separate process report](PLATFORM_BENCHMARK_REPORT.md).
+
 Workload: 1000 jobs per configuration, 3 repetitions. All six variants completed; 6,000 accepted results total. Caching disabled. No live API calls.
 
 | Repetition | Concurrency | Seconds | Jobs/s | Retries | Execution P95 ms | Completion P95 ms |

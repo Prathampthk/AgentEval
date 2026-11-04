@@ -48,3 +48,5 @@ Controlled tests now verify a 16-active evaluation bound with 120 persisted jobs
 | Capacity/lock overload | 429/503 retry hints; duplicate replay retains original run |
 
 Crash tests use `os._exit(86)` and fsync the fake external side-effect record. Lease expiry for recovery assertions is advanced by controlled SQL; the benchmark recovery probe separately waits for a real two-second lease. These tests do not kill the host, corrupt WAL, or prove external-provider cancellation. Run them against the dedicated `_test` database; they truncate only that database and must not share it with another concurrent suite.
+
+The fresh-volume container check exposed one initial connection-establishment timeout (126 tests passed, one setup error). The integration fixture now waits up to 30 seconds for a connection before a test starts, retrying only connection acquisition. It does not retry test transactions or operations, and runtime five-second connection/ten-second statement limits remain unchanged. Final rerun results are in `reports/platform-verification.json`; the initial failed run is disclosed there.

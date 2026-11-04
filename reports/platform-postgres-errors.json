@@ -1,0 +1,13 @@
+{
+  "since": "2026-11-04T02:11:53.067142+00:00",
+  "until": "2026-11-04T02:13:21.067142+00:00",
+  "counts": {
+    "canceling statement due to statement timeout": 10
+  },
+  "statement_categories": {
+    "SELECT:evaluation_runs": 10
+  },
+  "statement_lock_categories": {
+    "run_select_for_update": 10
+  }
+}

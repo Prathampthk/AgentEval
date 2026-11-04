@@ -123,7 +123,7 @@ Equivalent queued submissions with the same key return the original run. Conflic
 
 Queued runs retain successful case results even if other jobs fail or the run is canceled. Result writes are fenced by lease token and expiration. A crash after receiving an external response can repeat a paid request; no exactly-once provider execution is promised. The three-attempt default limits automatic retries, not manual submissions with new keys. Live Gemini can cost up to two provider calls per attempt, and API/worker must use matching provider/model configurations.
 
-Read [execution semantics](docs/JOB_EXECUTION_SEMANTICS.md), [reliability checks](docs/RELIABILITY_TESTING.md), and [milestone 3 evidence](docs/MILESTONE_3_EVIDENCE.md). The bounded pool and controlled drain/cancellation tests are implemented; full database-outage validation and performance benchmarks remain later milestones.
+Read [execution semantics](docs/JOB_EXECUTION_SEMANTICS.md), [reliability checks](docs/RELIABILITY_TESTING.md), and [milestone 3 evidence](docs/MILESTONE_3_EVIDENCE.md). The bounded pool and controlled drain/cancellation tests are implemented; controlled database-outage tests and performance benchmarks are documented in the later milestone evidence.
 
 ## Configure worker concurrency
 
@@ -141,7 +141,7 @@ The concurrency cap is **per process**, not installation-wide. Multiple workers,
 
 SIGTERM/SIGINT stops new loop iterations and uses one shared 50-second drain window for all lanes. Remaining tasks are then canceled; unfinished jobs keep their leases and recover after expiration. A claim already in flight can commit during shutdown, but starts no new provider work after observing the stop signal. Provider cancellation is cooperative and can still incur charges.
 
-Pool start/stop events report configuration and measured process-local active/peak evaluation counts. Counts cover actual evaluation execution, not pending jobs or final database writes; they are not a cost ledger. See [milestone 4 evidence](docs/MILESTONE_4_EVIDENCE.md) for the 120-job correctness test. The planned 1,000-job benchmark remains unrun.
+Pool start/stop events report configuration and measured process-local active/peak evaluation counts. Counts cover actual evaluation execution, not pending jobs or final database writes; they are not a cost ledger. See [milestone 4 evidence](docs/MILESTONE_4_EVIDENCE.md) for the 120-job correctness test. The completed historical 1,000-job async-lane benchmark and new process sweep are documented below.
 
 ## Overall run deadline and reliability
 
@@ -181,7 +181,7 @@ Checks: `npm run format:check --prefix frontend`, `npm run build --prefix fronte
 
 ## Measured simulated performance
 
-The committed 1,000-job benchmark compares concurrency 1 and 16 across three repetitions through the actual PostgreSQL queue. Mean completion times were 40.40 s and 13.07 s respectively: **3.09×** ratio of mean times, with all 6,000 accepted evaluations completed and 11 injected retries per variant. This is simulated-provider throughput, not live Gemini throughput; caching is disabled.
+The committed 1,000-job benchmark compares concurrency 1 and 16 across three repetitions through the actual PostgreSQL queue. Mean completion times were 40.40 s and 13.07 s respectively: **3.09×** ratio of mean times, with all 6,000 accepted evaluations completed and 11 injected retries per variant. This is simulated-provider throughput, not live Gemini throughput; caching is disabled. Configured concurrency was 16, while observed peak overlap was five. The new independent-process sweep is reported separately.
 
 See [benchmark methodology](docs/BENCHMARK_METHODOLOGY.md), [measured report](docs/BENCHMARK_REPORT.md), and raw `reports/benchmark.json`. Run only in the separate `_benchmark` database using the documented command.
 
@@ -190,3 +190,7 @@ See [benchmark methodology](docs/BENCHMARK_METHODOLOGY.md), [measured report](do
 `bash scripts/setup_environment.sh` installs the pinned Python and frontend dependencies, builds the dashboard, starts the owned local pgvector database (unless an external app URL is configured), and applies migrations. Read [the demonstration steps](docs/DEMO.md) and [final review](docs/FINAL_REVIEW.md). Processes still need explicit startup; setup does not publish the environment.
 
 Remaining external work: securely configure a replacement GEMINI_API_KEY and a supported AGENTEVAL_MODEL for the authorized sample (at most 10 live evaluations), and supply actual human labels using the prepared template. The checked-in human report remains BLOCKED; live performance/accuracy is not claimed.
+
+## Fault-tolerant platform verification
+
+See [container deployment and verification](docs/DEPLOYMENT.md), [delivery semantics](docs/JOB_EXECUTION_SEMANTICS.md) and [résumé evidence](RESUME_EVIDENCE.md) for the current backend upgrade. The new process sweep benchmarks **1, 4, 8 and 16 independent processes**, separately from the historical 1-vs-16 async-lane report above. Active queues have configurable capacity and retry hints; worker execution has fixed per-process bounds. Compose defaults to simulated providers and a loopback-only API. External side effects may repeat after crashes; no exactly-once external execution or public production-readiness claim is made.

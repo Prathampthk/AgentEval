@@ -4,9 +4,8 @@
 .env
 .env.*
 artifacts
-reports/audit
-reports/benchmark.json
-reports/platform-benchmark.json
+reports/*
+!reports/judge_validation.json
 frontend/node_modules
 frontend/dist
 frontend/test-results
