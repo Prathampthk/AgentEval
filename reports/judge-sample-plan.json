@@ -1,0 +1,19 @@
+{
+  "status": "PLAN_ONLY",
+  "seed": 42,
+  "selected_ids": [
+    "study-06-1",
+    "study-05-4",
+    "study-04-5",
+    "study-03-2",
+    "study-01-5",
+    "study-10-1",
+    "study-06-2",
+    "study-02-5",
+    "study-06-5",
+    "study-04-2"
+  ],
+  "provider_calls": 0,
+  "human_labels_generated": 0,
+  "examples_sha256": "e4488704bf763bbee07d71964a20399008c34df088ea151d02f1f36f89ef86bd"
+}

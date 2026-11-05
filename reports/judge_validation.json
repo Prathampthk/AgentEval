@@ -2,7 +2,7 @@
   "status": "BLOCKED",
   "positive_class": "quality_pass",
   "example_count": 50,
-  "human_labeled": 0,
+  "human_labeled": 50,
   "paired_count": 0,
   "simulated_judge": null,
   "confusion_matrix": {

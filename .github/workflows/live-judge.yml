@@ -31,6 +31,9 @@ jobs:
           .venv/bin/python -c 'import os; n=int(os.environ["SAMPLE_LIMIT"]); assert 1 <= n <= 10; assert os.environ.get("GEMINI_API_KEY"); assert os.environ.get("AGENTEVAL_MODEL")'
           .venv/bin/python scripts/judge_examples.py --live --limit "$SAMPLE_LIMIT"
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: live-judge-predictions
-          path: artifacts/judge_predictions.json
+          path: |
+            artifacts/judge_predictions.json
+            artifacts/judge_predictions.meta.json

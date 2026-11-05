@@ -20,6 +20,7 @@ COPY src/ ./src/
 RUN pip install --no-build-isolation --no-deps .
 COPY migrations/ ./migrations/
 COPY alembic.ini ./
+COPY examples/ ./examples/
 COPY scripts/ ./scripts/
 COPY deploy/ ./deploy/
 COPY reports/judge_validation.json ./reports/judge_validation.json

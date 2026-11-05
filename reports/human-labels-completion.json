@@ -1,0 +1,19 @@
+{
+  "status": "HUMAN_LABELS_COMPLETE",
+  "recorded_at_utc": "2026-11-05T16:59:41.807924+00:00",
+  "human_labeled": 50,
+  "pass": 10,
+  "fail": 40,
+  "labels_sha256": "764d7e4b36f52bd46a3cb83c9ac2aa1f5da93ec2ddc5917084c96859f1d61e63",
+  "frozen_local_copy": "artifacts/human_labels.frozen-764d7e4b36f5.json",
+  "labels_generated_by_agent": 0,
+  "source": "User supplied and confirmed saved labels; validated locally without editing decisions.",
+  "rubric_version": "v1",
+  "judge_predictions_collected": 0,
+  "limits": [
+    "No AI/human agreement measured.",
+    "Ten distinct questions, five response variants each; convenience sample.",
+    "Reviewer blinding was instructed but not independently verified.",
+    "Raw labels and labeler identifiers remain in ignored local artifacts."
+  ]
+}

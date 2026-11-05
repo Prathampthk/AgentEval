@@ -4,7 +4,7 @@ The two completed Gemini smoke evaluations validate a narrow generation/judgment
 
 ## Human review
 
-The category-blinded packet and separate blank labels are prepared under ignored `artifacts/`; instructions and strict rubric are in [HUMAN_LABELING.md](HUMAN_LABELING.md). Actual human labels remain zero. A human should review without AI predictions/category hints, supply their own identifier and keep ambiguity notes. Freeze those labels before comparing predictions. Fifty variants of ten questions are a convenience sample, so later agreement must disclose that dependency and scope. Never replace unreviewed nulls with generated labels.
+The user completed all 50 labels under ignored `artifacts/`; validation found 10 pass and 40 fail. Decisions are frozen locally with a committed provenance hash (`reports/human-labels-completion.json`). Instructions and strict rubric are in [HUMAN_LABELING.md](HUMAN_LABELING.md). Judge predictions and agreement remain pending. A human should review without AI predictions/category hints, supply their own identifier and keep ambiguity notes. The completed labels have been frozen before new predictions. Fifty variants of ten questions are a convenience sample, so later agreement must disclose that dependency and scope. Never replace unreviewed nulls with generated labels.
 
 ## Live RAG assessment — pending budget approval
 
@@ -21,3 +21,5 @@ Current Compose controls include loopback-only API binding, no published databas
 The remaining public-release gaps are authentication/authorization and tenant isolation; TLS and ingress/body/read limits; installation-wide provider concurrency, rate and spend controls across API/worker replicas; protected secret provisioning/rotation; migration/rollback operations; encrypted offsite backups with retention and repeatable restore exercises; observability, alerting, retention and workload/outage validation. Existing accepted-result token metadata is not a complete spend ledger. Idempotent submission and fenced persistence cannot stop charges from an external response lost before acknowledgment.
 
 The completed generated-data local dump/restore drill proves its documented snapshot checks only, not host-loss recovery, HA, PITR or production RPO/RTO. Keep the local demonstration private. A public release requires a separate concrete implementation/review and authorization; no URL publication, DNS/ingress change or deployment was performed here.
+
+Current judge-collection preparation: [provider configuration](PROVIDER_CONFIGURATION.md) documents a deterministic offline selection, a ten-request live cap, checkpoints and key switching through environment configuration. The user requested no Gemini calls until the current project’s free-tier/billing status is confirmed. No premium key-entry UI or shared-server key ownership is implemented.
