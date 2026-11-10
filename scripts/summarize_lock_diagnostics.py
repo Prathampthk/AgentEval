@@ -67,6 +67,15 @@ for row in data["results"]:
             sql_errors=dict(errors),
             worker_events=dict(events),
             run_lock_latency_ms=distribution([(s["end"] - s["start"]) * 1000 for s in run_locks]),
+            worker_event_loop_delay_ms=distribution(
+                [s["delay_seconds"] * 1000 for s in diagnostics.get("event_loop_samples", [])]
+            ),
+            run_lock_to_transaction_end_start_ms=distribution(
+                [
+                    (s["transaction_end_started"] - s["lock_returned"]) * 1000
+                    for s in diagnostics.get("run_lock_transactions", [])
+                ]
+            ),
             run_lock_max_ms=max(((s["end"] - s["start"]) * 1000 for s in run_locks), default=None),
             max_sampled_root_blocker_transaction_age_seconds=max_root_age,
             sampled_root_blocker_waits=dict(root_holder_waits),

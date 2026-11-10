@@ -65,3 +65,16 @@ The benchmark image must contain the checkout being measured; build it before a 
 The full container suite also passed the controlled PostgreSQL lock-graph/statement-timeout test ([current verification](../reports/current-verification.json)). That forced 1.5-second timeout validates attribution, not the cause of the historical spontaneous ten-second timeout. No queue policy, retry, lease or timeout was changed.
 
 Next useful experiment: on the original environment or comparable controlled hardware, collect per-process event-loop scheduling lag and lock-acquired-to-transaction-end timing alongside the existing numeric backend graph and storage/fsync telemetry. Distinguish client stalls while holding the run lock from server commit waits. Use a controlled delayed holder as a positive control, retain failures and all repetitions, then repeat without induced delays. None of these extra telemetry correlations has been measured yet. The historical root cause remains **unresolved**; more process counts or a higher timeout would not resolve that gap.
+
+## Worker and transaction timing capture (2026-11-10)
+
+The opt-in benchmark records worker wake-up delay every 100 ms and the interval from the first successful run-lock SQL response to the start of commit or rollback. These records share a monotonic clock with the SQL and blocker traces. The transaction records include worker and backend PIDs for matching to the sampled blocker graph. The interval starts after PostgreSQL returns the lock query and ends before commit I/O, so it excludes both time spent waiting to acquire the lock and time spent releasing it.
+
+One local Compose repetition at each worker count completed 1,000 simulated jobs with 11 planned retries and zero SQL errors per variant. The source fingerprints, workload hash and both complete traces are recorded in the [summary](../reports/lock-timing-2026-11-10-summary.json) and [raw archive](../reports/lock-timing-2026-11-10.json.gz).
+
+| Worker processes | Run-lock query p99 | Worker wake-up delay p99 | Lock response to transaction-end start p99 |
+|---|---:|---:|---:|
+| 4 | 3.98 ms | 3.08 ms | 3.45 ms |
+| 16 | 97.78 ms | 18.81 ms | 14.86 ms |
+
+The longest observed run-lock query took 117.96 ms. The sixteen-worker blocker graph sampled client-read and WAL sync waits. A single repetition on this host leaves their contribution to the historical ten-second timeout unresolved. The existing controlled PostgreSQL test checks that a known lock holder is matched to its transaction timing record when a waiter times out. A comparable-hardware capture with server-side storage telemetry is still needed for the original incident.

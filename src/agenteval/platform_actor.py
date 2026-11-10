@@ -15,7 +15,7 @@ from sqlalchemy import text
 from sqlalchemy.engine import make_url
 
 from agenteval.database import Database
-from agenteval.diagnostics import WorkerTrace, instrument_sql
+from agenteval.diagnostics import WorkerTrace, instrument_sql, sample_event_loop
 from agenteval.jobs import JobQueue
 from agenteval.providers import FakeProvider, ProviderError
 from agenteval.worker import serve
@@ -176,6 +176,9 @@ async def main():
                     await asyncio.sleep(0.02)
 
             watch_task = asyncio.create_task(watch())
+            lag_task = (
+                asyncio.create_task(sample_event_loop(trace)) if config.get("diagnostics") else None
+            )
             try:
                 metrics = await serve(
                     stop,
@@ -202,6 +205,9 @@ async def main():
                 )
             finally:
                 watch_task.cancel()
+                if lag_task is not None:
+                    lag_task.cancel()
+                    await asyncio.gather(lag_task, return_exceptions=True)
                 await asyncio.gather(watch_task, return_exceptions=True)
     finally:
         await database.close()

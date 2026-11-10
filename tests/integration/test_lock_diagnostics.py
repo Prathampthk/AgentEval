@@ -60,11 +60,16 @@ async def test_lock_graph_attributes_run_lock_timeout_without_query_text(db):
                 task.cancel()
             await asyncio.gather(task, return_exceptions=True)
     records = [json.loads(line) for line in trace.getvalue().splitlines()]
-    errors = [r for r in records if r["operation"] == "run_lock" and r["error_type"]]
+    errors = [r for r in records if r.get("operation") == "run_lock" and r["error_type"]]
     assert len(errors) == 1 and errors[0]["sqlstate"] == "57014"
     assert errors[0]["start"] <= observed_at <= errors[0]["end"]
     assert errors[0]["backend_pid"] in {
         row["pid"] for row in snapshots if blocker_pid in row["blockers"]
     }
+    transactions = [r for r in records if r["kind"] == "run-lock-transaction"]
+    assert len(transactions) == 1
+    transaction = transactions[0]
+    assert transaction["backend_pid"] == blocker_pid and transaction["outcome"] == "commit"
+    assert transaction["lock_returned"] <= observed_at <= transaction["transaction_end_started"]
     assert "private question" not in trace.getvalue() and "private answer" not in trace.getvalue()
     assert all("query" not in row for row in snapshots)

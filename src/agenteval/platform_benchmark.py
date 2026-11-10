@@ -326,6 +326,8 @@ async def variant(database, args, workers, rep, scenario):
                 lock_samples=lock_samples,
                 worker_events=[e for e in events if e["kind"] == "worker-event"],
                 sql_operations=[e for e in events if e["kind"] == "sql-operation"],
+                event_loop_samples=[e for e in events if e["kind"] == "event-loop-delay"],
+                run_lock_transactions=[e for e in events if e["kind"] == "run-lock-transaction"],
             ),
             simulated=True,
             response_cache_enabled=False,

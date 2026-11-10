@@ -1,5 +1,6 @@
 """Opt-in benchmark diagnostics: numeric lock graphs and SQL categories, no payloads."""
 
+import asyncio
 import json
 import logging
 import os
@@ -7,6 +8,26 @@ from time import perf_counter
 
 from sqlalchemy import event, text
 from sqlalchemy.exc import SQLAlchemyError
+
+
+async def sample_event_loop(trace, interval=0.1):
+    """Record wake-up delay on the same clock as the SQL and blocker traces."""
+    while True:
+        expected = perf_counter() + interval
+        await asyncio.sleep(interval)
+        observed = perf_counter()
+        trace.write(
+            json.dumps(
+                dict(
+                    kind="event-loop-delay",
+                    process_id=os.getpid(),
+                    expected=expected,
+                    observed=observed,
+                    delay_seconds=max(0.0, observed - expected),
+                )
+            )
+            + "\n"
+        )
 
 
 def sql_category(statement):
@@ -93,6 +114,40 @@ def instrument_sql(database, trace):
     @event.listens_for(engine, "after_cursor_execute")
     def after(conn, cursor, statement, parameters, context, executemany):
         write(conn, statement, context)
+        if sql_category(statement) == "run_lock":
+            conn.info.setdefault("diagnostic_run_lock_returned", perf_counter())
+
+    @event.listens_for(engine, "begin")
+    def begin(conn):
+        conn.info.pop("diagnostic_run_lock_returned", None)
+
+    def transaction_end(conn, outcome):
+        if conn.invalidated:
+            return
+        returned = conn.info.pop("diagnostic_run_lock_returned", None)
+        if returned is None:
+            return
+        trace.write(
+            json.dumps(
+                dict(
+                    kind="run-lock-transaction",
+                    process_id=os.getpid(),
+                    backend_pid=conn.connection.driver_connection.get_server_pid(),
+                    lock_returned=returned,
+                    transaction_end_started=perf_counter(),
+                    outcome=outcome,
+                )
+            )
+            + "\n"
+        )
+
+    @event.listens_for(engine, "commit")
+    def commit(conn):
+        transaction_end(conn, "commit")
+
+    @event.listens_for(engine, "rollback")
+    def rollback(conn):
+        transaction_end(conn, "rollback")
 
     @event.listens_for(engine, "handle_error")
     def failed(exception_context):
