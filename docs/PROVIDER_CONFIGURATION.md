@@ -4,13 +4,23 @@ AgentEval already supports a user-supplied Gemini API key through the process en
 
 For a Gemini process, securely supply `GEMINI_API_KEY`, set `AGENTEVAL_PROVIDER=gemini`, and explicitly set `AGENTEVAL_MODEL`. The two recorded smoke evaluations used `gemini-3.1-flash-lite`; that sample does not establish future availability or billing eligibility. Keep keys out of chat, source control, command-line arguments, images and reports. Use a secret manager or a private terminal environment rather than pasting an actual key into a command saved in shell history.
 
-To use another person's own key on their local installation, change `GEMINI_API_KEY` in that installation's environment and restart its API/worker processes with matching provider/model settings. Existing processes retain their earlier environment; editing a shell variable does not rotate a running client. Stored runs retain provider/model metadata, not the API key. Queued jobs have no key ownership or tenant isolation, so sharing one server among people with different keys is not currently supported. The supplied Compose demonstration intentionally uses fake mode; setting a host shell variable does not automatically change its containers to Gemini.
+On macOS or Linux, from a checkout with Python 3.12+ and Docker Compose, run `python3 scripts/run_gemini.py --model gemini-3.1-flash-lite` with a model available to your project. The launcher reads `GEMINI_API_KEY` from the environment or prompts with terminal echo disabled. It builds the application, initializes PostgreSQL, and applies the Gemini configuration to the API and worker. The dashboard is at `http://127.0.0.1:8012/dashboard/`. Use `--port` if that port is occupied. Readiness verifies application and database startup. Your first submitted evaluation checks provider access and uses one generation and one judge request per attempt.
 
-Free-tier versus billable use is controlled by the provider project/account, not a local `free` or `premium` toggle. AgentEval cannot determine a key's billing status. Before live requests, the operator must verify the project and permitted model in the provider console and explicitly agree the incremental request/spending limit. The present user instruction is **offline preparation only** while that status is uncertain. No live request is authorized by this document or by possession of a key. Consult the provider's [billing documentation](https://ai.google.dev/gemini-api/docs/billing) and [key management documentation](https://ai.google.dev/gemini-api/docs/api-key) in the provider console workflow.
+The launcher passes the key to the API and worker as runtime environment configuration. Treat Docker access as privileged because it can inspect container environment variables. The Gemini stack uses its own Compose project and PostgreSQL volume. Rerun the launcher with a replacement key to recreate the affected services. Finish queued work before switching models because workers claim jobs for their configured provider and model.
+
+Stop the local Gemini stack from the repository root with:
+
+```bash
+docker compose -p agenteval-gemini --env-file .local/compose.env down
+```
+
+The command preserves the database volume. Queued jobs have no key ownership or tenant isolation. Use a separate local installation for each person's credentials.
+
+Free-tier versus billable use is controlled by the provider project/account, not a local `free` or `premium` toggle. AgentEval cannot determine a key's billing status. Before live requests, the operator must verify the project and permitted model in the provider console and explicitly agree the incremental request/spending limit. Consult the provider's [billing documentation](https://ai.google.dev/gemini-api/docs/billing) and [key management documentation](https://ai.google.dev/gemini-api/docs/api-key) in the provider console workflow.
 
 ## Prepared judge sample
 
-The user has supplied fifty valid human labels, frozen locally before any new predictions. Raw labels and reviewer identifiers remain ignored. The committed completion record contains their file hash and aggregate counts only.
+The user has supplied fifty valid human labels, frozen locally before any new predictions. This study is prepared offline while billing eligibility for the study project is unconfirmed. Raw labels and reviewer identifiers remain ignored. The committed completion record contains their file hash and aggregate counts only.
 
 Prepare a deterministic shuffled selection without constructing a provider client:
 

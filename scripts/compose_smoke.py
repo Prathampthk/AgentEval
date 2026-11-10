@@ -21,7 +21,9 @@ def request(path, body=None, headers=None):
         return json.load(response)
 
 
-request("/health/ready")
+ready = request("/health/ready")
+if ready.get("provider") != "fake" or ready.get("simulated") is not True:
+    raise SystemExit("Compose smoke requires a simulated fake-provider API")
 with opener.open(base + "/dashboard/", timeout=5) as response:
     assert response.status == 200
 name = str(uuid4())

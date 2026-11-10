@@ -1,0 +1,9 @@
+services:
+  api:
+    environment: &gemini
+      AGENTEVAL_PROVIDER: gemini
+      AGENTEVAL_MODEL: ${AGENTEVAL_MODEL:?Choose a Gemini model}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:?Supply your Gemini API key}
+      AGENTEVAL_EMBEDDING_MODEL: ${AGENTEVAL_EMBEDDING_MODEL:-gemini-embedding-001}
+  worker:
+    environment: *gemini

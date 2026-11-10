@@ -27,7 +27,15 @@ The fake provider echoes context and uses a substring check. Its scores demonstr
 
 ## Optional Gemini mode
 
-Securely supply `GEMINI_API_KEY` and explicitly select `AGENTEVAL_MODEL`; then set `AGENTEVAL_PROVIDER=gemini` when starting the server. Do not commit secrets. The configured model is used for both generation and judgment, which can introduce shared-model bias. Each evaluation makes two requests, with SDK retries disabled. Token counts remain null when absent from provider metadata.
+On macOS or Linux with Python 3.12+ and Docker Compose running, launch the dashboard, PostgreSQL, and worker from a fresh checkout:
+
+```bash
+python3 scripts/run_gemini.py --model gemini-3.1-flash-lite
+```
+
+Choose a model available to your Gemini project. Enter your key at the hidden prompt or supply it through `GEMINI_API_KEY` in the environment. Open `http://127.0.0.1:8012/dashboard/`, create a dataset, and submit a queued run. The launcher uses a separate Compose project from the simulated demo. See [provider configuration](docs/PROVIDER_CONFIGURATION.md) for restart, shutdown, and provider usage details.
+
+For a manual launch, supply `GEMINI_API_KEY` securely and set `AGENTEVAL_MODEL` and `AGENTEVAL_PROVIDER=gemini` before starting the API and worker. Do not commit secrets. The configured model is used for both generation and judgment, which can introduce shared-model bias. Each evaluation makes two requests, with SDK retries disabled. Token counts remain null when absent from provider metadata.
 
 Local `gemini-3.1-flash-lite` completed one synchronous and one queued evaluation of the same simple case; see [live evidence](reports/live-gemini-smoke.json), committed in `da60690`. The judge uses `response_json_schema=Judgment.model_json_schema()` with two offline wire-contract checks. These two results establish connectivity and structured output only, not accuracy, throughput, embeddings or RAG quality. Accepted-result metadata totals 418 input and 126 output tokens across four generation/judgment responses; it excludes failed/discarded attempts and is not a billing ledger. Ask before expanding paid testing. Never enter keys in chat; fake mode remains the demonstration default.
 
