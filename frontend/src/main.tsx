@@ -51,12 +51,24 @@ type Study = {
   status: string;
   human_labeled: number;
   paired_count: number;
+  simulated_judge?: boolean | null;
   agreement: number | null;
   precision: number | null;
   recall: number | null;
   confusion_matrix: Record<string, number>;
   disagreements: { example_id: string; category: string }[];
 };
+function studySummary(study: Study | null) {
+  if (!study) return "Loading study results…";
+  if (study.paired_count) {
+    return study.simulated_judge
+      ? "Analysis of paired human and simulated judge decisions."
+      : "Analysis of paired human and judge decisions.";
+  }
+  return study.human_labeled
+    ? "Judge predictions are pending."
+    : "Human labels are pending.";
+}
 type Comparison = {
   outcome: string;
   reasons: string[];
@@ -687,11 +699,7 @@ function App() {
           <>
             <section>
               <h2>Human vs. AI agreement</h2>
-              <p className="intro">
-                {study?.paired_count
-                  ? "Analysis of paired human and judge decisions."
-                  : "Human labels are pending. No agreement measurement is available yet."}
-              </p>
+              <p className="intro">{studySummary(study)}</p>
               <div className="stats">
                 <article>
                   <span>Human labels</span>

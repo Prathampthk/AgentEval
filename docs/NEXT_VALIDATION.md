@@ -25,3 +25,13 @@ The completed generated-data local dump/restore drill proves its documented snap
 Current judge-collection preparation: [provider configuration](PROVIDER_CONFIGURATION.md) documents a deterministic offline selection, a ten-request live cap, checkpoints and key switching through environment configuration. The user requested no Gemini calls until the current project’s free-tier/billing status is confirmed. No premium key-entry UI or shared-server key ownership is implemented.
 
 The simulated judge rehearsal paired all ten planned IDs with the frozen label snapshot and verified its SHA-256 hash. Live agreement remains pending.
+
+## Offline acceptance
+
+The packaged dashboard browser test submits a queued run, waits for the worker to complete it, and checks the resulting job, quality result, comparison, and judge-study status. Container CI runs this test against the simulated stack alongside the queue, RAG, and portfolio smoke commands. The judge-study view displays the 50 recorded labels and shows that predictions are pending.
+
+The local acceptance run passed 148 Python tests and one packaged-dashboard browser test. Queue replay, two-document retrieval, the portfolio comparison, and the deterministic regression gate passed. The process smoke completed 64 jobs across four worker counts and recovered all four deliberate worker crashes. Local evidence is under `artifacts/offline-acceptance/`.
+
+The full simulated judge rehearsal paired all 50 frozen labels. Its substring judge marked all 50 cases as failing, yielding 40 true negatives and 10 false negatives. The 80% agreement reflects the distribution of labels in this sample. The local report is `artifacts/offline-acceptance/judge-agreement.json`.
+
+The historical PostgreSQL timeout remains an environment investigation. The recorded local captures include worker scheduling, transaction, blocker, and WAL timings. The next measurement needs a recurrence on the original or comparable hardware. See the [lock contention review](LOCK_CONTENTION_REVIEW.md).

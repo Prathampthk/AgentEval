@@ -185,7 +185,7 @@ npm run build --prefix frontend
 
 Restart the API after building; it serves the dashboard at its `/dashboard/` path. For frontend development, `npm run dev --prefix frontend` proxies API calls to the local API. Do not expose the unauthenticated demonstration publicly.
 
-Checks: `npm run format:check --prefix frontend`, `npm run build --prefix frontend`, and `npm run test:e2e --prefix frontend`. The browser test starts dedicated API/frontend ports and uses the current local development database with clearly named browser-smoke datasets. It uses installed Chromium when available; otherwise install Playwright Chromium. No paid provider calls occur.
+Run `npm run format:check --prefix frontend` and `npm run build --prefix frontend` for the frontend checks. With the simulated Compose API and worker running, `AGENTEVAL_E2E_URL=http://127.0.0.1:8011 npm run test:e2e --prefix frontend` exercises the packaged dashboard through queued completion. With no target URL, the test starts its own development API and Vite server. Install Playwright Chromium or set `AGENTEVAL_E2E_BROWSER` to an installed Chromium executable. The test verifies the simulated provider before creating its browser-smoke dataset.
 
 ## Measured simulated performance
 
