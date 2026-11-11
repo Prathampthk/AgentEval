@@ -204,7 +204,7 @@ Human review is complete: 50 labels were supplied, and the ten-example live Gemi
 See [container deployment and verification](docs/DEPLOYMENT.md), [delivery semantics](docs/JOB_EXECUTION_SEMANTICS.md) and [résumé evidence](RESUME_EVIDENCE.md) for the current backend upgrade. The new process sweep benchmarks **1, 4, 8 and 16 independent processes**, separately from the historical 1-vs-16 async-lane report above. Active queues have configurable capacity and retry hints; worker execution has fixed per-process bounds. Compose defaults to simulated providers and a loopback-only API. External side effects may repeat after crashes; no exactly-once external execution or public production-readiness claim is made.
 
 
-Latest follow-up: [lock contention investigation and hosted CI](docs/LOCK_CONTENTION_REVIEW.md). The latest non-root container suite passed 165 tests ([verification](reports/rag-study-preparation.json)). Both hosted workflows passed at `0031224`; earlier Bake recovery evidence is retained. The historical lock-timeout outlier remains unresolved; optional diagnostic capture is now available without changing default queue execution.
+Latest follow-up: [lock contention investigation and hosted CI](docs/LOCK_CONTENTION_REVIEW.md). The latest non-root container suite passed 168 tests ([verification](reports/rag-collector-verification.json)). Both hosted workflows passed at `0031224`; earlier Bake recovery evidence is retained. The historical lock-timeout outlier remains unresolved; optional diagnostic capture is now available without changing default queue execution.
 
 Repeatable fake-provider portfolio walkthrough: [demo steps](docs/DEMO.md), `.venv/bin/python scripts/portfolio_demo.py`. All 50 human labels are complete, with twenty paired candidate-v2 predictions; [separate validation plans](docs/NEXT_VALIDATION.md) cover live RAG and deployment safeguards without authorizing paid calls or public release.
 
@@ -216,3 +216,5 @@ Latest live validation: [judge comparison](reports/judge_validation.json) and [R
 
 
 The candidate-v2 judge prompt matched all ten human labels on the same development sample, correcting the four baseline instruction-injection false positives. The response-level holdout subsequently matched 10/10 labels. New Gemini processes use candidate-v2 by default and persist prompt provenance for compatible comparisons. See [prompt comparison](reports/judge-prompt-comparison.json).
+
+The separately authorized [eight-question live RAG study](reports/live-rag-study-v1-summary.json) completed 28 attempted operations. All six answerable queries retrieved their expected documents at K=3; answer/citation/abstention review is pending. No further provider requests are authorized by that completed run.

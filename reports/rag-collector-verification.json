@@ -1,0 +1,25 @@
+{
+  "collector_revision": "9da1e13",
+  "scope": "Bounded collector and blank human-review packet helper",
+  "full_container_suite": {
+    "passed": 168,
+    "warnings": 1,
+    "seconds": 19.09
+  },
+  "host_unit_suite": {
+    "passed": 104,
+    "integration_deselected": 64,
+    "warnings": 2,
+    "seconds": 0.92
+  },
+  "ruff_lint": "PASS",
+  "ruff_format": "PASS",
+  "new_live_provider_calls_for_tests": 0,
+  "source_sha256": {
+    "scripts/collect_rag_study.py": "7a7b5a0acd742ba3ce5f53bf3b0b518891512d4036efc4e84f4a8e569505370e",
+    "scripts/prepare_rag_answers.py": "b2b0525b2df0351a052cf9b73c8c4a5b86eabd96d4e68c25021d3f1c801a5bfe",
+    "tests/test_rag_collection.py": "35991abd223414f0982b349e7199f1381773e12ec1579fa807ae375ab904ec2e",
+    "tests/integration/test_rag_study_execution.py": "2cd1eb90a4f21addf02c0336df7489f72bea6126b491d3846c49ded8e7152774"
+  },
+  "initial_verification_issue": "Duplicate pytest file basenames interrupted collection; integration test was renamed, image rebuilt, and full suite passed."
+}

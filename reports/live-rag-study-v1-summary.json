@@ -1,0 +1,42 @@
+{
+  "status": "COLLECTED_HUMAN_REVIEW_PENDING",
+  "observed_at_utc": "2026-11-11T23:41:30.460964+00:00",
+  "collector_revision": "9da1e13",
+  "fixture_sha256": "d7172662509f32c2cc9ca44dca23752d76b53ecaf6f7327f29ca14c7e2044bbc",
+  "raw_report_sha256": "8293eccbf7888ddf3380542949e1dfdd5419eb2c89cd8e9b2ea845ca98009ca2",
+  "raw_report": "reports/live-rag-study-v1.json",
+  "authorized_attempt_ceiling": 28,
+  "attempted_operations": 28,
+  "automatic_retries": false,
+  "operation_counts": {
+    "document_embedding": 6,
+    "generation": 8,
+    "judgment": 6,
+    "query_embedding": 8
+  },
+  "answers_saved": 8,
+  "human_reviews_completed": 0,
+  "answerable_retrieval": {
+    "question_count": 6,
+    "k": 3,
+    "mean_recall_at_k": 1.0,
+    "mean_hit_rate_at_k": 1.0
+  },
+  "unanswerable_questions": {
+    "question_count": 2,
+    "recall_at_k": null,
+    "hit_rate_at_k": null,
+    "abstention_assessment": "HUMAN_REVIEW_PENDING"
+  },
+  "saved_generation_judgment_usage": {
+    "input_tokens": 6741,
+    "output_tokens": 805
+  },
+  "limitations": [
+    "Six authored synthetic documents and eight questions are not representative retrieval or accuracy evidence.",
+    "Embedding usage is unavailable; saved usage does not establish monetary cost, free-tier status or remaining allowance.",
+    "Judge scores are opinions and have not been treated as human labels.",
+    "The study uses a dedicated corpus and study-specific citation/abstention prompt.",
+    "Operation limit is invocation-local; no further live requests are authorized by completion."
+  ]
+}

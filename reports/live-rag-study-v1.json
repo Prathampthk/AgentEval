@@ -1,0 +1,451 @@
+{
+  "status": "COMPLETED",
+  "stage": "complete",
+  "source_sha256": "d7172662509f32c2cc9ca44dca23752d76b53ecaf6f7327f29ca14c7e2044bbc",
+  "operation_limit": 28,
+  "attempted_operations": 28,
+  "operation_types": [
+    "document_embedding",
+    "document_embedding",
+    "document_embedding",
+    "document_embedding",
+    "document_embedding",
+    "document_embedding",
+    "query_embedding",
+    "generation",
+    "judgment",
+    "query_embedding",
+    "generation",
+    "judgment",
+    "query_embedding",
+    "generation",
+    "judgment",
+    "query_embedding",
+    "generation",
+    "judgment",
+    "query_embedding",
+    "generation",
+    "judgment",
+    "query_embedding",
+    "generation",
+    "judgment",
+    "query_embedding",
+    "generation",
+    "query_embedding",
+    "generation"
+  ],
+  "automatic_retries": false,
+  "delay_seconds": 13.0,
+  "usage_scope": "Saved generation/judgment responses only; embedding and failed/uncertain usage is unavailable.",
+  "human_labels_created": 0,
+  "documents": [
+    {
+      "fixture_id": "aurora-manual",
+      "id": "ab10762c-ef0d-4c03-a10f-96cf30b214dd",
+      "chunks": 1,
+      "simulated": false
+    },
+    {
+      "fixture_id": "aurora-log",
+      "id": "b0245128-9369-44aa-804b-fcc7d87fc9f3",
+      "chunks": 1,
+      "simulated": false
+    },
+    {
+      "fixture_id": "borealis-manual",
+      "id": "6d021d6c-e840-4793-b676-b2975c8eab16",
+      "chunks": 1,
+      "simulated": false
+    },
+    {
+      "fixture_id": "supply-record",
+      "id": "58117d7c-ba3b-428d-8baa-95b8a9710ecd",
+      "chunks": 1,
+      "simulated": false
+    },
+    {
+      "fixture_id": "aurora-archive",
+      "id": "cb96b11d-1add-4485-9eaf-3e137f12d6d4",
+      "chunks": 1,
+      "simulated": false
+    },
+    {
+      "fixture_id": "untrusted-note",
+      "id": "47a52d7b-1418-4f6d-a539-c5b6c914923d",
+      "chunks": 1,
+      "simulated": false
+    }
+  ],
+  "responses": [
+    {
+      "question_id": "aurora-signal",
+      "question": "What does Aurora use to announce its arrival? Cite both current records.",
+      "retrieved": [
+        {
+          "document_id": "b0245128-9369-44aa-804b-fcc7d87fc9f3",
+          "chunk_id": "e6b0600f-a486-4a58-9d36-5962967efa1b",
+          "content": "The Aurora expedition arrival was announced with amber beacons. The arrival observation window is dawn.",
+          "distance": 0.24259104145274413
+        },
+        {
+          "document_id": "ab10762c-ef0d-4c03-a10f-96cf30b214dd",
+          "chunk_id": "505b276e-ec22-45bf-85f1-fcf7562774d0",
+          "content": "The Aurora expedition uses amber beacons as its arrival signal. Its field leader is Mira Chen. This manual supersedes the old Aurora archive.",
+          "distance": 0.30623976505269346
+        },
+        {
+          "document_id": "cb96b11d-1add-4485-9eaf-3e137f12d6d4",
+          "chunk_id": "afc0d6d1-32ff-4f22-b583-902b279f5cdc",
+          "content": "An obsolete Aurora procedure used red flags for arrival. This archive is superseded by the current Aurora field manual; red flags are no longer the arrival signal.",
+          "distance": 0.30761050079646046
+        }
+      ],
+      "context_chunk_ids": [
+        "e6b0600f-a486-4a58-9d36-5962967efa1b",
+        "505b276e-ec22-45bf-85f1-fcf7562774d0",
+        "afc0d6d1-32ff-4f22-b583-902b279f5cdc"
+      ],
+      "supplied_context": "[document=b0245128-9369-44aa-804b-fcc7d87fc9f3 chunk=e6b0600f-a486-4a58-9d36-5962967efa1b] The Aurora expedition arrival was announced with amber beacons. The arrival observation window is dawn.\n[document=ab10762c-ef0d-4c03-a10f-96cf30b214dd chunk=505b276e-ec22-45bf-85f1-fcf7562774d0] The Aurora expedition uses amber beacons as its arrival signal. Its field leader is Mira Chen. This manual supersedes the old Aurora archive.\n[document=cb96b11d-1add-4485-9eaf-3e137f12d6d4 chunk=afc0d6d1-32ff-4f22-b583-902b279f5cdc] An obsolete Aurora procedure used red flags for arrival. This archive is superseded by the current Aurora field manual; red flags are no longer the arrival signal.",
+      "context_truncated": false,
+      "answer": "Aurora uses amber beacons to announce its arrival [document=b0245128-9369-44aa-804b-fcc7d87fc9f3, document=ab10762c-ef0d-4c03-a10f-96cf30b214dd].",
+      "recall_at_k": 1.0,
+      "hit_rate_at_k": 1,
+      "generation_usage": {
+        "input_tokens": 339,
+        "output_tokens": 80
+      },
+      "judgment": {
+        "correctness": 2,
+        "relevance": 2,
+        "groundedness": 2,
+        "explanation": "The candidate correctly identifies amber beacons as the arrival signal and cites the two relevant documents that confirm this information."
+      },
+      "judge_usage": {
+        "input_tokens": 693,
+        "output_tokens": 58
+      }
+    },
+    {
+      "question_id": "aurora-leader",
+      "question": "Who leads the Aurora expedition in the field?",
+      "retrieved": [
+        {
+          "document_id": "6d021d6c-e840-4793-b676-b2975c8eab16",
+          "chunk_id": "d6d651a4-b3a6-466a-a6c1-d0cf1fc52be5",
+          "content": "The Borealis expedition uses blue lanterns as its arrival signal. Its field leader is Ivo Reed. Borealis is separate from Aurora.",
+          "distance": 0.23264197186437474
+        },
+        {
+          "document_id": "b0245128-9369-44aa-804b-fcc7d87fc9f3",
+          "chunk_id": "e6b0600f-a486-4a58-9d36-5962967efa1b",
+          "content": "The Aurora expedition arrival was announced with amber beacons. The arrival observation window is dawn.",
+          "distance": 0.2577152915029809
+        },
+        {
+          "document_id": "ab10762c-ef0d-4c03-a10f-96cf30b214dd",
+          "chunk_id": "505b276e-ec22-45bf-85f1-fcf7562774d0",
+          "content": "The Aurora expedition uses amber beacons as its arrival signal. Its field leader is Mira Chen. This manual supersedes the old Aurora archive.",
+          "distance": 0.2803198601229163
+        }
+      ],
+      "context_chunk_ids": [
+        "d6d651a4-b3a6-466a-a6c1-d0cf1fc52be5",
+        "e6b0600f-a486-4a58-9d36-5962967efa1b",
+        "505b276e-ec22-45bf-85f1-fcf7562774d0"
+      ],
+      "supplied_context": "[document=6d021d6c-e840-4793-b676-b2975c8eab16 chunk=d6d651a4-b3a6-466a-a6c1-d0cf1fc52be5] The Borealis expedition uses blue lanterns as its arrival signal. Its field leader is Ivo Reed. Borealis is separate from Aurora.\n[document=b0245128-9369-44aa-804b-fcc7d87fc9f3 chunk=e6b0600f-a486-4a58-9d36-5962967efa1b] The Aurora expedition arrival was announced with amber beacons. The arrival observation window is dawn.\n[document=ab10762c-ef0d-4c03-a10f-96cf30b214dd chunk=505b276e-ec22-45bf-85f1-fcf7562774d0] The Aurora expedition uses amber beacons as its arrival signal. Its field leader is Mira Chen. This manual supersedes the old Aurora archive.",
+      "context_truncated": false,
+      "answer": "The field leader of the Aurora expedition is Mira Chen [document=ab10762c-ef0d-4c03-a10f-96cf30b214dd].",
+      "recall_at_k": 1.0,
+      "hit_rate_at_k": 1,
+      "generation_usage": {
+        "input_tokens": 334,
+        "output_tokens": 46
+      },
+      "judgment": {
+        "correctness": 2,
+        "relevance": 2,
+        "groundedness": 2,
+        "explanation": "The candidate correctly identifies Mira Chen as the field leader of the Aurora expedition and provides the correct source document."
+      },
+      "judge_usage": {
+        "input_tokens": 654,
+        "output_tokens": 58
+      }
+    },
+    {
+      "question_id": "borealis-signal",
+      "question": "Which arrival signal belongs to Borealis rather than Aurora?",
+      "retrieved": [
+        {
+          "document_id": "6d021d6c-e840-4793-b676-b2975c8eab16",
+          "chunk_id": "d6d651a4-b3a6-466a-a6c1-d0cf1fc52be5",
+          "content": "The Borealis expedition uses blue lanterns as its arrival signal. Its field leader is Ivo Reed. Borealis is separate from Aurora.",
+          "distance": 0.21738795543188916
+        },
+        {
+          "document_id": "b0245128-9369-44aa-804b-fcc7d87fc9f3",
+          "chunk_id": "e6b0600f-a486-4a58-9d36-5962967efa1b",
+          "content": "The Aurora expedition arrival was announced with amber beacons. The arrival observation window is dawn.",
+          "distance": 0.26349924931549484
+        },
+        {
+          "document_id": "ab10762c-ef0d-4c03-a10f-96cf30b214dd",
+          "chunk_id": "505b276e-ec22-45bf-85f1-fcf7562774d0",
+          "content": "The Aurora expedition uses amber beacons as its arrival signal. Its field leader is Mira Chen. This manual supersedes the old Aurora archive.",
+          "distance": 0.3369972607432078
+        }
+      ],
+      "context_chunk_ids": [
+        "d6d651a4-b3a6-466a-a6c1-d0cf1fc52be5",
+        "e6b0600f-a486-4a58-9d36-5962967efa1b",
+        "505b276e-ec22-45bf-85f1-fcf7562774d0"
+      ],
+      "supplied_context": "[document=6d021d6c-e840-4793-b676-b2975c8eab16 chunk=d6d651a4-b3a6-466a-a6c1-d0cf1fc52be5] The Borealis expedition uses blue lanterns as its arrival signal. Its field leader is Ivo Reed. Borealis is separate from Aurora.\n[document=b0245128-9369-44aa-804b-fcc7d87fc9f3 chunk=e6b0600f-a486-4a58-9d36-5962967efa1b] The Aurora expedition arrival was announced with amber beacons. The arrival observation window is dawn.\n[document=ab10762c-ef0d-4c03-a10f-96cf30b214dd chunk=505b276e-ec22-45bf-85f1-fcf7562774d0] The Aurora expedition uses amber beacons as its arrival signal. Its field leader is Mira Chen. This manual supersedes the old Aurora archive.",
+      "context_truncated": false,
+      "answer": "The Borealis expedition uses blue lanterns as its arrival signal [document=6d021d6c-e840-4793-b676-b2975c8eab16].",
+      "recall_at_k": 1.0,
+      "hit_rate_at_k": 1,
+      "generation_usage": {
+        "input_tokens": 336,
+        "output_tokens": 50
+      },
+      "judgment": {
+        "correctness": 2,
+        "relevance": 2,
+        "groundedness": 2,
+        "explanation": "The candidate correctly identifies blue lanterns as the arrival signal for Borealis and cites the appropriate document."
+      },
+      "judge_usage": {
+        "input_tokens": 660,
+        "output_tokens": 56
+      }
+    },
+    {
+      "question_id": "supply-seal",
+      "question": "What seal identifies the Aurora shipment crates?",
+      "retrieved": [
+        {
+          "document_id": "58117d7c-ba3b-428d-8baa-95b8a9710ecd",
+          "chunk_id": "7fef92fa-e0f1-4809-8d6c-3068532f3501",
+          "content": "The Aurora supply shipment contains twelve crates. Each crate carries a cobalt seal. The inventory contains no departure date or financial budget.",
+          "distance": 0.2072794050064194
+        },
+        {
+          "document_id": "6d021d6c-e840-4793-b676-b2975c8eab16",
+          "chunk_id": "d6d651a4-b3a6-466a-a6c1-d0cf1fc52be5",
+          "content": "The Borealis expedition uses blue lanterns as its arrival signal. Its field leader is Ivo Reed. Borealis is separate from Aurora.",
+          "distance": 0.31366308675562815
+        },
+        {
+          "document_id": "ab10762c-ef0d-4c03-a10f-96cf30b214dd",
+          "chunk_id": "505b276e-ec22-45bf-85f1-fcf7562774d0",
+          "content": "The Aurora expedition uses amber beacons as its arrival signal. Its field leader is Mira Chen. This manual supersedes the old Aurora archive.",
+          "distance": 0.32766707918100724
+        }
+      ],
+      "context_chunk_ids": [
+        "7fef92fa-e0f1-4809-8d6c-3068532f3501",
+        "d6d651a4-b3a6-466a-a6c1-d0cf1fc52be5",
+        "505b276e-ec22-45bf-85f1-fcf7562774d0"
+      ],
+      "supplied_context": "[document=58117d7c-ba3b-428d-8baa-95b8a9710ecd chunk=7fef92fa-e0f1-4809-8d6c-3068532f3501] The Aurora supply shipment contains twelve crates. Each crate carries a cobalt seal. The inventory contains no departure date or financial budget.\n[document=6d021d6c-e840-4793-b676-b2975c8eab16 chunk=d6d651a4-b3a6-466a-a6c1-d0cf1fc52be5] The Borealis expedition uses blue lanterns as its arrival signal. Its field leader is Ivo Reed. Borealis is separate from Aurora.\n[document=ab10762c-ef0d-4c03-a10f-96cf30b214dd chunk=505b276e-ec22-45bf-85f1-fcf7562774d0] The Aurora expedition uses amber beacons as its arrival signal. Its field leader is Mira Chen. This manual supersedes the old Aurora archive.",
+      "context_truncated": false,
+      "answer": "The Aurora shipment crates are identified by a cobalt seal [document=58117d7c-ba3b-428d-8baa-95b8a9710ecd].",
+      "recall_at_k": 1.0,
+      "hit_rate_at_k": 1,
+      "generation_usage": {
+        "input_tokens": 339,
+        "output_tokens": 45
+      },
+      "judgment": {
+        "correctness": 2,
+        "relevance": 2,
+        "groundedness": 2,
+        "explanation": "The candidate correctly identifies the cobalt seal as the identifier for the Aurora shipment crates and cites the appropriate document."
+      },
+      "judge_usage": {
+        "input_tokens": 659,
+        "output_tokens": 58
+      }
+    },
+    {
+      "question_id": "supply-count",
+      "question": "How many crates are in the Aurora supply shipment?",
+      "retrieved": [
+        {
+          "document_id": "58117d7c-ba3b-428d-8baa-95b8a9710ecd",
+          "chunk_id": "7fef92fa-e0f1-4809-8d6c-3068532f3501",
+          "content": "The Aurora supply shipment contains twelve crates. Each crate carries a cobalt seal. The inventory contains no departure date or financial budget.",
+          "distance": 0.17600378471183808
+        },
+        {
+          "document_id": "b0245128-9369-44aa-804b-fcc7d87fc9f3",
+          "chunk_id": "e6b0600f-a486-4a58-9d36-5962967efa1b",
+          "content": "The Aurora expedition arrival was announced with amber beacons. The arrival observation window is dawn.",
+          "distance": 0.3005725681951761
+        },
+        {
+          "document_id": "6d021d6c-e840-4793-b676-b2975c8eab16",
+          "chunk_id": "d6d651a4-b3a6-466a-a6c1-d0cf1fc52be5",
+          "content": "The Borealis expedition uses blue lanterns as its arrival signal. Its field leader is Ivo Reed. Borealis is separate from Aurora.",
+          "distance": 0.3117334101957596
+        }
+      ],
+      "context_chunk_ids": [
+        "7fef92fa-e0f1-4809-8d6c-3068532f3501",
+        "e6b0600f-a486-4a58-9d36-5962967efa1b",
+        "d6d651a4-b3a6-466a-a6c1-d0cf1fc52be5"
+      ],
+      "supplied_context": "[document=58117d7c-ba3b-428d-8baa-95b8a9710ecd chunk=7fef92fa-e0f1-4809-8d6c-3068532f3501] The Aurora supply shipment contains twelve crates. Each crate carries a cobalt seal. The inventory contains no departure date or financial budget.\n[document=b0245128-9369-44aa-804b-fcc7d87fc9f3 chunk=e6b0600f-a486-4a58-9d36-5962967efa1b] The Aurora expedition arrival was announced with amber beacons. The arrival observation window is dawn.\n[document=6d021d6c-e840-4793-b676-b2975c8eab16 chunk=d6d651a4-b3a6-466a-a6c1-d0cf1fc52be5] The Borealis expedition uses blue lanterns as its arrival signal. Its field leader is Ivo Reed. Borealis is separate from Aurora.",
+      "context_truncated": false,
+      "answer": "The Aurora supply shipment contains twelve crates [document=58117d7c-ba3b-428d-8baa-95b8a9710ecd].",
+      "recall_at_k": 1.0,
+      "hit_rate_at_k": 1,
+      "generation_usage": {
+        "input_tokens": 333,
+        "output_tokens": 42
+      },
+      "judgment": {
+        "correctness": 2,
+        "relevance": 2,
+        "groundedness": 2,
+        "explanation": "The candidate response accurately identifies the number of crates as twelve and provides the correct source document."
+      },
+      "judge_usage": {
+        "input_tokens": 649,
+        "output_tokens": 55
+      }
+    },
+    {
+      "question_id": "superseded-signal",
+      "question": "Does Aurora currently use red flags or amber beacons for arrival?",
+      "retrieved": [
+        {
+          "document_id": "b0245128-9369-44aa-804b-fcc7d87fc9f3",
+          "chunk_id": "e6b0600f-a486-4a58-9d36-5962967efa1b",
+          "content": "The Aurora expedition arrival was announced with amber beacons. The arrival observation window is dawn.",
+          "distance": 0.19144128595719512
+        },
+        {
+          "document_id": "cb96b11d-1add-4485-9eaf-3e137f12d6d4",
+          "chunk_id": "afc0d6d1-32ff-4f22-b583-902b279f5cdc",
+          "content": "An obsolete Aurora procedure used red flags for arrival. This archive is superseded by the current Aurora field manual; red flags are no longer the arrival signal.",
+          "distance": 0.20549197822550713
+        },
+        {
+          "document_id": "ab10762c-ef0d-4c03-a10f-96cf30b214dd",
+          "chunk_id": "505b276e-ec22-45bf-85f1-fcf7562774d0",
+          "content": "The Aurora expedition uses amber beacons as its arrival signal. Its field leader is Mira Chen. This manual supersedes the old Aurora archive.",
+          "distance": 0.29093307058115525
+        }
+      ],
+      "context_chunk_ids": [
+        "e6b0600f-a486-4a58-9d36-5962967efa1b",
+        "afc0d6d1-32ff-4f22-b583-902b279f5cdc",
+        "505b276e-ec22-45bf-85f1-fcf7562774d0"
+      ],
+      "supplied_context": "[document=b0245128-9369-44aa-804b-fcc7d87fc9f3 chunk=e6b0600f-a486-4a58-9d36-5962967efa1b] The Aurora expedition arrival was announced with amber beacons. The arrival observation window is dawn.\n[document=cb96b11d-1add-4485-9eaf-3e137f12d6d4 chunk=afc0d6d1-32ff-4f22-b583-902b279f5cdc] An obsolete Aurora procedure used red flags for arrival. This archive is superseded by the current Aurora field manual; red flags are no longer the arrival signal.\n[document=ab10762c-ef0d-4c03-a10f-96cf30b214dd chunk=505b276e-ec22-45bf-85f1-fcf7562774d0] The Aurora expedition uses amber beacons as its arrival signal. Its field leader is Mira Chen. This manual supersedes the old Aurora archive.",
+      "context_truncated": false,
+      "answer": "Aurora currently uses amber beacons for arrival [document=b0245128-9369-44aa-804b-fcc7d87fc9f3, document=ab10762c-ef0d-4c03-a10f-96cf30b214dd]. Red flags are no longer used, as they were part of an obsolete procedure [document=cb96b11d-1add-4485-9eaf-3e137f12d6d4].",
+      "recall_at_k": 1.0,
+      "hit_rate_at_k": 1,
+      "generation_usage": {
+        "input_tokens": 337,
+        "output_tokens": 130
+      },
+      "judgment": {
+        "correctness": 2,
+        "relevance": 2,
+        "groundedness": 2,
+        "explanation": "The candidate response correctly identifies that amber beacons are used and explains that red flags are obsolete, citing the provided documents accurately."
+      },
+      "judge_usage": {
+        "input_tokens": 741,
+        "output_tokens": 61
+      }
+    },
+    {
+      "question_id": "unknown-date",
+      "question": "On what calendar date will Aurora depart?",
+      "retrieved": [
+        {
+          "document_id": "b0245128-9369-44aa-804b-fcc7d87fc9f3",
+          "chunk_id": "e6b0600f-a486-4a58-9d36-5962967efa1b",
+          "content": "The Aurora expedition arrival was announced with amber beacons. The arrival observation window is dawn.",
+          "distance": 0.2461133074702423
+        },
+        {
+          "document_id": "ab10762c-ef0d-4c03-a10f-96cf30b214dd",
+          "chunk_id": "505b276e-ec22-45bf-85f1-fcf7562774d0",
+          "content": "The Aurora expedition uses amber beacons as its arrival signal. Its field leader is Mira Chen. This manual supersedes the old Aurora archive.",
+          "distance": 0.31401990653590106
+        },
+        {
+          "document_id": "6d021d6c-e840-4793-b676-b2975c8eab16",
+          "chunk_id": "d6d651a4-b3a6-466a-a6c1-d0cf1fc52be5",
+          "content": "The Borealis expedition uses blue lanterns as its arrival signal. Its field leader is Ivo Reed. Borealis is separate from Aurora.",
+          "distance": 0.31428517166110304
+        }
+      ],
+      "context_chunk_ids": [
+        "e6b0600f-a486-4a58-9d36-5962967efa1b",
+        "505b276e-ec22-45bf-85f1-fcf7562774d0",
+        "d6d651a4-b3a6-466a-a6c1-d0cf1fc52be5"
+      ],
+      "supplied_context": "[document=b0245128-9369-44aa-804b-fcc7d87fc9f3 chunk=e6b0600f-a486-4a58-9d36-5962967efa1b] The Aurora expedition arrival was announced with amber beacons. The arrival observation window is dawn.\n[document=ab10762c-ef0d-4c03-a10f-96cf30b214dd chunk=505b276e-ec22-45bf-85f1-fcf7562774d0] The Aurora expedition uses amber beacons as its arrival signal. Its field leader is Mira Chen. This manual supersedes the old Aurora archive.\n[document=6d021d6c-e840-4793-b676-b2975c8eab16 chunk=d6d651a4-b3a6-466a-a6c1-d0cf1fc52be5] The Borealis expedition uses blue lanterns as its arrival signal. Its field leader is Ivo Reed. Borealis is separate from Aurora.",
+      "context_truncated": false,
+      "answer": "The provided documents do not contain information regarding the calendar date on which Aurora will depart.",
+      "recall_at_k": null,
+      "hit_rate_at_k": null,
+      "generation_usage": {
+        "input_tokens": 333,
+        "output_tokens": 17
+      }
+    },
+    {
+      "question_id": "unknown-budget",
+      "question": "What is Aurora's approved financial budget in dollars?",
+      "retrieved": [
+        {
+          "document_id": "58117d7c-ba3b-428d-8baa-95b8a9710ecd",
+          "chunk_id": "7fef92fa-e0f1-4809-8d6c-3068532f3501",
+          "content": "The Aurora supply shipment contains twelve crates. Each crate carries a cobalt seal. The inventory contains no departure date or financial budget.",
+          "distance": 0.3655585236908949
+        },
+        {
+          "document_id": "b0245128-9369-44aa-804b-fcc7d87fc9f3",
+          "chunk_id": "e6b0600f-a486-4a58-9d36-5962967efa1b",
+          "content": "The Aurora expedition arrival was announced with amber beacons. The arrival observation window is dawn.",
+          "distance": 0.3959554474407697
+        },
+        {
+          "document_id": "6d021d6c-e840-4793-b676-b2975c8eab16",
+          "chunk_id": "d6d651a4-b3a6-466a-a6c1-d0cf1fc52be5",
+          "content": "The Borealis expedition uses blue lanterns as its arrival signal. Its field leader is Ivo Reed. Borealis is separate from Aurora.",
+          "distance": 0.3994577352051022
+        }
+      ],
+      "context_chunk_ids": [
+        "7fef92fa-e0f1-4809-8d6c-3068532f3501",
+        "e6b0600f-a486-4a58-9d36-5962967efa1b",
+        "d6d651a4-b3a6-466a-a6c1-d0cf1fc52be5"
+      ],
+      "supplied_context": "[document=58117d7c-ba3b-428d-8baa-95b8a9710ecd chunk=7fef92fa-e0f1-4809-8d6c-3068532f3501] The Aurora supply shipment contains twelve crates. Each crate carries a cobalt seal. The inventory contains no departure date or financial budget.\n[document=b0245128-9369-44aa-804b-fcc7d87fc9f3 chunk=e6b0600f-a486-4a58-9d36-5962967efa1b] The Aurora expedition arrival was announced with amber beacons. The arrival observation window is dawn.\n[document=6d021d6c-e840-4793-b676-b2975c8eab16 chunk=d6d651a4-b3a6-466a-a6c1-d0cf1fc52be5] The Borealis expedition uses blue lanterns as its arrival signal. Its field leader is Ivo Reed. Borealis is separate from Aurora.",
+      "context_truncated": false,
+      "answer": "The provided documents do not contain information regarding Aurora's approved financial budget [document=58117d7c-ba3b-428d-8baa-95b8a9710ecd].",
+      "recall_at_k": null,
+      "hit_rate_at_k": null,
+      "generation_usage": {
+        "input_tokens": 334,
+        "output_tokens": 49
+      }
+    }
+  ],
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-lite",
+  "simulated": false,
+  "embedding_model": "gemini-embedding-001",
+  "judge_prompt_version": "candidate-v2",
+  "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6"
+}
