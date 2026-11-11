@@ -21,7 +21,7 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
       - ./deploy/init-db.sh:/docker-entrypoint-initdb.d/01-agenteval.sh:ro
-    command: [postgres, -c, track_io_timing=on]
+    command: [postgres, -c, track_io_timing=on, -c, "track_wal_io_timing=${AGENTEVAL_TRACK_WAL_IO_TIMING:-off}"]
     restart: unless-stopped
     healthcheck:
       test: [CMD-SHELL, pg_isready -U postgres -d agenteval]

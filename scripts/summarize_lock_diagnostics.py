@@ -9,6 +9,25 @@ from pathlib import Path
 
 from agenteval.benchmark import distribution
 
+
+def summarize_wal(samples):
+    if len(samples) < 2:
+        return None
+    counters = ("wal_records", "wal_bytes", "wal_write", "wal_sync", "wal_write_ms", "wal_sync_ms")
+    deltas = {}
+    for counter in counters:
+        values = [sample[counter] for sample in samples]
+        if (
+            len({sample["stats_reset"] for sample in samples}) == 1
+            and all(value is not None for value in values)
+            and all(left <= right for left, right in zip(values, values[1:]))
+        ):
+            deltas[counter] = values[-1] - values[0]
+        else:
+            deltas[counter] = None
+    return {"scope": "postgresql_cluster", "samples": len(samples), "counter_deltas": deltas}
+
+
 parser = argparse.ArgumentParser()
 parser.add_argument("--input", required=True)
 parser.add_argument("--archive", default="reports/lock-diagnostics.json.gz")
@@ -65,6 +84,7 @@ for row in data["results"]:
             max_active_evaluations=row["max_active_evaluations"],
             workload_sha256=row["workload_sha256"],
             sql_errors=dict(errors),
+            wal=summarize_wal(diagnostics.get("wal_samples", [])),
             worker_events=dict(events),
             run_lock_latency_ms=distribution([(s["end"] - s["start"]) * 1000 for s in run_locks]),
             worker_event_loop_delay_ms=distribution(

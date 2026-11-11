@@ -78,3 +78,18 @@ One local Compose repetition at each worker count completed 1,000 simulated jobs
 | 16 | 97.78 ms | 18.81 ms | 14.86 ms |
 
 The longest observed run-lock query took 117.96 ms. The sixteen-worker blocker graph sampled client-read and WAL sync waits. A single repetition on this host leaves their contribution to the historical ten-second timeout unresolved. The existing controlled PostgreSQL test checks that a known lock holder is matched to its transaction timing record when a waiter times out. A comparable-hardware capture with server-side storage telemetry is still needed for the original incident.
+
+## PostgreSQL WAL timing capture (2026-11-10)
+
+Set `AGENTEVAL_TRACK_WAL_IO_TIMING=on` when starting an isolated Compose database to collect WAL write and sync durations. The diagnostic benchmark samples `pg_stat_wal` before releasing workers, alongside blocker snapshots, and after worker shutdown. Counters cover the whole PostgreSQL instance and can include background work. The summary leaves deltas unavailable when timing is disabled, statistics reset, or counters decrease. Cumulative sync duration is total time across sync operations and cannot identify the delay of a particular transaction.
+
+Two repetitions at each worker count completed 1,000 jobs per repetition, with 11 planned retries and zero captured SQL errors per repetition. These runs used a separate local Compose database with WAL timing enabled. See the [summary](../reports/lock-wal-2026-11-10-summary.json) and [raw capture](../reports/lock-wal-2026-11-10.json.gz).
+
+| Workers | Repetition | Run-lock p99 | WAL sync operations | Total WAL sync time |
+|---:|---:|---:|---:|---:|
+| 4 | 1 | 5.49 ms | 2,126 | 219.41 ms |
+| 16 | 1 | 215.12 ms | 1,984 | 721.29 ms |
+| 16 | 2 | 65.53 ms | 2,014 | 478.01 ms |
+| 4 | 2 | 3.49 ms | 2,063 | 212.12 ms |
+
+The sixteen-worker runs showed both WAL sync waits and idle-in-transaction client-read waits in sampled root blockers. The longest run-lock query took 237.86 ms. The historical ten-second timeout did not recur, and attributing it to storage requires a capture during a recurrence on the original or comparable environment.

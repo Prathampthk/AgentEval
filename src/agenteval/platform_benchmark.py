@@ -19,7 +19,7 @@ from sqlalchemy.engine import make_url
 
 from agenteval.benchmark import distribution
 from agenteval.database import Database
-from agenteval.diagnostics import lock_snapshot
+from agenteval.diagnostics import lock_snapshot, wal_snapshot
 from agenteval.jobs import JobQueue
 from agenteval.models import Job, Result, Run
 from agenteval.persistence_schemas import DatasetCreate, RunCreate
@@ -159,6 +159,7 @@ async def variant(database, args, workers, rep, scenario):
     db_samples = []
     docker_samples = []
     lock_samples = []
+    wal_samples = []
     monitor_stop = asyncio.Event()
 
     async def monitor():
@@ -170,6 +171,7 @@ async def variant(database, args, workers, rep, scenario):
                 lock_samples.append(
                     dict(time=perf_counter(), activity=await lock_snapshot(database))
                 )
+                wal_samples.append(await wal_snapshot(database))
             if args.postgres_container and tick % 5 == 0:
                 docker_samples.append(await docker_sample(args.postgres_container))
             tick += 1
@@ -203,6 +205,8 @@ async def variant(database, args, workers, rep, scenario):
         if len({r["pid"] for r in ready}) != workers:
             raise RuntimeError("Worker processes are not independent")
         before, _ = await pg_stats(database)
+        if config["diagnostics"]:
+            wal_samples.append(await wal_snapshot(database))
         started = perf_counter()
         (control / "start.json").write_text(json.dumps({"time": started}))
         monitor_task = asyncio.create_task(monitor())
@@ -245,6 +249,8 @@ async def variant(database, args, workers, rep, scenario):
         monitor_task.cancel()
         await asyncio.gather(monitor_task, return_exceptions=True)
         after, _ = await pg_stats(database)
+        if config["diagnostics"]:
+            wal_samples.append(await wal_snapshot(database))
         events = []
         for path in control.glob("trace-*.jsonl"):
             events.extend(json.loads(line) for line in path.read_text().splitlines())
@@ -324,6 +330,7 @@ async def variant(database, args, workers, rep, scenario):
             diagnostics=dict(
                 enabled=config["diagnostics"],
                 lock_samples=lock_samples,
+                wal_samples=wal_samples,
                 worker_events=[e for e in events if e["kind"] == "worker-event"],
                 sql_operations=[e for e in events if e["kind"] == "sql-operation"],
                 event_loop_samples=[e for e in events if e["kind"] == "event-loop-delay"],

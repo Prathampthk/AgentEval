@@ -180,3 +180,26 @@ async def lock_snapshot(database):
             .all()
         )
         return [dict(row) for row in rows]
+
+
+async def wal_snapshot(database):
+    """Sample PostgreSQL 17 cluster-wide WAL counters without resetting statistics."""
+    async with database.sessions() as session:
+        row = (
+            (
+                await session.execute(
+                    text("""
+                SELECT wal_records, wal_bytes::text AS wal_bytes, wal_write, wal_sync,
+                       CASE WHEN current_setting('track_wal_io_timing') = 'on'
+                            THEN wal_write_time END AS wal_write_ms,
+                       CASE WHEN current_setting('track_wal_io_timing') = 'on'
+                            THEN wal_sync_time END AS wal_sync_ms,
+                       stats_reset::text AS stats_reset
+                FROM pg_stat_wal
+                """)
+                )
+            )
+            .mappings()
+            .one()
+        )
+        return {"time": perf_counter(), **row, "wal_bytes": int(row["wal_bytes"])}

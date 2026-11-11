@@ -1,0 +1,272 @@
+{
+  "kind": "instrumented-lock-reproduction",
+  "complete": true,
+  "raw_sha256": "9d282f015f3816fc267126250318edd48626b9e6258320c3beb32bd2697f0575",
+  "archive": "reports/lock-wal-2026-11-10.json.gz",
+  "jobs_per_variant": 1000,
+  "repetitions": 2,
+  "source_sha256": {
+    "jobs.py": "8e67455f559a5b932e346e069d75458eb76837396d46f4bc63976d2959c4398b",
+    "worker.py": "23f507ba25780d928822bc64840bf2071298e18bec2b9543fb075e06c711ab21",
+    "platform_actor.py": "cd48c3ac835f9d5c3590048e282f0e5fd2379dec90c463fad7c84cd3cf31e5c3",
+    "platform_benchmark.py": "c456c303334e62e138077d40cd0cda8427b554429a9a6e9b4e6c2ef618387479",
+    "diagnostics.py": "2684e6b796c52d8d417fa62cd34ef6aaa9c651dde43b68bc31c290aa3ddf8c9c",
+    "database.py": "dc288782aac47078fbed71c91b0aa60b66fe0f569985607b82aad4386121f82c"
+  },
+  "results": [
+    {
+      "worker_processes": 4,
+      "repetition": 1,
+      "jobs_completed": 1000,
+      "duration_seconds": 5.2247127939990605,
+      "retry_count": 11,
+      "max_active_evaluations": 4,
+      "workload_sha256": "4b2be038ca36a936ec7126bd8cdd215603f35b28062fe9598836bcb8e6899dfd",
+      "sql_errors": {},
+      "wal": {
+        "scope": "postgresql_cluster",
+        "samples": 28,
+        "counter_deltas": {
+          "wal_records": 32191,
+          "wal_bytes": 3071393,
+          "wal_write": 2127,
+          "wal_sync": 2126,
+          "wal_write_ms": 13.384,
+          "wal_sync_ms": 219.40900000000002
+        }
+      },
+      "worker_events": {
+        "worker_pool_started": 4,
+        "job_claimed": 1011,
+        "job_completed": 1000,
+        "job_attempt_failed": 11,
+        "worker_pool_stopped": 4
+      },
+      "run_lock_latency_ms": {
+        "count": 1011,
+        "mean": 0.6978217280006304,
+        "p50": 0.186416000360623,
+        "p95": 2.311958000063896,
+        "p99": 5.491583000548417
+      },
+      "worker_event_loop_delay_ms": {
+        "count": 204,
+        "mean": 0.9635954230522176,
+        "p50": 0.5280840014165733,
+        "p95": 2.0952910017513204,
+        "p99": 13.223041998571716
+      },
+      "run_lock_to_transaction_end_start_ms": {
+        "count": 1011,
+        "mean": 2.0384998782997035,
+        "p50": 1.7346249987895135,
+        "p95": 3.0435410008067265,
+        "p99": 5.994749997626059
+      },
+      "run_lock_max_ms": 62.38775000019814,
+      "max_sampled_root_blocker_transaction_age_seconds": 0.063696,
+      "sampled_root_blocker_waits": {
+        "idle in transaction:Client:ClientRead": 2
+      },
+      "max_sampled_blocker_transaction_age_seconds": 0.063696,
+      "samples_with_blockers": 2,
+      "sampled_blocker_states": {
+        "idle in transaction": 2
+      }
+    },
+    {
+      "worker_processes": 16,
+      "repetition": 1,
+      "jobs_completed": 1000,
+      "duration_seconds": 4.342678043998603,
+      "retry_count": 11,
+      "max_active_evaluations": 9,
+      "workload_sha256": "4b2be038ca36a936ec7126bd8cdd215603f35b28062fe9598836bcb8e6899dfd",
+      "sql_errors": {},
+      "wal": {
+        "scope": "postgresql_cluster",
+        "samples": 25,
+        "counter_deltas": {
+          "wal_records": 20749,
+          "wal_bytes": 1923551,
+          "wal_write": 1985,
+          "wal_sync": 1984,
+          "wal_write_ms": 40.903,
+          "wal_sync_ms": 721.2909999999999
+        }
+      },
+      "worker_events": {
+        "worker_pool_started": 16,
+        "job_claimed": 1011,
+        "job_completed": 1000,
+        "job_attempt_failed": 11,
+        "worker_pool_stopped": 16
+      },
+      "run_lock_latency_ms": {
+        "count": 1011,
+        "mean": 27.021882020690512,
+        "p50": 17.688583997369278,
+        "p95": 99.79370799919707,
+        "p99": 215.1190830009
+      },
+      "worker_event_loop_delay_ms": {
+        "count": 672,
+        "mean": 1.2760778556152477,
+        "p50": 0.7802090003679041,
+        "p95": 4.568416999973124,
+        "p99": 10.15979200383299
+      },
+      "run_lock_to_transaction_end_start_ms": {
+        "count": 1011,
+        "mean": 5.08775943320012,
+        "p50": 3.4672500005399343,
+        "p95": 14.771874997677514,
+        "p99": 32.100666998303495
+      },
+      "run_lock_max_ms": 237.858624997898,
+      "max_sampled_root_blocker_transaction_age_seconds": 0.220493,
+      "sampled_root_blocker_waits": {
+        "idle in transaction:Client:ClientRead": 24,
+        "active:IO:WalSync": 1,
+        "active:Client:ClientRead": 1,
+        "active:Lock:transactionid": 1,
+        "idle in transaction:None:None": 1
+      },
+      "max_sampled_blocker_transaction_age_seconds": 0.220819,
+      "samples_with_blockers": 17,
+      "sampled_blocker_states": {
+        "active": 384,
+        "idle in transaction": 25
+      }
+    },
+    {
+      "worker_processes": 16,
+      "repetition": 2,
+      "jobs_completed": 1000,
+      "duration_seconds": 3.336623335002514,
+      "retry_count": 11,
+      "max_active_evaluations": 14,
+      "workload_sha256": "4b2be038ca36a936ec7126bd8cdd215603f35b28062fe9598836bcb8e6899dfd",
+      "sql_errors": {},
+      "wal": {
+        "scope": "postgresql_cluster",
+        "samples": 20,
+        "counter_deltas": {
+          "wal_records": 21516,
+          "wal_bytes": 2229163,
+          "wal_write": 2015,
+          "wal_sync": 2014,
+          "wal_write_ms": 30.120000000000005,
+          "wal_sync_ms": 478.0110000000001
+        }
+      },
+      "worker_events": {
+        "worker_pool_started": 16,
+        "job_claimed": 1011,
+        "job_completed": 1000,
+        "worker_pool_stopped": 16,
+        "job_attempt_failed": 11
+      },
+      "run_lock_latency_ms": {
+        "count": 1011,
+        "mean": 16.50471847468998,
+        "p50": 15.089915999851655,
+        "p95": 36.81341700212215,
+        "p99": 65.53175099907094
+      },
+      "worker_event_loop_delay_ms": {
+        "count": 523,
+        "mean": 0.7916689401951683,
+        "p50": 0.7235420016513672,
+        "p95": 1.8565830032457598,
+        "p99": 2.386500000284286
+      },
+      "run_lock_to_transaction_end_start_ms": {
+        "count": 1011,
+        "mean": 3.531566883341359,
+        "p50": 3.2686669983377215,
+        "p95": 5.534791998798028,
+        "p99": 9.172083999146707
+      },
+      "run_lock_max_ms": 88.05325000139419,
+      "max_sampled_root_blocker_transaction_age_seconds": 0.034734,
+      "sampled_root_blocker_waits": {
+        "idle in transaction:Client:ClientRead": 16,
+        "active:IO:WalSync": 2,
+        "idle in transaction:None:None": 1,
+        "active:Client:ClientRead": 1
+      },
+      "max_sampled_blocker_transaction_age_seconds": 0.034734,
+      "samples_with_blockers": 12,
+      "sampled_blocker_states": {
+        "active": 174,
+        "idle in transaction": 17
+      }
+    },
+    {
+      "worker_processes": 4,
+      "repetition": 2,
+      "jobs_completed": 1000,
+      "duration_seconds": 5.400791669002501,
+      "retry_count": 11,
+      "max_active_evaluations": 4,
+      "workload_sha256": "4b2be038ca36a936ec7126bd8cdd215603f35b28062fe9598836bcb8e6899dfd",
+      "sql_errors": {},
+      "wal": {
+        "scope": "postgresql_cluster",
+        "samples": 30,
+        "counter_deltas": {
+          "wal_records": 26060,
+          "wal_bytes": 2390017,
+          "wal_write": 2063,
+          "wal_sync": 2063,
+          "wal_write_ms": 11.491,
+          "wal_sync_ms": 212.12300000000005
+        }
+      },
+      "worker_events": {
+        "worker_pool_started": 4,
+        "job_claimed": 1011,
+        "job_completed": 1000,
+        "job_attempt_failed": 11,
+        "worker_pool_stopped": 4
+      },
+      "run_lock_latency_ms": {
+        "count": 1011,
+        "mean": 0.49540209400707774,
+        "p50": 0.1582910008437466,
+        "p95": 1.9094999988737982,
+        "p99": 3.4935830008180346
+      },
+      "worker_event_loop_delay_ms": {
+        "count": 212,
+        "mean": 0.64737818085186,
+        "p50": 0.5599159994744696,
+        "p95": 1.3395410023804288,
+        "p99": 3.453958001045976
+      },
+      "run_lock_to_transaction_end_start_ms": {
+        "count": 1011,
+        "mean": 1.8676946666687286,
+        "p50": 1.6940829991654027,
+        "p95": 2.7512080014275853,
+        "p99": 4.121875001146691
+      },
+      "run_lock_max_ms": 15.037875000416534,
+      "max_sampled_root_blocker_transaction_age_seconds": 0.00105,
+      "sampled_root_blocker_waits": {
+        "idle in transaction:Client:ClientRead": 1
+      },
+      "max_sampled_blocker_transaction_age_seconds": 0.00105,
+      "samples_with_blockers": 1,
+      "sampled_blocker_states": {
+        "idle in transaction": 1
+      }
+    }
+  ],
+  "limitations": [
+    "Diagnostic tracing changes timing; do not replace original performance report.",
+    "Sampled transaction age is not exact lock holding time; short waits can be missed.",
+    "No timeout reproduction does not prove the historical cause resolved."
+  ]
+}
