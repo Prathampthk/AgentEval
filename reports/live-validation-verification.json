@@ -1,0 +1,47 @@
+{
+  "source_revision": "ce18054",
+  "full_container_suite": {
+    "passed": 152,
+    "failed": 0,
+    "skipped": 0,
+    "warnings": 1,
+    "seconds": 19.01,
+    "scope": "Non-root Python 3.12, real PostgreSQL test database",
+    "source": "Observed pytest stdout and exit code 0"
+  },
+  "host_unit_suite": {
+    "passed": 95,
+    "integration_deselected": 57,
+    "warnings": 2,
+    "seconds": 0.83,
+    "scope": "macOS Python 3.14"
+  },
+  "browser_workflow": {
+    "passed": 1,
+    "seconds": 3.1,
+    "scope": "Packaged dashboard, fake provider, queued worker completion and ten live study pairs displayed"
+  },
+  "ruff_lint": "PASS",
+  "ruff_format": "PASS",
+  "new_live_provider_calls": 0,
+  "live_evidence": [
+    "reports/live-judge-sample.json",
+    "reports/judge_validation.json",
+    "reports/live-rag-smoke.json"
+  ],
+  "candidate_prompt": {
+    "version": "candidate-v2",
+    "live_evaluation": "PENDING",
+    "planned_sample_size": 10
+  },
+  "source_sha256": {
+    "src/agenteval/gemini.py": "a9fb0db32ea0cb83e4bd0be81bc6522a0fb2d37a668249919453f940d6bd7c90",
+    "src/agenteval/runtime.py": "69ec5e52cc18f3bd0a4a14886e862869a5ee5c0b9210d1907168df44e0dc6d3c",
+    "src/agenteval/judge_validation.py": "31d9391033a585a94f8c509b370c1431c02672df74078fedce20b3d40076e807",
+    "scripts/judge_examples.py": "57bbeef4399b1846739f7304731a7235a855dd7f4d68d701ccd100c02cc419c9",
+    "tests/test_gemini.py": "4e1b71827d43141fb950531c5aafac8c286852ca014f83866bf7b2c5987b14c9",
+    "tests/test_judge_collection.py": "f3c8361ed679240adf8b7e9a6a3c142274b4dbd5b9a87da229b1d2e4c3c4659e",
+    "tests/test_judge_validation.py": "b2b3084da22d133beee24e73ac7014661be7788677844bf2f5c9e1952c806ef7",
+    "frontend/tests/workflow.spec.js": "2ee7a4fedbead6f01bca1ebd0059b90b6fb0cfde781dd12d3f07390c288bd1a2"
+  }
+}
