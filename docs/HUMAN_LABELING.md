@@ -33,3 +33,5 @@ The ten-example sample was collected in two local files containing four and six 
 
 
 The candidate-v2 prompt was subsequently run on the same ten IDs and agreed with all ten human labels. The baseline report remains at reports/judge_validation.json, and the candidate report is reports/judge-candidate-v2-agreement.json. Reports are kept by prompt version. The candidate development used observed baseline failures, so these ten examples serve as a regression sample. The other forty labeled examples remain available for holdout validation.
+
+The response-level holdout selected in reports/judge-holdout-plan.json matched all ten frozen decisions (TP=3, TN=7, FP=0, FN=0). Its IDs are disjoint from the ten development response IDs, while some underlying questions may overlap. One initial request returned unavailable before saving a response. A separate ten-request retry completed, for eleven attempted requests in this stage. The failed attempt and successful retry metadata are retained with reports/judge-holdout-agreement.json.
