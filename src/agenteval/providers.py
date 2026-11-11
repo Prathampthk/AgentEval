@@ -5,6 +5,21 @@ from typing import Protocol
 from agenteval.domain import GenerationInput, JudgeInput, JudgeResponse, Judgment, TextResponse
 
 
+def judge_configuration(source):
+    return {
+        "judge_prompt_version": getattr(source, "judge_prompt_version", "v1"),
+        "judge_prompt_sha256": getattr(source, "judge_prompt_sha256", None),
+    }
+
+
+def validate_judge_configuration(result, configuration):
+    if result.judge_prompt_version != configuration.get("judge_prompt_version", "v1"):
+        raise ValueError("Judge prompt version does not match the run snapshot")
+    expected_hash = configuration.get("judge_prompt_sha256")
+    if expected_hash is not None and result.judge_prompt_sha256 != expected_hash:
+        raise ValueError("Judge prompt fingerprint does not match the run snapshot")
+
+
 class ProviderError(Exception):
     def __init__(
         self, category: str, retryable: bool = False, retry_after_seconds: float | None = None

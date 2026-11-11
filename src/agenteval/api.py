@@ -152,6 +152,7 @@ def create_app(
             "provider": selected.name,
             "model": selected.model,
             "embedding_model": getattr(selected, "embedding_model", None),
+            "judge_prompt_version": getattr(selected, "judge_prompt_version", "v1"),
             "simulated": selected.simulated,
             "remote_access_verified": False,
             "database": "ready" if app.state.database else "disabled",

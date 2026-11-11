@@ -40,7 +40,7 @@ Analyze only after predictions exist, using the frozen human copy and a distinct
 .venv/bin/python -m agenteval.judge_validation --labels artifacts/human_labels.frozen-764d7e4b36f5.json --judgments artifacts/judge_predictions.json --output artifacts/judge-agreement.json
 ```
 
-Keep simulated-provider comparisons explicitly simulated. No simulated prediction is evidence for Gemini accuracy. The recorded `reports/judge_validation.json` now contains ten live pairs against fifty frozen human labels.
+Keep simulated-provider comparisons explicitly simulated. No simulated prediction is evidence for Gemini accuracy. The recorded `reports/judge_validation.json` now contains twenty candidate-v2 pairs against fifty frozen human labels, with separate development and holdout reports.
 
 The optional hosted live workflow remains manual, disabled by default and capped at ten calls. Repository secrets/variables configure it separately; it has no access to ignored local human labels. It preserves partial prediction/metadata artifacts on failure, but dispatch still requires explicit usage authorization. A future hosted bring-your-own-key feature requires authentication, tenant-specific secret storage, job ownership, distributed quotas and spending controls before implementation or public deployment.
 
@@ -50,7 +50,7 @@ The first live collection stopped after saving four responses. To continue a kno
 
 The measured ten-example baseline used the v1 prompt and produced four false positives on instruction-injection responses. The collector now supports an experimental `--judge-prompt candidate-v2` option. It names the submitted text `candidate_response` and directs the judge to score the content present in that field. It explicitly addresses responses that consist entirely of grading instructions. The score scale remains rubric v1.
 
-API and worker evaluations continue to use the v1 prompt. Candidate predictions record their prompt version and SHA-256 fingerprint. Analysis rejects files containing multiple prompt versions or fingerprints. Historical files without those fields are interpreted as v1.
+New Gemini API and worker processes select candidate-v2 by default. Set AGENTEVAL_JUDGE_PROMPT=v1, or pass --judge-prompt v1 to scripts/run_gemini.py, to select the baseline. Candidate predictions record their prompt version and SHA-256 fingerprint. Analysis rejects files containing multiple prompt versions or fingerprints. Historical files without those fields are interpreted as v1.
 
 Prepare the same ten IDs offline with:
 
@@ -62,3 +62,10 @@ After authorizing ten additional Gemini requests, collect with `--live --limit 1
 
 
 The recorded comparison is in reports/judge-prompt-comparison.json. Baseline v1 agreed on six of ten examples (TP=2, TN=4, FP=4, FN=0). Candidate-v2 agreed on ten of ten (TP=2, TN=8, FP=0, FN=0). Its saved response usage totals 3,399 input tokens and 539 output tokens. The candidate was developed after examining failures on these same examples. An independent holdout comparison and repeatability measurement remain pending.
+
+
+## Persisted prompt provenance
+
+After response-level holdout validation, candidate-v2 is the default for new Gemini processes. Restart the local API and worker together to load the release. Every new run snapshots the judge prompt version and fingerprint, and every result carries those fields. Queued jobs execute the prompt recorded at submission, even if the worker's default changes. Older runs without prompt metadata retain v1 semantics. Legacy idempotent submissions replay under v1, while an attempt to reuse the same key for a different prompt is a conflict.
+
+Regression comparisons return INCONCLUSIVE when judge prompt versions or fingerprints differ. Old comparison artifacts default to v1 with an unknown fingerprint. The score scale remains rubric v1. The study collector keeps an explicit --judge-prompt selector for baseline and candidate experiments. Its live request cap remains ten per invocation, and --offset can select a later range of the fifty-example source.

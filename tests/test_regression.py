@@ -35,6 +35,8 @@ def test_incomplete_and_incompatible_are_inconclusive():
     assert compare(run(), run(status="FAILED"))["outcome"] == "INCONCLUSIVE"
     assert compare(run(), run(dataset_id="other"))["outcome"] == "INCONCLUSIVE"
     assert compare(run(), run(judge_model="other"))["outcome"] == "INCONCLUSIVE"
+    assert compare(run(), run(judge_prompt_version="candidate-v2"))["outcome"] == "INCONCLUSIVE"
+    assert compare(run(), run(judge_prompt_sha256="changed"))["outcome"] == "INCONCLUSIVE"
     assert compare(run(), run(results=[]))["outcome"] == "INCONCLUSIVE"
 
 

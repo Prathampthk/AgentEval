@@ -6,12 +6,29 @@ from time import perf_counter
 from pydantic import ValidationError
 
 from agenteval.domain import EvaluationRequest, EvaluationResult, GenerationInput, JudgeInput
-from agenteval.providers import Provider, ProviderError
+from agenteval.providers import Provider, ProviderError, judge_configuration
 
 
 async def evaluate(
-    data: EvaluationRequest, provider: Provider, timeout_seconds: float = 30
+    data: EvaluationRequest,
+    provider: Provider,
+    timeout_seconds: float = 30,
+    *,
+    judge_prompt_version: str | None = None,
+    judge_prompt_sha256: str | None = None,
 ) -> EvaluationResult:
+    if (
+        judge_prompt_version is not None
+        and judge_configuration(provider)["judge_prompt_version"] != judge_prompt_version
+    ):
+        if not hasattr(provider, "with_judge_prompt"):
+            raise ProviderError("incompatible_judge_prompt")
+        provider = provider.with_judge_prompt(judge_prompt_version)
+    if (
+        judge_prompt_sha256 is not None
+        and judge_configuration(provider)["judge_prompt_sha256"] != judge_prompt_sha256
+    ):
+        raise ProviderError("incompatible_judge_prompt")
     try:
         start = perf_counter()
         async with asyncio.timeout(timeout_seconds):
@@ -60,4 +77,5 @@ async def evaluate(
         generation_usage=generation.usage,
         judge_usage=judged.usage,
         simulated=provider.simulated,
+        **judge_configuration(provider),
     )

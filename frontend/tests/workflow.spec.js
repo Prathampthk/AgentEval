@@ -90,7 +90,10 @@ test("dataset to run details comparison and honest judge-study status", async ({
       .locator("article")
       .filter({ hasText: "Paired examples" })
       .locator("strong"),
-  ).toHaveText("10");
+  ).toHaveText("20");
+  await expect(
+    page.getByText("Judge prompt candidate-v2", { exact: false }),
+  ).toBeVisible();
   await page.getByRole("button", { name: "Overview", exact: true }).click();
   await page.goto("/dashboard/");
   await expect(

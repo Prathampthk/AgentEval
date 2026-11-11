@@ -29,6 +29,8 @@ class ComparisonRun(StrictModel):
     judge_provider: str
     judge_model: str
     rubric_version: str
+    judge_prompt_version: str = "v1"
+    judge_prompt_sha256: str | None = None
     simulated: bool
     results: list[ComparisonCase]
 
@@ -74,6 +76,8 @@ def comparison_input(run, expected_cases):
         judge_provider=run.provider,
         judge_model=run.model,
         rubric_version=run.rubric_version,
+        judge_prompt_version=run.configuration.get("judge_prompt_version", "v1"),
+        judge_prompt_sha256=run.configuration.get("judge_prompt_sha256"),
         simulated=run.simulated,
         results=rows,
     )
@@ -93,6 +97,8 @@ def compare(baseline, candidate, policy=None):
             "judge_provider",
             "judge_model",
             "rubric_version",
+            "judge_prompt_version",
+            "judge_prompt_sha256",
             "simulated",
         )
         if getattr(baseline, key) != getattr(candidate, key)

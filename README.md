@@ -197,7 +197,7 @@ See [benchmark methodology](docs/BENCHMARK_METHODOLOGY.md), [measured report](do
 
 `bash scripts/setup_environment.sh` installs the pinned Python and frontend dependencies, builds the dashboard, starts the owned local pgvector database (unless an external app URL is configured), and applies migrations. Read [the demonstration steps](docs/DEMO.md) and [final review](docs/FINAL_REVIEW.md). Processes still need explicit startup; setup does not publish the environment.
 
-Human review is complete: 50 labels were supplied, and the ten-example live Gemini sample measured 60% agreement, with four false positives and zero false negatives. Further paid calls require a budget review; the two recorded smoke evaluations do not establish the remaining allowance because failed/discarded requests are outside accepted-result usage. The checked-in human report covers ten paired examples from the controlled convenience sample.
+Human review is complete: 50 labels were supplied, and the ten-example live Gemini sample measured 60% agreement, with four false positives and zero false negatives. Further paid calls require a budget review; the two recorded smoke evaluations do not establish the remaining allowance because failed/discarded requests are outside accepted-result usage. The dashboard report covers twenty candidate-v2 pairs, including ten development and ten response-level holdout examples.
 
 ## Fault-tolerant platform verification
 
@@ -206,11 +206,11 @@ See [container deployment and verification](docs/DEPLOYMENT.md), [delivery seman
 
 Latest follow-up: [lock contention investigation and hosted CI](docs/LOCK_CONTENTION_REVIEW.md). The current non-root container suite has 152 passing tests ([latest verification](reports/live-validation-verification.json)). Both hosted workflows passed on current source revision `da60690`; earlier Bake recovery evidence is retained. The historical lock-timeout outlier remains unresolved; optional diagnostic capture is now available without changing default queue execution.
 
-Repeatable fake-provider portfolio walkthrough: [demo steps](docs/DEMO.md), `.venv/bin/python scripts/portfolio_demo.py`. All 50 human labels are complete, with ten paired live judge predictions; [separate validation plans](docs/NEXT_VALIDATION.md) cover live RAG and deployment safeguards without authorizing paid calls or public release.
+Repeatable fake-provider portfolio walkthrough: [demo steps](docs/DEMO.md), `.venv/bin/python scripts/portfolio_demo.py`. All 50 human labels are complete, with twenty paired candidate-v2 predictions; [separate validation plans](docs/NEXT_VALIDATION.md) cover live RAG and deployment safeguards without authorizing paid calls or public release.
 
 Gemini free-tier preparation and bring-your-own-key configuration: [provider configuration](docs/PROVIDER_CONFIGURATION.md). Collection now preserves partial results and usage, refuses existing outputs, and caps live samples at ten calls. Current billing eligibility is unconfirmed; no new Gemini calls were made.
 
 Latest live validation: [judge comparison](reports/judge_validation.json) and [RAG smoke](reports/live-rag-smoke.json). The RAG run retrieved and cited both fixture documents, with Recall@2 and Hit Rate@2 of 1.0. All four judge disagreements involved instruction-injection responses.
 
 
-The candidate-v2 judge prompt matched all ten human labels on the same development sample, correcting the four baseline instruction-injection false positives. API/worker evaluations continue to use v1 while holdout validation is pending. See [prompt comparison](reports/judge-prompt-comparison.json).
+The candidate-v2 judge prompt matched all ten human labels on the same development sample, correcting the four baseline instruction-injection false positives. The response-level holdout subsequently matched 10/10 labels. New Gemini processes use candidate-v2 by default and persist prompt provenance for compatible comparisons. See [prompt comparison](reports/judge-prompt-comparison.json).

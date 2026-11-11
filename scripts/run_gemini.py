@@ -11,6 +11,7 @@ from pathlib import Path
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--model", required=True, help="Gemini generation and judge model ID")
+    parser.add_argument("--judge-prompt", choices=("v1", "candidate-v2"), default="candidate-v2")
     parser.add_argument("--port", type=int, default=8012, help="Loopback port (default 8012)")
     args = parser.parse_args()
     if not args.model.strip():
@@ -62,6 +63,7 @@ def main():
             **os.environ,
             "GEMINI_API_KEY": key,
             "AGENTEVAL_MODEL": args.model.strip(),
+            "AGENTEVAL_JUDGE_PROMPT": args.judge_prompt,
             "API_PORT": str(args.port),
             "AGENTEVAL_BUILD_CA": ".local/build-ca.crt",
         },

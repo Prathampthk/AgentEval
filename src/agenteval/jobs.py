@@ -14,7 +14,7 @@ from agenteval.database import Database, MissingRecord
 from agenteval.domain import EvaluationRequest, EvaluationResult
 from agenteval.models import Dataset, Job, Result, Run, TestCase
 from agenteval.persistence_schemas import JobView, RunCreate
-from agenteval.providers import Provider
+from agenteval.providers import Provider, judge_configuration, validate_judge_configuration
 
 
 class SubmissionConflict(Exception):
@@ -33,6 +33,12 @@ class LostLease(Exception):
     pass
 
 
+def submission_hash(canonical):
+    return hashlib.sha256(
+        json.dumps(canonical, sort_keys=True, separators=(",", ":")).encode()
+    ).hexdigest()
+
+
 @dataclass(frozen=True)
 class Claim:
     id: UUID
@@ -45,6 +51,8 @@ class Claim:
     request: EvaluationRequest
     provider_timeout: float
     job_timeout: float
+    judge_prompt_version: str = "v1"
+    judge_prompt_sha256: str | None = None
 
 
 class JobQueue:
@@ -72,6 +80,7 @@ class JobQueue:
         ):
             raise ValueError("Timeouts must be positive and finite")
         config = {
+            **judge_configuration(provider),
             "prompt": data.prompt,
             "provider_timeout_seconds": provider_timeout,
             "job_timeout_seconds": job_timeout,
@@ -89,9 +98,7 @@ class JobQueue:
             "simulated": provider.simulated,
             "rubric_version": "v1",
         }
-        digest = hashlib.sha256(
-            json.dumps(canonical, sort_keys=True, separators=(",", ":")).encode()
-        ).hexdigest()
+        digest = submission_hash(canonical)
         async with self.db.sessions.begin() as session:
             # All admissions use this installation-wide lock. Concurrent draining can
             # only make the count conservative; it cannot cause over-admission.
@@ -104,7 +111,25 @@ class JobQueue:
                 raise
             existing = await session.scalar(select(Run).where(Run.submission_key == key))
             if existing:
-                if existing.request_hash != digest:
+                accepted_hashes = {digest}
+                if (
+                    "judge_prompt_version" not in existing.configuration
+                    and config["judge_prompt_version"] == "v1"
+                ):
+                    legacy_config = {
+                        k: v
+                        for k, v in config.items()
+                        if k not in ("judge_prompt_version", "judge_prompt_sha256")
+                    }
+                    accepted_hashes.add(
+                        submission_hash(
+                            {
+                                **canonical,
+                                "configuration": legacy_config,
+                            }
+                        )
+                    )
+                if existing.request_hash not in accepted_hashes:
                     raise SubmissionConflict
                 return existing.id
             if await session.get(Dataset, data.dataset_id) is None:
@@ -197,6 +222,8 @@ class JobQueue:
                 ),
                 run.configuration["provider_timeout_seconds"],
                 run.configuration["job_timeout_seconds"],
+                run.configuration.get("judge_prompt_version", "v1"),
+                run.configuration.get("judge_prompt_sha256"),
             )
 
     @staticmethod
@@ -283,6 +310,7 @@ class JobQueue:
                 claim.request.test_case_id,
             ):
                 raise ValueError("Result does not match claim configuration")
+            validate_judge_configuration(result, run.configuration)
             updated = await session.execute(
                 update(Job)
                 .where(*self._owned(claim))

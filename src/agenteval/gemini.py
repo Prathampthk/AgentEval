@@ -80,6 +80,9 @@ class GeminiProvider:
     def judge_prompt_sha256(self):
         return hashlib.sha256(self.judge_prompt.encode()).hexdigest()
 
+    def with_judge_prompt(self, version):
+        return GeminiProvider(self.client, self.model, judge_prompt_version=version)
+
     async def _request(self, contents: str, config):
         return await self._sdk_call(
             "generate_content", model=self.model, contents=contents, config=config

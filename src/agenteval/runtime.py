@@ -16,7 +16,7 @@ async def connection_timeout_bounds(request):
 
 
 @asynccontextmanager
-async def provider_context(provided=None, timeout_seconds=30, judge_prompt_version="v1"):
+async def provider_context(provided=None, timeout_seconds=30, judge_prompt_version=None):
     client = None
     selected = provided
     if selected is None:
@@ -40,7 +40,12 @@ async def provider_context(provided=None, timeout_seconds=30, judge_prompt_versi
                     retry_options=types.HttpRetryOptions(attempts=1),
                 ),
             )
-            selected = GeminiProvider(client, model, judge_prompt_version=judge_prompt_version)
+            version = (
+                judge_prompt_version
+                if judge_prompt_version is not None
+                else os.getenv("AGENTEVAL_JUDGE_PROMPT", "candidate-v2")
+            )
+            selected = GeminiProvider(client, model, judge_prompt_version=version)
         else:
             raise RuntimeError("AGENTEVAL_PROVIDER must be fake or gemini")
     try:

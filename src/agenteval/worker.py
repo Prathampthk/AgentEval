@@ -90,7 +90,13 @@ async def run_once(
             metrics.entered()
         try:
             async with asyncio.timeout(claim.job_timeout):
-                return await evaluate(claim.request, provider, claim.provider_timeout)
+                return await evaluate(
+                    claim.request,
+                    provider,
+                    claim.provider_timeout,
+                    judge_prompt_version=claim.judge_prompt_version,
+                    judge_prompt_sha256=claim.judge_prompt_sha256,
+                )
         finally:
             if metrics is not None:
                 metrics.exited()

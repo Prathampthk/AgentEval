@@ -7,7 +7,7 @@
   "labels_sha256": "764d7e4b36f52bd46a3cb83c9ac2aa1f5da93ec2ddc5917084c96859f1d61e63",
   "baseline": {
     "prompt": "v1",
-    "report": "reports/judge_validation.json",
+    "report": "reports/judge-baseline-v1-agreement.json",
     "agreement": 0.6,
     "confusion_matrix": {
       "tp": 2,

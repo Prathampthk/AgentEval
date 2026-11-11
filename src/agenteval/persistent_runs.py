@@ -7,7 +7,7 @@ import logging
 from agenteval.database import Database
 from agenteval.domain import EvaluationRequest
 from agenteval.persistence_schemas import RunCreate
-from agenteval.providers import Provider, ProviderError
+from agenteval.providers import Provider, ProviderError, judge_configuration
 from agenteval.service import evaluate
 
 logger = logging.getLogger("agenteval")
@@ -21,6 +21,7 @@ async def execute_run(
         dataset.id,
         provider,
         {
+            **judge_configuration(provider),
             "prompt": data.prompt,
             "provider_timeout_seconds": timeout_seconds,
             "temperature": 0 if not provider.simulated else None,

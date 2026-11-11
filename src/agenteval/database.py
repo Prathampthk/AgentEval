@@ -12,6 +12,7 @@ from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from agenteval.domain import EvaluationResult, Judgment, Usage
 from agenteval.models import Dataset, Result, Run, TestCase
 from agenteval.persistence_schemas import DatasetCase, DatasetCreate, DatasetView, RunView
+from agenteval.providers import validate_judge_configuration
 
 
 class MissingRecord(Exception):
@@ -153,6 +154,7 @@ class Database:
                     run.simulated,
                 ):
                     raise ValueError("Result configuration does not match the run snapshot")
+                validate_judge_configuration(result, run.configuration)
                 session.add(
                     Result(
                         run_id=run.id,
@@ -223,6 +225,8 @@ class Database:
                         provider=run.provider,
                         model=run.model,
                         rubric_version=run.rubric_version,
+                        judge_prompt_version=run.configuration.get("judge_prompt_version", "v1"),
+                        judge_prompt_sha256=run.configuration.get("judge_prompt_sha256"),
                         simulated=run.simulated,
                         answer=r.answer,
                         judgment=Judgment(

@@ -71,3 +71,10 @@ The ten-example live judge comparison is recorded in reports/judge_validation.js
 ## Candidate judge regression
 
 A ten-request candidate-v2 run on the same predeclared development IDs measured 10/10 agreement (TP=2, TN=8, FP=0, FN=0), compared with 6/10 for baseline v1. All four baseline instruction-injection false positives were corrected in this run. The candidate prompt was developed after inspection of baseline failures on those examples. Independent holdout accuracy and repeatability are pending. See reports/judge-prompt-comparison.json and its recorded source, prompt, and label fingerprints.
+
+
+## Prompt adoption after response-level holdout
+
+The predeclared holdout measured 10/10 agreement (TP=3, TN=7, FP=0, FN=0). It used response IDs disjoint from the development sample, with possible overlap in underlying questions. A provider-unavailable first attempt saved zero judgments, and a ten-request retry completed. Reports retain both attempts. Candidate-v2 is the default for new Gemini processes, with per-run prompt snapshots, result fingerprints, legacy v1 execution, and cross-prompt comparison checks. Thirty labeled examples remain unpaired, and repeated trials on new questions remain future validation.
+
+Candidate-v2 adoption verification: 159 tests passed against PostgreSQL in the container; 96 host unit tests passed (63 integration tests deselected). Ruff lint/format and the packaged browser workflow passed. See `reports/judge-adoption-verification.json`. These adoption checks made no live provider calls.

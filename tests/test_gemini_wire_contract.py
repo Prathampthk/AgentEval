@@ -15,6 +15,7 @@ def test_gemini_json_schema_contract(monkeypatch, invalid_judgment):
     monkeypatch.setenv("AGENTEVAL_PROVIDER", "gemini")
     monkeypatch.setenv("AGENTEVAL_MODEL", "gemini-3.1-flash-lite")
     monkeypatch.setenv("GEMINI_API_KEY", "offline-test-placeholder")
+    monkeypatch.delenv("AGENTEVAL_JUDGE_PROMPT", raising=False)
     monkeypatch.delenv("AGENTEVAL_DATABASE_URL", raising=False)
     requests = []
 
@@ -82,3 +83,5 @@ def test_gemini_json_schema_contract(monkeypatch, invalid_judgment):
         assert response.status_code == 200
         assert response.json()["passed"] is True
         assert response.json()["simulated"] is False
+        assert response.json()["judge_prompt_version"] == "candidate-v2"
+        assert response.json()["judge_prompt_sha256"]

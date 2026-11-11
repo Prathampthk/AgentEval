@@ -52,6 +52,8 @@ type Study = {
   human_labeled: number;
   paired_count: number;
   simulated_judge?: boolean | null;
+  judge_prompt_version?: string | null;
+  scope?: string;
   agreement: number | null;
   precision: number | null;
   recall: number | null;
@@ -700,6 +702,10 @@ function App() {
             <section>
               <h2>Human vs. AI agreement</h2>
               <p className="intro">{studySummary(study)}</p>
+              <p className="muted">
+                Judge prompt {study?.judge_prompt_version ?? "v1"}
+                {study?.scope ? " · " + study.scope : ""}
+              </p>
               <div className="stats">
                 <article>
                   <span>Human labels</span>

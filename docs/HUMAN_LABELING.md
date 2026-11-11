@@ -1,4 +1,4 @@
-# Human/AI judge study — ten live pairs measured
+# Human/AI judge study — development and holdout results
 
 The 50 prepared examples in examples/judge_study.json contain ten simple controlled questions with five response variants each. Categories include direct answers, abstentions, factual errors, question echoing and attempted rubric injection. They are a convenience sample, not a representative benchmark.
 
@@ -15,7 +15,7 @@ Gemini mode additionally requires securely configured credentials/model, an agre
 
 The analysis defines quality_pass as positive and reports paired sample size, agreement, TP/TN/FP/FN, precision, recall, false-positive and false-negative rates, and disagreement identifiers/categories. Undefined ratios are null, not zero. Unknown/duplicate IDs and incompatible rubrics are rejected. Labels and AI predictions remain separate files.
 
-reports/judge_validation.json reports 50 available examples, 50 supplied human labels and ten paired live Gemini judgments. Agreement is 60%, precision is 33.3%, recall is 100%, and the false-positive rate is 50% (4 of 8 human-negative examples). This is the honest study status. The analysis implementation is tested using explicitly synthetic unit fixtures; those fixtures are not human-study evidence.
+reports/judge_validation.json reports fifty human labels and twenty candidate-v2 pairs, comprising ten development responses and ten response-level holdout responses. Candidate agreement is 20/20 in these runs. The separate v1 baseline reported 6/10 agreement and four false positives. Thirty labeled responses remain unpaired. This is the honest study status. The analysis implementation is tested using explicitly synthetic unit fixtures; those fixtures are not human-study evidence.
 
 To prepare a category-blinded review packet and a separate writable label template:
 
@@ -32,6 +32,6 @@ On 2026-11-05, all 50 saved user labels validated: 10 pass, 40 fail, no missing/
 The ten-example sample was collected in two local files containing four and six predictions. Their concatenation matches the predeclared shuffled sample exactly. Source and frozen-label hashes were verified before analysis. The live model was gemini-3.1-flash-lite, rubric v1. All four false positives were instruction-injection examples whose response asked for a perfect grade. The returned explanations asserted factual answers absent from those responses. Inspect the recorded predictions in reports/live-judge-sample.json. Forty labeled examples remain unpaired.
 
 
-The candidate-v2 prompt was subsequently run on the same ten IDs and agreed with all ten human labels. The baseline report remains at reports/judge_validation.json, and the candidate report is reports/judge-candidate-v2-agreement.json. Reports are kept by prompt version. The candidate development used observed baseline failures, so these ten examples serve as a regression sample. The other forty labeled examples remain available for holdout validation.
+The candidate-v2 prompt was subsequently run on the same ten IDs and agreed with all ten human labels. The baseline report is archived at reports/judge-baseline-v1-agreement.json, and the candidate report is reports/judge-candidate-v2-agreement.json. Reports are kept by prompt version. The candidate development used observed baseline failures, so these ten examples serve as a regression sample. The other forty labeled examples remain available for holdout validation.
 
 The response-level holdout selected in reports/judge-holdout-plan.json matched all ten frozen decisions (TP=3, TN=7, FP=0, FN=0). Its IDs are disjoint from the ten development response IDs, while some underlying questions may overlap. One initial request returned unavailable before saving a response. A separate ten-request retry completed, for eleven attempted requests in this stage. The failed attempt and successful retry metadata are retained with reports/judge-holdout-agreement.json.

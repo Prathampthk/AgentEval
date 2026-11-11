@@ -3,6 +3,7 @@ services:
     environment: &gemini
       AGENTEVAL_PROVIDER: gemini
       AGENTEVAL_MODEL: ${AGENTEVAL_MODEL:?Choose a Gemini model}
+      AGENTEVAL_JUDGE_PROMPT: ${AGENTEVAL_JUDGE_PROMPT:-candidate-v2}
       GEMINI_API_KEY: ${GEMINI_API_KEY:?Supply your Gemini API key}
       AGENTEVAL_EMBEDDING_MODEL: ${AGENTEVAL_EMBEDDING_MODEL:-gemini-embedding-001}
   worker:

@@ -66,6 +66,8 @@ class EvaluationResult(StrictModel):
     provider: str
     model: str
     rubric_version: Literal["v1"] = "v1"
+    judge_prompt_version: str = "v1"
+    judge_prompt_sha256: str | None = None
     answer: str
     judgment: Judgment
     exact_match: bool | None
