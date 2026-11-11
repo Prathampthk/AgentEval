@@ -21,3 +21,23 @@ Truncation can omit decisive facts and affect correctness/groundedness; it is di
 Unscored generation now uses the same provider timeout wrapper as embeddings. A provider timeout returns HTTP 504 with category `timeout` and `retryable=true`, matching the scored path; it no longer falls through to the generic database-unavailable handler. Database timeouts still retain database error handling.
 
 Verification covers oversized real-pgvector retrieval through both HTTP paths, identical supplied evidence, intact citation headers, unchanged small contexts and controlled generation timeouts. No paid provider calls or new AI feature was introduced.
+
+## Two-document smoke test
+
+Start the simulated Compose API and run:
+
+```bash
+python3 scripts/rag_smoke.py
+```
+
+The command checks readiness, ingests two one-chunk synthetic documents, and submits one scored query. It checks both document IDs and their context chunks, finite cosine distances, Recall@2, and Hit Rate@2. The JSON report records model IDs, the answer, judge scores, and which expected document IDs appear in the answer. Inspect the answer alongside its sources when evaluating citation support.
+
+For a Gemini smoke test, use the [local Gemini launcher](PROVIDER_CONFIGURATION.md) with a fresh corpus and a model and key approved for the intended usage. Run the following after confirming the allowance for five provider operations:
+
+```bash
+python3 scripts/rag_smoke.py --live
+```
+
+The live command targets the Gemini stack on port 8012 and checks provider identity before ingestion. The successful path uses two document embeddings, one query embedding, one generation request and one judge request. The script stops at the first failure and retains the stage and available results under ignored `artifacts/`. Each invocation adds two synthetic documents and may consume a fresh set of requests. Use `--port` for a different loopback port.
+
+The simulated rehearsal completed with Recall@2 and Hit Rate@2 of 1.0 against a fresh Compose database. Hosted container checks now exercise the same simulated command.

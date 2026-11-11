@@ -151,6 +151,7 @@ def create_app(
             "status": "configured",
             "provider": selected.name,
             "model": selected.model,
+            "embedding_model": getattr(selected, "embedding_model", None),
             "simulated": selected.simulated,
             "remote_access_verified": False,
             "database": "ready" if app.state.database else "disabled",

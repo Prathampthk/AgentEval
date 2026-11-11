@@ -33,12 +33,15 @@ jobs:
           PYCODE
       - run: docker compose --env-file .local/compose.env up -d --wait api worker
       - run: python scripts/compose_smoke.py
+      - run: python scripts/rag_smoke.py --output artifacts/rag-ci-smoke.json
       - run: docker compose --env-file .local/compose.env --profile verification run --rm tests
       - run: docker compose --env-file .local/compose.env --profile benchmark run --rm benchmark python -m agenteval.platform_benchmark --jobs 16 --repetitions 1 --workers 1 4 8 16 --output reports/platform-ci-smoke.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: platform-process-smoke
-          path: reports/platform-ci-smoke.json
+          path: |
+            reports/platform-ci-smoke.json
+            artifacts/rag-ci-smoke.json
       - if: always()
         run: docker compose --env-file .local/compose.env down
