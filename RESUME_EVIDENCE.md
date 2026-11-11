@@ -66,3 +66,8 @@ Offline judge-collection follow-up: user decisions were validated and frozen wit
 ## Live validation update
 
 The ten-example live judge comparison is recorded in reports/judge_validation.json, with predictions and provenance hashes. It covers ten preselected examples from the controlled fifty-example set. The two-document live RAG run is recorded in reports/live-rag-smoke.json and passed Recall@2, Hit Rate@2 and inspected citation support for one answer. Earlier pending-status entries retain their original milestone scope.
+
+
+## Candidate judge regression
+
+A ten-request candidate-v2 run on the same predeclared development IDs measured 10/10 agreement (TP=2, TN=8, FP=0, FN=0), compared with 6/10 for baseline v1. All four baseline instruction-injection false positives were corrected in this run. The candidate prompt was developed after inspection of baseline failures on those examples. Independent holdout accuracy and repeatability are pending. See reports/judge-prompt-comparison.json and its recorded source, prompt, and label fingerprints.

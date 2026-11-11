@@ -211,3 +211,6 @@ Repeatable fake-provider portfolio walkthrough: [demo steps](docs/DEMO.md), `.ve
 Gemini free-tier preparation and bring-your-own-key configuration: [provider configuration](docs/PROVIDER_CONFIGURATION.md). Collection now preserves partial results and usage, refuses existing outputs, and caps live samples at ten calls. Current billing eligibility is unconfirmed; no new Gemini calls were made.
 
 Latest live validation: [judge comparison](reports/judge_validation.json) and [RAG smoke](reports/live-rag-smoke.json). The RAG run retrieved and cited both fixture documents, with Recall@2 and Hit Rate@2 of 1.0. All four judge disagreements involved instruction-injection responses.
+
+
+The candidate-v2 judge prompt matched all ten human labels on the same development sample, correcting the four baseline instruction-injection false positives. API/worker evaluations continue to use v1 while holdout validation is pending. See [prompt comparison](reports/judge-prompt-comparison.json).

@@ -1,0 +1,41 @@
+{
+  "kind": "paired_judge_prompt_regression",
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-lite",
+  "sample_plan": "reports/judge-sample-plan.json",
+  "paired_count": 10,
+  "labels_sha256": "764d7e4b36f52bd46a3cb83c9ac2aa1f5da93ec2ddc5917084c96859f1d61e63",
+  "baseline": {
+    "prompt": "v1",
+    "report": "reports/judge_validation.json",
+    "agreement": 0.6,
+    "confusion_matrix": {
+      "tp": 2,
+      "tn": 4,
+      "fp": 4,
+      "fn": 0
+    },
+    "predictions_sha256": "70419279fcf21a88d9d6c0456bc997a658e542afec27bf75a5792fae67a272c7"
+  },
+  "candidate": {
+    "prompt": "candidate-v2",
+    "report": "reports/judge-candidate-v2-agreement.json",
+    "agreement": 1.0,
+    "confusion_matrix": {
+      "tp": 2,
+      "tn": 8,
+      "fp": 0,
+      "fn": 0
+    },
+    "predictions_sha256": "cf9112c209b81a4844b8538a58b98d61284a865ebb2c75e7d52cd6bf8d26ef64",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6"
+  },
+  "new_requests_started": 10,
+  "new_responses_saved": 10,
+  "limitations": [
+    "Candidate prompt was developed after inspection of baseline failures on these same ten examples.",
+    "No independent holdout sample or repeated-trial improvement has been measured.",
+    "API and worker evaluations currently use v1; candidate-v2 is selected in the study collector.",
+    "Returned usage covers saved successful responses."
+  ]
+}

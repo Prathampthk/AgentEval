@@ -58,4 +58,7 @@ Prepare the same ten IDs offline with:
 .venv/bin/python scripts/judge_examples.py --plan --limit 10 --seed 42 --judge-prompt candidate-v2 --output artifacts/judge-plan-candidate-new.json
 ```
 
-After authorizing ten additional Gemini requests, collect with `--live --limit 10 --seed 42 --judge-prompt candidate-v2` and a fresh output path. Compare candidate and baseline reports against the frozen human labels. Offline tests verify the request payload and provenance. Live effectiveness is still unmeasured. Repeating the ten observed examples is a regression check. The remaining forty labeled examples can support a later holdout evaluation with its own usage allowance.
+After authorizing ten additional Gemini requests, collect with `--live --limit 10 --seed 42 --judge-prompt candidate-v2` and a fresh output path. Compare candidate and baseline reports against the frozen human labels. Offline tests verify the request payload and provenance. The completed ten-request candidate run matched all ten human decisions in the planned regression sample. Repeating the ten observed examples is a regression check. The remaining forty labeled examples can support a later holdout evaluation with its own usage allowance.
+
+
+The recorded comparison is in reports/judge-prompt-comparison.json. Baseline v1 agreed on six of ten examples (TP=2, TN=4, FP=4, FN=0). Candidate-v2 agreed on ten of ten (TP=2, TN=8, FP=0, FN=0). Its saved response usage totals 3,399 input tokens and 539 output tokens. The candidate was developed after examining failures on these same examples. An independent holdout comparison and repeatability measurement remain pending.
