@@ -41,8 +41,11 @@ jobs:
       - run: python scripts/rag_smoke.py --output artifacts/rag-ci-smoke.json
       - run: python scripts/portfolio_demo.py --output artifacts/portfolio-ci-smoke.json
       - run: npm ci --prefix frontend
-      - run: npx playwright install --with-deps chromium
-        working-directory: frontend
+      - name: Select installed Chrome
+        run: |
+          browser_path=$(command -v google-chrome)
+          "$browser_path" --version
+          printf 'AGENTEVAL_E2E_BROWSER=%s\n' "$browser_path" >> "$GITHUB_ENV"
       - run: npm run test:e2e --prefix frontend
         env:
           AGENTEVAL_E2E_URL: http://127.0.0.1:8011
