@@ -1,0 +1,24 @@
+{
+  "status": "PLAN_ONLY",
+  "seed": 42,
+  "offset": 10,
+  "judge_prompt_version": "candidate-v2",
+  "selected_ids": [
+    "study-07-2",
+    "study-05-2",
+    "study-03-3",
+    "study-01-4",
+    "study-08-5",
+    "study-08-4",
+    "study-03-1",
+    "study-05-5",
+    "study-08-1",
+    "study-01-1"
+  ],
+  "provider_calls": 0,
+  "human_labels_generated": 0,
+  "examples_sha256": "e4488704bf763bbee07d71964a20399008c34df088ea151d02f1f36f89ef86bd",
+  "labels_sha256": "764d7e4b36f52bd46a3cb83c9ac2aa1f5da93ec2ddc5917084c96859f1d61e63",
+  "development_plan": "reports/judge-sample-plan.json",
+  "scope": "Response-level holdout; questions can overlap the development sample."
+}

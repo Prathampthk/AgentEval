@@ -90,7 +90,7 @@ def test_selection_deterministic_without_mutating_source():
     assert source == before and selected != source[:10]
 
 
-@pytest.mark.parametrize("offset,limit", [(0, 10), (4, 6)])
+@pytest.mark.parametrize("offset,limit", [(0, 10), (4, 6), (10, 10)])
 async def test_offline_plan_never_constructs_provider(tmp_path, monkeypatch, offset, limit):
     output = tmp_path / "plan.json"
     monkeypatch.setenv("AGENTEVAL_PROVIDER", "gemini")
@@ -121,7 +121,8 @@ async def test_offline_plan_never_constructs_provider(tmp_path, monkeypatch, off
         (Path(__file__).resolve().parents[1] / "examples/judge_study.json").read_text()
     )
     assert plan["selected_ids"] == [
-        row["example_id"] for row in select_examples(source, 10, 42)[offset : offset + limit]
+        row["example_id"]
+        for row in select_examples(source, offset + limit, 42)[offset : offset + limit]
     ]
 
 

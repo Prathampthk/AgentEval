@@ -135,8 +135,8 @@ async def main():
     args = parser.parse_args()
     live = os.getenv("AGENTEVAL_PROVIDER", "fake") != "fake"
     maximum = 10 if live else 50
-    if args.offset < 0 or args.limit < 1 or args.offset + args.limit > maximum:
-        parser.error(f"offset must be nonnegative and offset + limit must be at most {maximum}")
+    if args.offset < 0 or not 1 <= args.limit <= maximum:
+        parser.error(f"offset must be nonnegative and limit must be 1–{maximum}")
     delay_seconds = args.delay_seconds if args.delay_seconds is not None else (6 if live else 0)
     if not 0 <= delay_seconds <= 60:
         parser.error("delay-seconds must be finite and between 0 and 60")
@@ -146,8 +146,11 @@ async def main():
         parser.error("The candidate judge prompt requires the Gemini provider")
     if args.output.exists() or args.output.with_suffix(".meta.json").exists():
         parser.error("Output exists; choose a new path to preserve evidence")
+    source = json.loads(Path("examples/judge_study.json").read_text())
+    if args.offset + args.limit > len(source):
+        parser.error("Selected range exceeds the available examples")
     examples = select_examples(
-        json.loads(Path("examples/judge_study.json").read_text()),
+        source,
         args.offset + args.limit,
         args.seed,
     )[args.offset :]
@@ -158,6 +161,7 @@ async def main():
                 {
                     "status": "PLAN_ONLY",
                     "seed": args.seed,
+                    "offset": args.offset,
                     "judge_prompt_version": args.judge_prompt,
                     "selected_ids": [e["example_id"] for e in examples],
                     "provider_calls": 0,
