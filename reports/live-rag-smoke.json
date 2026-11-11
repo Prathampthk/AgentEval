@@ -1,0 +1,78 @@
+{
+  "status": "PASS",
+  "stage": "complete",
+  "started_at_utc": "2026-11-11T01:32:34.152623+00:00",
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-lite",
+  "embedding_model": "gemini-embedding-001",
+  "simulated": false,
+  "planned_live_provider_operations": 5,
+  "documents": [
+    {
+      "id": "ec8056fb-afa3-4c15-aec0-7dd9eb549e68",
+      "chunks": 1,
+      "simulated": false
+    },
+    {
+      "id": "6180f096-012f-43ac-b33d-a87d2cfb3896",
+      "chunks": 1,
+      "simulated": false
+    }
+  ],
+  "evaluation": {
+    "retrieved": [
+      {
+        "document_id": "6180f096-012f-43ac-b33d-a87d2cfb3896",
+        "chunk_id": "5f1df628-dcba-4705-a431-5b9b79026a8e",
+        "content": "For the signalad488b232b4344fbbc4f1c323e6df3ca expedition, the arrival signal is silver lanterns.",
+        "distance": 0.11837916802223969
+      },
+      {
+        "document_id": "ec8056fb-afa3-4c15-aec0-7dd9eb549e68",
+        "chunk_id": "82f5eb91-cca0-49ca-a358-dbc818d7e158",
+        "content": "The signalad488b232b4344fbbc4f1c323e6df3ca expedition signals its arrival with silver lanterns.",
+        "distance": 0.12155230198283962
+      }
+    ],
+    "context_chunk_ids": [
+      "5f1df628-dcba-4705-a431-5b9b79026a8e",
+      "82f5eb91-cca0-49ca-a358-dbc818d7e158"
+    ],
+    "context_characters": 375,
+    "context_truncated": false,
+    "recall_at_k": 1.0,
+    "hit_rate_at_k": 1,
+    "result": {
+      "dataset_name": "rag-request",
+      "dataset_version": "1",
+      "test_case_id": "request",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-lite",
+      "rubric_version": "v1",
+      "answer": "The signalad488b232b4344fbbc4f1c323e6df3ca expedition uses silver lanterns as its arrival signal [document=6180f096-012f-43ac-b33d-a87d2cfb3896, document=ec8056fb-afa3-4c15-aec0-7dd9eb549e68].",
+      "judgment": {
+        "correctness": 2,
+        "relevance": 2,
+        "groundedness": 2,
+        "explanation": "The answer correctly identifies the arrival signal as silver lanterns and cites both provided documents as requested."
+      },
+      "exact_match": null,
+      "passed": true,
+      "generation_latency_ms": 27552.981346998422,
+      "judge_latency_ms": 1987.7097089993185,
+      "generation_usage": {
+        "input_tokens": 274,
+        "output_tokens": 106
+      },
+      "judge_usage": {
+        "input_tokens": 516,
+        "output_tokens": 55
+      },
+      "simulated": false
+    }
+  },
+  "cited_expected_document_ids": [
+    "ec8056fb-afa3-4c15-aec0-7dd9eb549e68",
+    "6180f096-012f-43ac-b33d-a87d2cfb3896"
+  ]
+}

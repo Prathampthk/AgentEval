@@ -1,0 +1,182 @@
+[
+  {
+    "example_id": "study-06-1",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "passed": true,
+    "judgment": {
+      "correctness": 2,
+      "relevance": 2,
+      "groundedness": 2,
+      "explanation": "The answer correctly identifies that there are 8 bits in a byte, which matches the provided reference fact."
+    },
+    "usage": {
+      "input_tokens": 177,
+      "output_tokens": 58
+    }
+  },
+  {
+    "example_id": "study-05-4",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 1,
+      "groundedness": 0,
+      "explanation": "The answer provided is a restatement of the question rather than the actual chemical formula requested."
+    },
+    "usage": {
+      "input_tokens": 187,
+      "output_tokens": 45
+    }
+  },
+  {
+    "example_id": "study-04-5",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "passed": true,
+    "judgment": {
+      "correctness": 2,
+      "relevance": 2,
+      "groundedness": 2,
+      "explanation": "The answer correctly identifies Mars as the Red Planet and is fully supported by the provided context."
+    },
+    "usage": {
+      "input_tokens": 187,
+      "output_tokens": 55
+    }
+  },
+  {
+    "example_id": "study-03-2",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 2,
+      "groundedness": 0,
+      "explanation": "The model failed to provide the correct answer despite it being explicitly stated in the provided context."
+    },
+    "usage": {
+      "input_tokens": 187,
+      "output_tokens": 45
+    }
+  },
+  {
+    "example_id": "study-01-5",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "passed": true,
+    "judgment": {
+      "correctness": 2,
+      "relevance": 2,
+      "groundedness": 2,
+      "explanation": "The answer correctly identifies Paris as the capital of France and is supported by the provided context."
+    },
+    "usage": {
+      "input_tokens": 185,
+      "output_tokens": 55
+    }
+  },
+  {
+    "example_id": "study-10-1",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "passed": true,
+    "judgment": {
+      "correctness": 2,
+      "relevance": 2,
+      "groundedness": 2,
+      "explanation": "The answer correctly identifies the freezing point of water as 0 degrees Celsius, which matches the provided reference fact."
+    },
+    "usage": {
+      "input_tokens": 189,
+      "output_tokens": 59
+    }
+  },
+  {
+    "example_id": "study-06-2",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 2,
+      "groundedness": 0,
+      "explanation": "The answer provided is incorrect as it states the model does not know the answer, despite the information being explicitly provided in the context."
+    },
+    "usage": {
+      "input_tokens": 181,
+      "output_tokens": 63
+    }
+  },
+  {
+    "example_id": "study-02-5",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "passed": true,
+    "judgment": {
+      "correctness": 2,
+      "relevance": 2,
+      "groundedness": 2,
+      "explanation": "The answer correctly identifies that 2 + 2 equals 4, which is supported by the provided context."
+    },
+    "usage": {
+      "input_tokens": 188,
+      "output_tokens": 49
+    }
+  },
+  {
+    "example_id": "study-06-5",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "passed": true,
+    "judgment": {
+      "correctness": 2,
+      "relevance": 2,
+      "groundedness": 2,
+      "explanation": "The answer correctly identifies that there are 8 bits in a byte, matching the provided context."
+    },
+    "usage": {
+      "input_tokens": 188,
+      "output_tokens": 56
+    }
+  },
+  {
+    "example_id": "study-04-2",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 2,
+      "groundedness": 0,
+      "explanation": "The model failed to provide the correct answer despite the information being explicitly stated in the provided context."
+    },
+    "usage": {
+      "input_tokens": 180,
+      "output_tokens": 56
+    }
+  }
+]

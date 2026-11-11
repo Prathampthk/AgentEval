@@ -53,6 +53,8 @@ async def collect(provider, examples, output, *, seed=42, delay_seconds=0):
         "provider": provider.name,
         "model": provider.model,
         "simulated": provider.simulated,
+        "judge_prompt_version": getattr(provider, "judge_prompt_version", "v1"),
+        "judge_prompt_sha256": getattr(provider, "judge_prompt_sha256", None),
         "seed": seed,
         "selected_ids": [e["example_id"] for e in examples],
         "selected_examples_sha256": hashlib.sha256(
@@ -91,6 +93,8 @@ async def collect(provider, examples, output, *, seed=42, delay_seconds=0):
                     "provider": provider.name,
                     "model": provider.model,
                     "simulated": provider.simulated,
+                    "judge_prompt_version": getattr(provider, "judge_prompt_version", "v1"),
+                    "judge_prompt_sha256": getattr(provider, "judge_prompt_sha256", None),
                     "passed": judgment.correctness == 2
                     and judgment.relevance == 2
                     and judgment.groundedness == 2,
@@ -123,23 +127,30 @@ async def main():
         "--plan", action="store_true", help="Write selection only; no provider calls"
     )
     parser.add_argument("--limit", type=int, default=10)
+    parser.add_argument("--offset", type=int, default=0, help="Skip this many shuffled examples")
     parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--judge-prompt", choices=("v1", "candidate-v2"), default="v1")
     parser.add_argument("--delay-seconds", type=float)
     parser.add_argument("--output", type=Path, default=Path("artifacts/judge_predictions.json"))
     args = parser.parse_args()
     live = os.getenv("AGENTEVAL_PROVIDER", "fake") != "fake"
-    if not 1 <= args.limit <= (10 if live else 50):
-        parser.error("limit must be 1–10 for live or 1–50 for simulated predictions")
+    maximum = 10 if live else 50
+    if args.offset < 0 or args.limit < 1 or args.offset + args.limit > maximum:
+        parser.error(f"offset must be nonnegative and offset + limit must be at most {maximum}")
     delay_seconds = args.delay_seconds if args.delay_seconds is not None else (6 if live else 0)
     if not 0 <= delay_seconds <= 60:
         parser.error("delay-seconds must be finite and between 0 and 60")
     if live and not args.live and not args.plan:
         parser.error("Live requests require --live and confirmed usage/budget authorization")
+    if args.judge_prompt != "v1" and not live and not args.plan:
+        parser.error("The candidate judge prompt requires the Gemini provider")
     if args.output.exists() or args.output.with_suffix(".meta.json").exists():
         parser.error("Output exists; choose a new path to preserve evidence")
     examples = select_examples(
-        json.loads(Path("examples/judge_study.json").read_text()), args.limit, args.seed
-    )
+        json.loads(Path("examples/judge_study.json").read_text()),
+        args.offset + args.limit,
+        args.seed,
+    )[args.offset :]
     if args.plan:
         args.output.parent.mkdir(parents=True, exist_ok=True)
         with open(args.output, "x", opener=lambda p, flags: os.open(p, flags, 0o600)) as file:
@@ -147,6 +158,7 @@ async def main():
                 {
                     "status": "PLAN_ONLY",
                     "seed": args.seed,
+                    "judge_prompt_version": args.judge_prompt,
                     "selected_ids": [e["example_id"] for e in examples],
                     "provider_calls": 0,
                     "human_labels_generated": 0,
@@ -158,7 +170,7 @@ async def main():
         print(f"Saved offline selection: {args.output}; no provider calls")
         return
     try:
-        async with provider_context() as provider:
+        async with provider_context(judge_prompt_version=args.judge_prompt) as provider:
             rows = await collect(
                 provider, examples, args.output, seed=args.seed, delay_seconds=delay_seconds
             )

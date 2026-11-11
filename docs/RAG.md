@@ -4,7 +4,7 @@ The pipeline accepts plain text only (no URLs, filesystem paths or arbitrary doc
 
 Routes: POST /documents (`title`, `content` up to 6,000 characters); POST /rag/ask (`question`, `k` 1–10); POST /rag/evaluate (also `expected_answer` and `expected_document_ids`). Ingestion allows at most 20 chunks, runs embedding calls sequentially outside a transaction, then inserts document/chunks atomically. Exact duplicate content reuses stored embeddings for the same provider/model; concurrent duplicate ingestion may repeat external calls before the uniqueness constraint resolves insertion.
 
-Fake mode uses normalized hashed word counts, explicitly labeled simulated. It demonstrates storage/retrieval mechanics, not semantic embedding quality. Gemini uses the official SDK and AGENTEVAL_EMBEDDING_MODEL (default gemini-embedding-001), requesting 768 dimensions. Provider and model are stored with every chunk and filtered during retrieval; incompatible embeddings are never mixed. Live embeddings remain unverified and were not executed.
+Fake mode uses normalized hashed word counts, explicitly labeled simulated. It demonstrates storage/retrieval mechanics, not semantic embedding quality. Gemini uses the official SDK and AGENTEVAL_EMBEDDING_MODEL (default gemini-embedding-001), requesting 768 dimensions. Provider and model are stored with every chunk and filtered during retrieval; incompatible embeddings are never mixed. The recorded two-document live smoke used gemini-embedding-001 and gemini-3.1-flash-lite.
 
 Retrieval returns chunk IDs, source document IDs and cosine distances. Recall@K measures the fraction of expected document IDs found among the top K chunks; Hit Rate@K indicates any match. Multiple chunks may come from the same document. These metrics depend on accurate ground truth and do not measure complete answer correctness. RAG evaluation also applies rubric v1 to the generated response. Expected answers are never passed into generation.
 
@@ -41,3 +41,9 @@ python3 scripts/rag_smoke.py --live
 The live command targets the Gemini stack on port 8012 and checks provider identity before ingestion. The successful path uses two document embeddings, one query embedding, one generation request and one judge request. The script stops at the first failure and retains the stage and available results under ignored `artifacts/`. Each invocation adds two synthetic documents and may consume a fresh set of requests. Use `--port` for a different loopback port.
 
 The simulated rehearsal completed with Recall@2 and Hit Rate@2 of 1.0 against a fresh Compose database. Hosted container checks now exercise the same simulated command.
+
+## Recorded live smoke
+
+The user-run report in reports/live-rag-smoke.json passed ingestion, retrieval and scored answer checks. Each source produced one chunk. Both expected documents were retrieved and supplied in 375 context characters with truncation false. Recall@2 and Hit Rate@2 were 1.0. The answer identified silver lanterns and cited both supporting document IDs. Inspection of the two synthetic source texts confirmed that claim.
+
+Generation took 27.55 seconds and judgment 1.99 seconds in this single run. Returned generation/judge usage totaled 790 input and 161 output tokens. Embedding usage is absent from this report. The sample covers two synthetic documents and one query, with citation support inspected for that answer.

@@ -4,13 +4,13 @@ The two completed Gemini smoke evaluations validate a narrow generation/judgment
 
 ## Human review
 
-The user completed all 50 labels under ignored `artifacts/`; validation found 10 pass and 40 fail. Decisions are frozen locally with a committed provenance hash (`reports/human-labels-completion.json`). Instructions and strict rubric are in [HUMAN_LABELING.md](HUMAN_LABELING.md). Judge predictions and agreement remain pending. A human should review without AI predictions/category hints, supply their own identifier and keep ambiguity notes. The completed labels have been frozen before new predictions. Fifty variants of ten questions are a convenience sample, so later agreement must disclose that dependency and scope. Never replace unreviewed nulls with generated labels.
+The user completed all 50 labels under ignored `artifacts/`; validation found 10 pass and 40 fail. Decisions are frozen locally with a committed provenance hash (`reports/human-labels-completion.json`). Instructions and strict rubric are in [HUMAN_LABELING.md](HUMAN_LABELING.md). Ten live pairs now measured 60% agreement, with four false positives on instruction-injection responses. A human should review without AI predictions/category hints, supply their own identifier and keep ambiguity notes. The completed labels have been frozen before new predictions. Fifty variants of ten questions are a convenience sample, so later agreement must disclose that dependency and scope. Never replace unreviewed nulls with generated labels.
 
-## Live RAG assessment — pending budget approval
+## Live RAG assessment
 
-Live embeddings have not run. First agree a hard incremental request/spend ceiling and check provider-side usage, including earlier failed or discarded calls. The accepted smoke results record 418 input and 126 output tokens; that cannot establish total spend or the unused portion of an earlier allowance. Do not dispatch the optional hosted live workflow merely because its boolean input exists.
+A user-run live RAG smoke passed for two one-chunk documents and one query. First agree a hard incremental request/spend ceiling and check provider-side usage, including earlier failed or discarded calls. The accepted smoke results record 418 input and 126 output tokens; that cannot establish total spend or the unused portion of an earlier allowance. Do not dispatch the optional hosted live workflow merely because its boolean input exists.
 
-The [two-document smoke command](RAG.md#two-document-smoke-test) now runs through the local Compose API and records its evidence. Its simulated rehearsal passed. The live path remains pending and uses five provider operations on success, including three embeddings, one generation request and one judgment call. Account for attempted requests when investigating any failure.
+The [two-document smoke command](RAG.md#two-document-smoke-test) now runs through the local Compose API and records its evidence. Its simulated rehearsal passed. The completed live path used the fixture designed for five provider operations, including three embeddings, one generation request and one judgment call. Account for attempted requests when investigating any failure.
 
 Use a local isolated dataset/corpus and no sensitive text. Record configured generation/embedding model IDs, vector dimension/finite-value validation, returned document/chunk IDs, distances, supplied context IDs/truncation, Recall@K/Hit Rate@K and sanitized errors. Independently inspect whether citations support the answer. A two-document sample can establish plumbing only; general retrieval quality and citation faithfulness require separate ground truth and a larger authorized study. A successful generation smoke does not imply embedding-model access.
 
@@ -24,14 +24,18 @@ The completed generated-data local dump/restore drill proves its documented snap
 
 Current judge-collection preparation: [provider configuration](PROVIDER_CONFIGURATION.md) documents a deterministic offline selection, a ten-request live cap, checkpoints and key switching through environment configuration. The user requested no Gemini calls until the current project’s free-tier/billing status is confirmed. No premium key-entry UI or shared-server key ownership is implemented.
 
-The simulated judge rehearsal paired all ten planned IDs with the frozen label snapshot and verified its SHA-256 hash. Live agreement remains pending.
+The simulated judge rehearsal paired all ten planned IDs with the frozen label snapshot and verified its SHA-256 hash. The subsequent live sample measured 60% agreement on the ten planned IDs.
 
 ## Offline acceptance
 
-The packaged dashboard browser test submits a queued run, waits for the worker to complete it, and checks the resulting job, quality result, comparison, and judge-study status. Container CI runs this test against the simulated stack alongside the queue, RAG, and portfolio smoke commands. The judge-study view displays the 50 recorded labels and shows that predictions are pending.
+The packaged dashboard browser test submits a queued run, waits for the worker to complete it, and checks the resulting job, quality result, comparison, and judge-study status. Container CI runs this test against the simulated stack alongside the queue, RAG, and portfolio smoke commands. The judge-study view displays the 50 recorded labels and ten paired live predictions.
 
 The local acceptance run passed 148 Python tests and one packaged-dashboard browser test. Queue replay, two-document retrieval, the portfolio comparison, and the deterministic regression gate passed. The process smoke completed 64 jobs across four worker counts and recovered all four deliberate worker crashes. Local evidence is under `artifacts/offline-acceptance/`.
 
 The full simulated judge rehearsal paired all 50 frozen labels. Its substring judge marked all 50 cases as failing, yielding 40 true negatives and 10 false negatives. The 80% agreement reflects the distribution of labels in this sample. The local report is `artifacts/offline-acceptance/judge-agreement.json`.
 
 The historical PostgreSQL timeout remains an environment investigation. The recorded local captures include worker scheduling, transaction, blocker, and WAL timings. The next measurement needs a recurrence on the original or comparable hardware. See the [lock contention review](LOCK_CONTENTION_REVIEW.md).
+
+## Next judge experiment
+
+The live ten-example baseline measured 60% agreement. Its four false positives all involved instruction-injection responses. An experimental candidate-v2 prompt is available through the judge collector and has offline request-contract checks. The next live experiment needs ten additional requests to compare that prompt on the same planned IDs. The API and worker still use v1. Candidate results will determine whether to adopt the new prompt and evaluate a broader holdout sample.

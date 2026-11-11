@@ -45,8 +45,8 @@ Evidence-supported résumé wording: “Built a PostgreSQL-backed leased job que
 ## Claims still blocked or limited
 
 - Public production deployment: authentication/TLS/ingress protection, provider quotas, backups/restore, HA and operational soak/outage verification remain required.
-- Live Gemini: two successful smoke evaluations, four recorded responses, 418 input / 126 output tokens in accepted-result metadata. This is not a complete billing ledger or accuracy/throughput study. Live embeddings/RAG remain unverified; ask before expanding paid testing.
-- Human judge validation: all fifty user-supplied labels are complete (10 pass, 40 fail), but no paired judge predictions exist. Agreement and error rates remain unmeasured.
+- Live Gemini: two successful smoke evaluations, four recorded responses, 418 input / 126 output tokens in accepted-result metadata. This is not a complete billing ledger or accuracy/throughput study. A live two-document RAG smoke passed with both sources retrieved and cited; ask before expanding paid testing.
+- Human judge validation: all fifty user-supplied labels are complete (10 pass, 40 fail). Ten paired live predictions measured 60% agreement, with TP=2, TN=4, FP=4 and FN=0. All four disagreements involved instruction-injection responses.
 - Hosted GitHub Actions: both workflows subsequently passed on `cb28a72`; artifact metadata is verified, artifact downloads are not. The diagnostic and RAG application revision `0b84e4d` also passed both hosted workflows.
 - Historical 3.091× result: ratio of mean completion times for a simulated single-process 1-vs-configured-16-lane experiment; observed concurrent peak was five. It is not evidence of sixteen simultaneously active workers, caching or live-provider speedup.
 
@@ -62,3 +62,7 @@ A deterministic shuffled human review packet without category hints and a separa
 The repeatable loopback fake-provider portfolio demo passed with four accepted results, submission replay and a stored-run comparison (`reports/portfolio-demo.json`). A separate 2,000-job local diagnostic capture did not reproduce the historical timeout (`reports/lock-followup-summary.json`); its different environment and single repetition do not establish a fix or new general speedup. The human review preparation record (`reports/human-review-preparation.json`) remains historical; all fifty user labels are now complete (`reports/human-labels-completion.json`); live RAG and public-release controls remain pending as described in `docs/NEXT_VALIDATION.md`.
 
 Offline judge-collection follow-up: user decisions were validated and frozen without modification. `reports/judge_validation.json` remains BLOCKED with 50 labels and zero paired predictions. A bounded collector now preserves partial successes, usage and failure metadata without retries or evidence overwrite; it does not verify billing tier or provide a complete cost ledger. The user requested preparation only until free-tier status is confirmed. No new Gemini requests or human labels were generated.
+
+## Live validation update
+
+The ten-example live judge comparison is recorded in reports/judge_validation.json, with predictions and provenance hashes. It covers ten preselected examples from the controlled fifty-example set. The two-document live RAG run is recorded in reports/live-rag-smoke.json and passed Recall@2, Hit Rate@2 and inspected citation support for one answer. Earlier pending-status entries retain their original milestone scope.

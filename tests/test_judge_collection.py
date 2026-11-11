@@ -90,11 +90,25 @@ def test_selection_deterministic_without_mutating_source():
     assert source == before and selected != source[:10]
 
 
-async def test_offline_plan_never_constructs_provider(tmp_path, monkeypatch):
+@pytest.mark.parametrize("offset,limit", [(0, 10), (4, 6)])
+async def test_offline_plan_never_constructs_provider(tmp_path, monkeypatch, offset, limit):
     output = tmp_path / "plan.json"
     monkeypatch.setenv("AGENTEVAL_PROVIDER", "gemini")
     monkeypatch.delenv("GEMINI_API_KEY", raising=False)
-    monkeypatch.setattr(sys, "argv", ["judge_examples.py", "--plan", "--output", str(output)])
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "judge_examples.py",
+            "--plan",
+            "--offset",
+            str(offset),
+            "--limit",
+            str(limit),
+            "--output",
+            str(output),
+        ],
+    )
 
     def forbidden_provider():
         pytest.fail("Offline planning must never construct a provider")
@@ -102,7 +116,13 @@ async def test_offline_plan_never_constructs_provider(tmp_path, monkeypatch):
     monkeypatch.setitem(script["main"].__globals__, "provider_context", forbidden_provider)
     await script["main"]()
     plan = json.loads(output.read_text())
-    assert plan["provider_calls"] == 0 and len(plan["selected_ids"]) == 10
+    assert plan["provider_calls"] == 0 and len(plan["selected_ids"]) == limit
+    source = json.loads(
+        (Path(__file__).resolve().parents[1] / "examples/judge_study.json").read_text()
+    )
+    assert plan["selected_ids"] == [
+        row["example_id"] for row in select_examples(source, 10, 42)[offset : offset + limit]
+    ]
 
 
 async def test_live_flag_required_before_provider_setup(tmp_path, monkeypatch):

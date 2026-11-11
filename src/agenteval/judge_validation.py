@@ -36,6 +36,10 @@ def agreement(examples, labels, judgments):
     source = unique(examples, "example_id")
     human = unique([HumanLabel.model_validate(row).model_dump() for row in labels], "example_id")
     ai = unique(judgments, "example_id")
+    prompt_versions = {row.get("judge_prompt_version", "v1") for row in ai.values()}
+    prompt_hashes = {row.get("judge_prompt_sha256") for row in ai.values()}
+    if len(prompt_versions) > 1 or len(prompt_hashes) > 1:
+        raise ValueError("Mixed judge prompts require separate analyses")
     if not set(human).issubset(source) or not set(ai).issubset(source):
         raise ValueError("Labels/judgments reference unknown examples")
     matched, disagreements = [], []
@@ -72,6 +76,8 @@ def agreement(examples, labels, judgments):
         "human_labeled": sum(r["human_pass"] is not None for r in human.values()),
         "paired_count": len(matched),
         "simulated_judge": any(r.get("simulated", False) for r in ai.values()) if ai else None,
+        "judge_prompt_version": next(iter(prompt_versions)) if prompt_versions else None,
+        "judge_prompt_sha256": next(iter(prompt_hashes)) if prompt_hashes else None,
         "confusion_matrix": {"tp": tp, "tn": tn, "fp": fp, "fn": fn},
         "agreement": ratio(tp + tn, len(matched)),
         "precision": ratio(tp, tp + fp),

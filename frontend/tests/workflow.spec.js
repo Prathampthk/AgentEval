@@ -75,7 +75,9 @@ test("dataset to run details comparison and honest judge-study status", async ({
   ).toBeVisible();
   await page.getByRole("button", { name: "Judge study", exact: true }).click();
   await expect(
-    page.getByText("Judge predictions are pending.", { exact: true }),
+    page.getByText("Analysis of paired human and judge decisions.", {
+      exact: true,
+    }),
   ).toBeVisible();
   await expect(
     page
@@ -83,6 +85,12 @@ test("dataset to run details comparison and honest judge-study status", async ({
       .filter({ hasText: "Human labels" })
       .locator("strong"),
   ).toHaveText("50");
+  await expect(
+    page
+      .locator("article")
+      .filter({ hasText: "Paired examples" })
+      .locator("strong"),
+  ).toHaveText("10");
   await page.getByRole("button", { name: "Overview", exact: true }).click();
   await page.goto("/dashboard/");
   await expect(

@@ -1,6 +1,6 @@
 # AgentEval
 
-A local AI evaluation and regression-testing platform with durable PostgreSQL jobs, bounded workers, a pgvector RAG target, regression checks and a React dashboard. Two live Gemini smoke evaluations are recorded; human-study validation and live RAG remain pending.
+A local AI evaluation and regression-testing platform with durable PostgreSQL jobs, bounded workers, a pgvector RAG target, regression checks and a React dashboard. Live evidence includes two Gemini evaluation smokes, a ten-example comparison with human labels, and a two-document RAG smoke.
 **Core stack:** a local FastAPI evaluation workflow, PostgreSQL persistence, and a durable job queue with a configurable bounded worker pool. Gemini adapter contracts and a small live generation/judgment smoke sample are verified.
 
 ## Run locally
@@ -197,7 +197,7 @@ See [benchmark methodology](docs/BENCHMARK_METHODOLOGY.md), [measured report](do
 
 `bash scripts/setup_environment.sh` installs the pinned Python and frontend dependencies, builds the dashboard, starts the owned local pgvector database (unless an external app URL is configured), and applies migrations. Read [the demonstration steps](docs/DEMO.md) and [final review](docs/FINAL_REVIEW.md). Processes still need explicit startup; setup does not publish the environment.
 
-Human review is complete: all 50 supplied labels validated (10 pass, 40 fail); judge predictions and agreement remain pending. Further paid calls require a budget review; the two recorded smoke evaluations do not establish the remaining allowance because failed/discarded requests are outside accepted-result usage. The checked-in human report remains BLOCKED; live performance/accuracy is not claimed.
+Human review is complete: 50 labels were supplied, and the ten-example live Gemini sample measured 60% agreement, with four false positives and zero false negatives. Further paid calls require a budget review; the two recorded smoke evaluations do not establish the remaining allowance because failed/discarded requests are outside accepted-result usage. The checked-in human report covers ten paired examples from the controlled convenience sample.
 
 ## Fault-tolerant platform verification
 
@@ -206,6 +206,8 @@ See [container deployment and verification](docs/DEPLOYMENT.md), [delivery seman
 
 Latest follow-up: [lock contention investigation and hosted CI](docs/LOCK_CONTENTION_REVIEW.md). The current non-root container suite has 148 passing tests, including eight judge-collection safeguards ([latest verification](reports/judge-preparation-verification.json)). Both hosted workflows passed on current source revision `da60690`; earlier Bake recovery evidence is retained. The historical lock-timeout outlier remains unresolved; optional diagnostic capture is now available without changing default queue execution.
 
-Repeatable fake-provider portfolio walkthrough: [demo steps](docs/DEMO.md), `.venv/bin/python scripts/portfolio_demo.py`. All 50 human labels are complete, with zero paired judge predictions; [separate validation plans](docs/NEXT_VALIDATION.md) cover live RAG and deployment safeguards without authorizing paid calls or public release.
+Repeatable fake-provider portfolio walkthrough: [demo steps](docs/DEMO.md), `.venv/bin/python scripts/portfolio_demo.py`. All 50 human labels are complete, with ten paired live judge predictions; [separate validation plans](docs/NEXT_VALIDATION.md) cover live RAG and deployment safeguards without authorizing paid calls or public release.
 
 Gemini free-tier preparation and bring-your-own-key configuration: [provider configuration](docs/PROVIDER_CONFIGURATION.md). Collection now preserves partial results and usage, refuses existing outputs, and caps live samples at ten calls. Current billing eligibility is unconfirmed; no new Gemini calls were made.
+
+Latest live validation: [judge comparison](reports/judge_validation.json) and [RAG smoke](reports/live-rag-smoke.json). The RAG run retrieved and cited both fixture documents, with Recall@2 and Hit Rate@2 of 1.0. All four judge disagreements involved instruction-injection responses.

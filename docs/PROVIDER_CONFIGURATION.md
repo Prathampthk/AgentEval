@@ -40,6 +40,22 @@ Analyze only after predictions exist, using the frozen human copy and a distinct
 .venv/bin/python -m agenteval.judge_validation --labels artifacts/human_labels.frozen-764d7e4b36f5.json --judgments artifacts/judge_predictions.json --output artifacts/judge-agreement.json
 ```
 
-Keep simulated-provider comparisons explicitly simulated. No simulated prediction is evidence for Gemini accuracy. Existing `reports/judge_validation.json` correctly remains BLOCKED with fifty human labels and zero paired predictions.
+Keep simulated-provider comparisons explicitly simulated. No simulated prediction is evidence for Gemini accuracy. The recorded `reports/judge_validation.json` now contains ten live pairs against fifty frozen human labels.
 
 The optional hosted live workflow remains manual, disabled by default and capped at ten calls. Repository secrets/variables configure it separately; it has no access to ignored local human labels. It preserves partial prediction/metadata artifacts on failure, but dispatch still requires explicit usage authorization. A future hosted bring-your-own-key feature requires authentication, tenant-specific secret storage, job ownership, distributed quotas and spending controls before implementation or public deployment.
+
+The first live collection stopped after saving four responses. To continue a known prefix of a sample, `--offset 4 --limit 6 --seed 42` selects the remaining six IDs within the ten-example live cap. Use a fresh output path and verify combined IDs against the original plan before analysis. The saved four-plus-six sample was verified this way.
+
+## Candidate judge prompt
+
+The measured ten-example baseline used the v1 prompt and produced four false positives on instruction-injection responses. The collector now supports an experimental `--judge-prompt candidate-v2` option. It names the submitted text `candidate_response` and directs the judge to score the content present in that field. It explicitly addresses responses that consist entirely of grading instructions. The score scale remains rubric v1.
+
+API and worker evaluations continue to use the v1 prompt. Candidate predictions record their prompt version and SHA-256 fingerprint. Analysis rejects files containing multiple prompt versions or fingerprints. Historical files without those fields are interpreted as v1.
+
+Prepare the same ten IDs offline with:
+
+```bash
+.venv/bin/python scripts/judge_examples.py --plan --limit 10 --seed 42 --judge-prompt candidate-v2 --output artifacts/judge-plan-candidate-new.json
+```
+
+After authorizing ten additional Gemini requests, collect with `--live --limit 10 --seed 42 --judge-prompt candidate-v2` and a fresh output path. Compare candidate and baseline reports against the frozen human labels. Offline tests verify the request payload and provenance. Live effectiveness is still unmeasured. Repeating the ten observed examples is a regression check. The remaining forty labeled examples can support a later holdout evaluation with its own usage allowance.
