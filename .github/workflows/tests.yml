@@ -41,6 +41,7 @@ jobs:
       - run: .venv/bin/ruff format --check src tests scripts migrations deploy
       - run: .venv/bin/pytest -q --junitxml=artifacts/tests.xml
       - run: .venv/bin/python -m agenteval.regression --demo-gate
+      - run: .venv/bin/python -m agenteval.regression --demo-scenarios --output artifacts/regression-scenarios.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:

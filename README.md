@@ -48,7 +48,7 @@ Local `gemini-3.1-flash-lite` completed one synchronous and one queued evaluatio
 .venv/bin/python -m pip check
 ```
 
-GitHub Actions defines the same deterministic checks with an isolated PostgreSQL service and no live-provider credentials. Both hosted workflows passed on `da60690`; [current hosted evidence](reports/hosted-ci-current.json) records step conclusions and artifact metadata, with contents not downloaded. The deterministic workflow runs the PASS/FAIL/INCONCLUSIVE regression demonstration gate.
+GitHub Actions defines the same deterministic checks with an isolated PostgreSQL service and no live-provider credentials. Both hosted workflows passed on `0031224`; [judge-adoption hosted evidence](reports/hosted-ci-judge-adoption.json) records step conclusions and artifact metadata, with contents not downloaded. The deterministic workflow runs the PASS/FAIL/INCONCLUSIVE regression demonstration gate.
 
 ## Operating limits
 
@@ -204,13 +204,13 @@ Human review is complete: 50 labels were supplied, and the ten-example live Gemi
 See [container deployment and verification](docs/DEPLOYMENT.md), [delivery semantics](docs/JOB_EXECUTION_SEMANTICS.md) and [résumé evidence](RESUME_EVIDENCE.md) for the current backend upgrade. The new process sweep benchmarks **1, 4, 8 and 16 independent processes**, separately from the historical 1-vs-16 async-lane report above. Active queues have configurable capacity and retry hints; worker execution has fixed per-process bounds. Compose defaults to simulated providers and a loopback-only API. External side effects may repeat after crashes; no exactly-once external execution or public production-readiness claim is made.
 
 
-Latest follow-up: [lock contention investigation and hosted CI](docs/LOCK_CONTENTION_REVIEW.md). The current non-root container suite has 152 passing tests ([latest verification](reports/live-validation-verification.json)). Both hosted workflows passed on current source revision `da60690`; earlier Bake recovery evidence is retained. The historical lock-timeout outlier remains unresolved; optional diagnostic capture is now available without changing default queue execution.
+Latest follow-up: [lock contention investigation and hosted CI](docs/LOCK_CONTENTION_REVIEW.md). The portfolio non-root container suite passed 160 tests ([verification](reports/portfolio-policy-verification.json)). Both hosted workflows passed at `0031224`; earlier Bake recovery evidence is retained. The historical lock-timeout outlier remains unresolved; optional diagnostic capture is now available without changing default queue execution.
 
 Repeatable fake-provider portfolio walkthrough: [demo steps](docs/DEMO.md), `.venv/bin/python scripts/portfolio_demo.py`. All 50 human labels are complete, with twenty paired candidate-v2 predictions; [separate validation plans](docs/NEXT_VALIDATION.md) cover live RAG and deployment safeguards without authorizing paid calls or public release.
 
-Gemini free-tier preparation and bring-your-own-key configuration: [provider configuration](docs/PROVIDER_CONFIGURATION.md). Collection now preserves partial results and usage, refuses existing outputs, and caps live samples at ten calls. Current billing eligibility is unconfirmed; no new Gemini calls were made.
+Gemini free-tier preparation and bring-your-own-key configuration: [provider configuration](docs/PROVIDER_CONFIGURATION.md). Collection now preserves partial results and usage, refuses existing outputs, and caps live samples at ten calls. Free-tier eligibility and remaining quota must be checked in the provider project before expanding live testing.
 
-Latest live validation: [judge comparison](reports/judge_validation.json) and [RAG smoke](reports/live-rag-smoke.json). The RAG run retrieved and cited both fixture documents, with Recall@2 and Hit Rate@2 of 1.0. All four judge disagreements involved instruction-injection responses.
+Latest live validation: [judge comparison](reports/judge_validation.json) and [RAG smoke](reports/live-rag-smoke.json). The RAG run retrieved and cited both fixture documents, with Recall@2 and Hit Rate@2 of 1.0. All four historical v1 disagreements involved instruction-injection responses; candidate-v2 matched all twenty development/holdout decisions.
 
 
 The candidate-v2 judge prompt matched all ten human labels on the same development sample, correcting the four baseline instruction-injection false positives. The response-level holdout subsequently matched 10/10 labels. New Gemini processes use candidate-v2 by default and persist prompt provenance for compatible comparisons. See [prompt comparison](reports/judge-prompt-comparison.json).

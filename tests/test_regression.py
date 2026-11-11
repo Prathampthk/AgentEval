@@ -1,4 +1,4 @@
-from agenteval.regression import ComparisonRun, RegressionPolicy, compare, demo_gate
+from agenteval.regression import ComparisonRun, RegressionPolicy, compare, demo_gate, demo_scenarios
 
 
 def run(passed=True, **changes):
@@ -63,3 +63,16 @@ def test_exact_pass_rate_threshold_is_allowed_despite_binary_float_rounding():
         ],
     )
     assert compare(baseline, candidate)["outcome"] == "PASS"
+
+
+async def test_demo_scenarios_exercise_expected_policy_decisions():
+    result = await demo_scenarios()
+    assert result["status"] == "PASS"
+    assert result["simulated"] and result["live_provider_calls"] == 0
+    passing, failing, incompatible = [s["comparison"] for s in result["scenarios"]]
+    assert passing["outcome"] == "PASS" and passing["paired_cases"] == 3
+    assert failing["outcome"] == "FAIL"
+    assert failing["reasons"] == ["Pass-rate regression", "Correctness regression"]
+    assert incompatible["outcome"] == "INCONCLUSIVE"
+    assert incompatible["reasons"] == ["Incompatible judge_prompt_version"]
+    assert incompatible["metrics"] == {}

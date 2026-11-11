@@ -1,0 +1,235 @@
+{
+  "source_revision": "0031224e7f342649f249b2ffc61da4a9b758a759",
+  "verified_at_utc": "2026-11-11T23:09:01.746Z",
+  "source": "GitHub connector REST reads",
+  "runs": [
+    {
+      "workflow": "Container deployment checks",
+      "commit": "0031224e7f342649f249b2ffc61da4a9b758a759",
+      "run_url": "https://github.com/Prathampthk/AgentEval/actions/runs/43113769531",
+      "conclusion": "success",
+      "status": "completed",
+      "jobs": [
+        {
+          "name": "compose",
+          "conclusion": "success",
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run docker/setup-buildx-action@v3",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run docker version && docker compose version && docker buildx version",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run python scripts/compose_env.py",
+              "conclusion": "success"
+            },
+            {
+              "name": "Build containers",
+              "conclusion": "success"
+            },
+            {
+              "name": "Surface build errors",
+              "conclusion": "skipped"
+            },
+            {
+              "name": "Run docker compose --env-file .local/compose.env up -d --wait api worker",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run python scripts/compose_smoke.py",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run python scripts/rag_smoke.py --output artifacts/rag-ci-smoke.json",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run python scripts/portfolio_demo.py --output artifacts/portfolio-ci-smoke.json",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run npm ci --prefix frontend",
+              "conclusion": "success"
+            },
+            {
+              "name": "Select installed Chrome",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run npm run test:e2e --prefix frontend",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run docker compose --env-file .local/compose.env --profile verification run --rm tests",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run docker compose --env-file .local/compose.env --profile benchmark run --rm benchmark python -m agenteval.platform_benchmark --jobs 16 --repetitions 1 --workers 1 4 8 16 --output reports/platform-ci-smoke.json",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/upload-artifact@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run docker compose --env-file .local/compose.env down",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run docker/setup-buildx-action@v3",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success"
+            }
+          ]
+        }
+      ],
+      "artifacts": [
+        {
+          "name": "platform-process-smoke",
+          "digest": "sha256:82e48ad6cb70f4d90507627593d81f4746fbfd037c55eb6c1ee619e27dceee95",
+          "size_in_bytes": 112720,
+          "expired": false
+        }
+      ],
+      "artifact_download_verified": false
+    },
+    {
+      "workflow": "Deterministic checks",
+      "commit": "0031224e7f342649f249b2ffc61da4a9b758a759",
+      "run_url": "https://github.com/Prathampthk/AgentEval/actions/runs/43113769376",
+      "conclusion": "success",
+      "status": "completed",
+      "jobs": [
+        {
+          "name": "test",
+          "conclusion": "success",
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success"
+            },
+            {
+              "name": "Initialize containers",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run bash scripts/install.sh",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run npm ci --prefix frontend",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run npm run format:check --prefix frontend",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run npm run build --prefix frontend",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run .venv/bin/ruff check src tests scripts migrations deploy",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run .venv/bin/ruff format --check src tests scripts migrations deploy",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run .venv/bin/pytest -q --junitxml=artifacts/tests.xml",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run .venv/bin/python -m agenteval.regression --demo-gate",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/upload-artifact@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Stop containers",
+              "conclusion": "success"
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success"
+            }
+          ]
+        }
+      ],
+      "artifacts": [
+        {
+          "name": "test-results",
+          "digest": "sha256:323c9f7f75ec09df3ef3048491ef41a432a9cbd451c239a571bf34f789a124d8",
+          "size_in_bytes": 3873,
+          "expired": false
+        }
+      ],
+      "artifact_download_verified": false
+    }
+  ],
+  "limits": [
+    "Job/step conclusions and artifact metadata verified; artifact contents not downloaded.",
+    "Hosted workflows use simulated providers; live judge and RAG findings are separate evidence."
+  ]
+}

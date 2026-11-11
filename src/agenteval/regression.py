@@ -165,7 +165,7 @@ def compare(baseline, candidate, policy=None):
     return output
 
 
-async def demo_gate():
+async def demo_runs():
     rows = []
     for index, answer in enumerate(["Paris", "4", "Mars"]):
         result = await evaluate(
@@ -201,7 +201,51 @@ async def demo_gate():
         ComparisonCase(test_case_id=str(i), passed=True, correctness=2, latency_ms=0)
         for i in range(3)
     ]
-    return compare(ComparisonRun(**common, results=expected), ComparisonRun(**common, results=rows))
+    return ComparisonRun(**common, results=expected), ComparisonRun(**common, results=rows)
+
+
+async def demo_gate():
+    return compare(*(await demo_runs()))
+
+
+async def demo_scenarios():
+    """Exercise policy outcomes using explicitly synthetic changes, without a database or key."""
+    baseline, candidate = await demo_runs()
+    degraded = candidate.model_copy(
+        update={
+            "results": [
+                row.model_copy(update={"passed": False, "correctness": 0})
+                for row in candidate.results
+            ]
+        }
+    )
+    incompatible = candidate.model_copy(update={"judge_prompt_version": "synthetic-other-prompt"})
+    scenarios = [
+        {
+            "name": "equivalent fake runs",
+            "expected": "PASS",
+            "comparison": compare(baseline, candidate),
+        },
+        {
+            "name": "synthetic score regression",
+            "expected": "FAIL",
+            "comparison": compare(baseline, degraded),
+        },
+        {
+            "name": "synthetic prompt mismatch",
+            "expected": "INCONCLUSIVE",
+            "comparison": compare(baseline, incompatible),
+        },
+    ]
+    return {
+        "status": "PASS"
+        if all(s["comparison"]["outcome"] == s["expected"] for s in scenarios)
+        else "FAIL",
+        "simulated": True,
+        "live_provider_calls": 0,
+        "scope": "Three fake-provider evaluations; score regression and prompt mismatch are synthetic fixtures, not observed model behavior.",
+        "scenarios": scenarios,
+    }
 
 
 def main():
@@ -209,13 +253,17 @@ def main():
     parser.add_argument("--baseline")
     parser.add_argument("--candidate")
     parser.add_argument("--output", default="artifacts/regression.json")
-    parser.add_argument("--demo-gate", action="store_true")
+    modes = parser.add_mutually_exclusive_group()
+    modes.add_argument("--demo-gate", action="store_true")
+    modes.add_argument("--demo-scenarios", action="store_true")
     args = parser.parse_args()
-    if args.demo_gate:
+    if args.demo_scenarios:
+        result = asyncio.run(demo_scenarios())
+    elif args.demo_gate:
         result = asyncio.run(demo_gate())
     else:
         if not args.baseline or not args.candidate:
-            parser.error("baseline and candidate are required unless --demo-gate is used")
+            parser.error("baseline and candidate are required unless a demo mode is used")
         baseline = ComparisonRun.model_validate_json(Path(args.baseline).read_text())
         candidate = ComparisonRun.model_validate_json(Path(args.candidate).read_text())
         result = compare(baseline, candidate)
@@ -223,7 +271,9 @@ def main():
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(result, indent=2) + "\n")
     print(json.dumps(result))
-    raise SystemExit({"PASS": 0, "FAIL": 1, "INCONCLUSIVE": 2}[result["outcome"]])
+    raise SystemExit(
+        {"PASS": 0, "FAIL": 1, "INCONCLUSIVE": 2}[result.get("status") or result["outcome"]]
+    )
 
 
 if __name__ == "__main__":

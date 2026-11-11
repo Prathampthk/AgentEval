@@ -1,0 +1,157 @@
+{
+  "base_revision": "0031224",
+  "scope": "Offline portfolio regression scenarios and current evidence reconciliation",
+  "full_container_suite": {
+    "passed": 160,
+    "warnings": 1,
+    "seconds": 18.93,
+    "scope": "Non-root Python 3.12, isolated real PostgreSQL test database"
+  },
+  "host_unit_suite": {
+    "passed": 97,
+    "integration_deselected": 63,
+    "warnings": 2,
+    "seconds": 0.88
+  },
+  "ruff_lint": "PASS",
+  "ruff_format": "PASS",
+  "live_provider_calls": 0,
+  "policy_scenarios": {
+    "status": "PASS",
+    "simulated": true,
+    "live_provider_calls": 0,
+    "scope": "Three fake-provider evaluations; score regression and prompt mismatch are synthetic fixtures, not observed model behavior.",
+    "scenarios": [
+      {
+        "name": "equivalent fake runs",
+        "expected": "PASS",
+        "comparison": {
+          "outcome": "PASS",
+          "paired_cases": 3,
+          "reasons": [],
+          "policy": {
+            "max_pass_rate_drop": 0.05,
+            "max_correctness_drop": 0.25,
+            "min_cases": 1,
+            "max_latency_ratio": null,
+            "max_token_ratio": null
+          },
+          "simulated": true,
+          "metrics": {
+            "baseline_pass_rate": 1.0,
+            "candidate_pass_rate": 1.0,
+            "baseline_correctness": 2.0,
+            "candidate_correctness": 2.0,
+            "baseline_latency_ms": 0.0,
+            "candidate_latency_ms": 0.0
+          }
+        }
+      },
+      {
+        "name": "synthetic score regression",
+        "expected": "FAIL",
+        "comparison": {
+          "outcome": "FAIL",
+          "paired_cases": 3,
+          "reasons": [
+            "Pass-rate regression",
+            "Correctness regression"
+          ],
+          "policy": {
+            "max_pass_rate_drop": 0.05,
+            "max_correctness_drop": 0.25,
+            "min_cases": 1,
+            "max_latency_ratio": null,
+            "max_token_ratio": null
+          },
+          "simulated": true,
+          "metrics": {
+            "baseline_pass_rate": 1.0,
+            "candidate_pass_rate": 0.0,
+            "baseline_correctness": 2.0,
+            "candidate_correctness": 0.0,
+            "baseline_latency_ms": 0.0,
+            "candidate_latency_ms": 0.0
+          }
+        }
+      },
+      {
+        "name": "synthetic prompt mismatch",
+        "expected": "INCONCLUSIVE",
+        "comparison": {
+          "outcome": "INCONCLUSIVE",
+          "paired_cases": 3,
+          "reasons": [
+            "Incompatible judge_prompt_version"
+          ],
+          "policy": {
+            "max_pass_rate_drop": 0.05,
+            "max_correctness_drop": 0.25,
+            "min_cases": 1,
+            "max_latency_ratio": null,
+            "max_token_ratio": null
+          },
+          "simulated": true,
+          "metrics": {}
+        }
+      }
+    ]
+  },
+  "queued_walkthrough": {
+    "status": "PASS",
+    "recorded_at_utc": "2026-11-11T23:09:18.688871+00:00",
+    "simulated": true,
+    "live_provider_calls": 0,
+    "dataset_id": "d58b67e4-054c-4f00-b863-8b68d94b5716",
+    "runs": [
+      {
+        "label": "baseline",
+        "run_id": "ddbf6cd8-d506-4bda-8d48-6193f95e07d2",
+        "accepted_results": 2
+      },
+      {
+        "label": "candidate",
+        "run_id": "cbc5f88c-bcc9-4222-bf74-300d1c656075",
+        "accepted_results": 2
+      }
+    ],
+    "comparison": {
+      "outcome": "PASS",
+      "paired_cases": 2,
+      "reasons": [],
+      "policy": {
+        "max_pass_rate_drop": 0.05,
+        "max_correctness_drop": 0.25,
+        "min_cases": 1,
+        "max_latency_ratio": null,
+        "max_token_ratio": null
+      },
+      "simulated": true,
+      "metrics": {
+        "baseline_pass_rate": 1.0,
+        "candidate_pass_rate": 1.0,
+        "baseline_correctness": 2.0,
+        "candidate_correctness": 2.0,
+        "baseline_latency_ms": 0.08256249930127524,
+        "candidate_latency_ms": 0.03162499706377275
+      }
+    },
+    "checks": [
+      "fake-provider preflight",
+      "idempotent replay",
+      "queued completion",
+      "comparison"
+    ],
+    "limits": [
+      "Four accepted simulated results; not accuracy or throughput evidence.",
+      "Repeated demos retain their own runs; no data is deleted.",
+      "Human labels, live RAG, crash recovery and public safeguards are separate evidence."
+    ]
+  },
+  "source_sha256": {
+    "src/agenteval/regression.py": "694ed77627b6fde97a6af2c104f3d336c95c2ae16ff426b6b4406775099fc34e",
+    "tests/test_regression.py": "eca600126953a80b6059b2c18e36cf6abebb2b102f7ca664d18b9c7f4497c0a2",
+    ".github/workflows/tests.yml": "75eccc742d0290b9af2703ee52e3b6e42e2dbcb26e753a51311c8028c5018c38",
+    "scripts/portfolio_demo.py": "7b289ee629ae56d80b8eac2c7ceef36c766a20720602b45e20520859cc36e506"
+  }
+}

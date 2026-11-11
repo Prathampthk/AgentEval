@@ -102,3 +102,12 @@ Offline preparation verification: **148 full container tests passed**, zero fail
 ## Ten live judge pairs and two-document RAG smoke
 
 Reports now record ten predeclared live Gemini judge pairs against fifty frozen human labels, with 60% agreement (TP=2, TN=4, FP=4, FN=0). All four false positives involved instruction-injection responses. The exact saved responses and source/label hashes are retained. A user-run live RAG smoke retrieved and cited both synthetic documents, with Recall@2 and Hit Rate@2 of 1.0 on one query. See reports/judge_validation.json and reports/live-rag-smoke.json. The historical lock-timeout cause remains open.
+
+
+## Judge adoption and portfolio reconciliation — 2026-11-11
+
+This section supersedes the earlier pending human-study and hosted-CI statuses. All fifty labels were supplied by the user and frozen before the new predictions. The archived v1 baseline matched 6/10 decisions. Candidate-v2 matched 10/10 development responses and 10/10 predeclared response-level holdout responses; the latter IDs are disjoint, though questions may overlap. Thirty responses remain unpaired. These ten-question convenience-sample results do not establish general judge accuracy.
+
+New Gemini processes use candidate-v2; persisted prompt versions and fingerprints preserve queued-run provenance and prevent incompatible comparisons. The adoption suite passed 159 PostgreSQL-backed container tests. Both hosted workflows passed at `0031224`; job/step conclusions and artifact metadata are retained in `reports/hosted-ci-judge-adoption.json`, with artifact contents not downloaded. Local readiness verified the refreshed Gemini API and database without a provider call.
+
+The live two-document RAG smoke passed one query (`reports/live-rag-smoke.json`). Its scope remains separate from general retrieval accuracy and public deployment safety. The historical PostgreSQL timeout cause remains unresolved. Authentication, distributed quotas and production recovery remain release gaps; no public deployment is claimed.
