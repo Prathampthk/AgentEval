@@ -1,0 +1,58 @@
+{
+  "base_revision": "dbdbcb5",
+  "scope": "Offline RAG study preparation only; no retrieval or model-quality results",
+  "full_container_suite": {
+    "passed": 165,
+    "warnings": 1,
+    "seconds": 19.19
+  },
+  "host_unit_suite": {
+    "passed": 102,
+    "integration_deselected": 63,
+    "warnings": 2,
+    "seconds": 1.03
+  },
+  "ruff_lint": "PASS",
+  "ruff_format": "PASS",
+  "plan": {
+    "status": "PREPARED_OFFLINE",
+    "study_version": "rag-study-v1",
+    "source_sha256": "d7172662509f32c2cc9ca44dca23752d76b53ecaf6f7327f29ca14c7e2044bbc",
+    "live_execution_authorized": false,
+    "provider_calls_made": 0,
+    "human_labels_created": 0,
+    "document_count": 6,
+    "question_ids": [
+      "aurora-signal",
+      "aurora-leader",
+      "borealis-signal",
+      "supply-seal",
+      "supply-count",
+      "superseded-signal",
+      "unknown-date",
+      "unknown-budget"
+    ],
+    "answerable_questions": 6,
+    "unanswerable_questions": 2,
+    "planned_successful_path_operations": {
+      "document_embeddings": 6,
+      "query_embeddings": 8,
+      "generations": 8,
+      "judgments": 6,
+      "total": 28
+    },
+    "execution_notes": [
+      "Use a fresh isolated corpus; resolve fixture document IDs to returned database IDs.",
+      "Answerable questions use /rag/evaluate; unanswerable questions use /rag/ask.",
+      "Recall/Hit Rate are undefined for unanswerable questions; report them as null.",
+      "Review abstention, answer support and citations manually; leave human decisions null until reviewed.",
+      "The successful-path count excludes failed, retried or repeated requests and is not a cost ceiling.",
+      "Agree a separate request budget and pacing before implementing or running live collection."
+    ]
+  },
+  "source_sha256": {
+    "examples/rag_study.json": "d7172662509f32c2cc9ca44dca23752d76b53ecaf6f7327f29ca14c7e2044bbc",
+    "scripts/prepare_rag_study.py": "2a2a7cecefc1f68ec772bd4482ca736e09560d4d43f2c38c926c142a6b5a9822",
+    "tests/test_rag_study_preparation.py": "4413630571a4bb8376e48bf578fed151e47f6f635400a4f9420c586ce9c5829c"
+  }
+}

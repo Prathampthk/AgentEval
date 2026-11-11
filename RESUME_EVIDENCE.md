@@ -82,3 +82,7 @@ Candidate-v2 adoption verification: 159 tests passed against PostgreSQL in the c
 ## Offline portfolio completion — 2026-11-11
 
 The portfolio CLI now demonstrates PASS, FAIL and INCONCLUSIVE policy decisions using explicitly synthetic score/prompt changes. The separate queued fake-provider walkthrough again completed four accepted results, submission replay and comparison. The full isolated PostgreSQL suite passed 160 tests; 97 host unit tests passed, with 63 integration tests deselected. Ruff lint/format passed. Reports: `reports/portfolio-policy-verification.json` and `reports/hosted-ci-judge-adoption.json` (both hosted workflows passed at `0031224`; artifact contents not downloaded). This increment made zero live provider calls and created no human labels. Synthetic scenarios establish policy behavior only.
+
+## Broader RAG study prepared offline
+
+The six-document/eight-question synthetic fixture now has a frozen source hash, an explicit successful-path operation estimate (28), and an empty human-review sheet. All review decisions remain null; no new labels or provider calls were created. The full isolated PostgreSQL suite passed 165 tests; 102 host unit tests passed (63 integration tests deselected), and Ruff lint/format passed. See `reports/rag-study-preparation.json`. This is preparation evidence only; broader live retrieval and citation/abstention results remain pending an agreed request budget.

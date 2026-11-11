@@ -12,6 +12,8 @@ A live RAG smoke passed for two one-chunk documents and one query. First agree a
 
 The [two-document smoke command](RAG.md#two-document-smoke-test) now runs through the local Compose API and records its evidence. Its simulated rehearsal passed. The completed live path used the fixture designed for five provider operations, including three embeddings, one generation request and one judgment call. Account for attempted requests when investigating any failure.
 
+Broader study preparation is now available without provider access: `.venv/bin/python scripts/prepare_rag_study.py`. The six-document/eight-question fixture, frozen plan and empty review sheet are described in [RAG study preparation](RAG.md#broader-offline-study-preparation). The successful-path estimate is 28 provider operations, with failures and retries excluded. Live collection and human review remain pending; this preparation grants no additional request budget.
+
 Use a local isolated dataset/corpus and no sensitive text. Record configured generation/embedding model IDs, vector dimension/finite-value validation, returned document/chunk IDs, distances, supplied context IDs/truncation, Recall@K/Hit Rate@K and sanitized errors. Independently inspect whether citations support the answer. A two-document sample can establish plumbing only; general retrieval quality and citation faithfulness require separate ground truth and a larger authorized study. A successful generation smoke does not imply embedding-model access.
 
 ## Deployment safeguards — no public release
