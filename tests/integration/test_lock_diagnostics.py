@@ -3,6 +3,8 @@
 import asyncio
 import io
 import json
+import os
+from pathlib import Path
 from time import perf_counter
 
 import pytest
@@ -73,3 +75,19 @@ async def test_lock_graph_attributes_run_lock_timeout_without_query_text(db):
     assert transaction["lock_returned"] <= observed_at <= transaction["transaction_end_started"]
     assert "private question" not in trace.getvalue() and "private answer" not in trace.getvalue()
     assert all("query" not in row for row in snapshots)
+    # An opt-in reproduction bundle retains the redacted positive control.
+    if output := os.getenv("AGENTEVAL_LOCK_CONTROL_OUTPUT"):
+        with Path(output).open("x") as file:
+            file.write(
+                json.dumps(
+                    {
+                        "kind": "deliberately-induced-timeout",
+                        "expected_sqlstate": "57014",
+                        "observed_at": observed_at,
+                        "sql_and_transaction_records": records,
+                        "blocker_snapshot": snapshots,
+                    },
+                    indent=2,
+                )
+                + "\n"
+            )

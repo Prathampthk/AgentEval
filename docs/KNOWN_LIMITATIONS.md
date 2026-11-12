@@ -1,6 +1,6 @@
 # Known limitations and evidence boundaries
 
-- Local/controlled demonstration only: no authentication or multi-tenancy. Do not expose submission endpoints publicly. Process-local limits and queue admission are not public abuse prevention.
+- Local/controlled demonstration only: the default demo is open; an optional single-owner gate is available, with no multi-tenancy. Do not expose submission endpoints publicly. Process-local limits and queue admission are not public abuse prevention.
 - Live Gemini generation/judgment has only two successful smoke evaluations of one simple case (`reports/live-gemini-smoke.json`). A two-document live embedding/retrieval smoke passed with one scored query (reports/live-rag-smoke.json). Neither this sample nor SDK contracts establish accuracy or throughput. Accepted-result usage is not a complete cost ledger; budget review is required before more paid calls.
 - The human study has fifty validated user-supplied labels. The archived v1 baseline paired ten predictions with 60% agreement and four false positives on instruction-injection examples. Candidate-v2 then matched 10/10 development labels and 10/10 response-level holdout labels. Thirty labeled examples remain unpaired. The convenience sample contains ten distinct questions with five variants each.
 - Only /queued-runs is durable; synchronous /runs, /evaluations and RAG requests can be interrupted without automatic resumption. Old migrated runs with NULL deadlines retain earlier timeout semantics.
@@ -18,7 +18,7 @@
 ## Platform review limits
 
 - Process-local concurrency is not a distributed provider quota. Queue capacity requires consistent configuration across submitting APIs. History storage remains unbounded without retention operations.
-- No authentication/TLS/public ingress abuse protection, HA or host/storage-loss recovery proof. A generated-data local dump/restore drill passed; production backup scheduling, offsite storage and RPO/RTO remain unverified. Compose is a loopback-only controlled deployment.
+- Optional single-owner authentication is implemented; TLS/public ingress abuse protection, tenant isolation, HA and host/storage-loss recovery remain unverified. A generated-data local dump/restore drill passed; production backup scheduling, offsite storage and RPO/RTO remain unverified. Compose is a loopback-only controlled deployment.
 - Fencing controls database acceptance, never already emitted external effects; duplicate provider charges remain possible after crashes or judge-stage retries.
 - Hosted CI success and two local live Gemini smoke evaluations are recorded; the historical v1 ten-example comparison measured 60% agreement. Human labels are complete (50), with twenty candidate-v2 pairs across development and response-level holdout; the prepared set has only ten distinct questions with five variants each and is not representative of all applications.
 - The historical RAG context overflow and generation-timeout misclassification are now corrected by a shared evidence budget and provider timeout handling; see RAG.md. Context truncation can still omit facts and is disclosed in the response. This does not establish general public-endpoint robustness.

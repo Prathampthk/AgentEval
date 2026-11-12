@@ -1,0 +1,7 @@
+# Optional owner gate; use after the base Compose file. Loopback binding is retained.
+services:
+  api:
+    environment:
+      AGENTEVAL_ACCESS_TOKEN: ${AGENTEVAL_ACCESS_TOKEN:?Create a protected access env file first}
+    healthcheck:
+      test: [CMD, python, -c, "import os,base64; from urllib.request import build_opener,ProxyHandler,Request; token=base64.b64encode(('owner:'+os.environ['AGENTEVAL_ACCESS_TOKEN']).encode()).decode(); build_opener(ProxyHandler({})).open(Request('http://127.0.0.1:8000/health/ready',headers={'Authorization':'Basic '+token}),timeout=3)"]

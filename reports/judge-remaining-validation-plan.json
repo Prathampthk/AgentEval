@@ -1,0 +1,76 @@
+{
+  "status": "PLAN_ONLY",
+  "live_execution_authorized": false,
+  "provider_calls": 0,
+  "judge_prompt_version": "candidate-v2",
+  "source_sha256": "e4488704bf763bbee07d71964a20399008c34df088ea151d02f1f36f89ef86bd",
+  "labels_sha256": "764d7e4b36f52bd46a3cb83c9ac2aa1f5da93ec2ddc5917084c96859f1d61e63",
+  "planned_requests": 30,
+  "batches": [
+    {
+      "status": "PLAN_ONLY",
+      "seed": 42,
+      "offset": 20,
+      "judge_prompt_version": "candidate-v2",
+      "selected_ids": [
+        "study-09-4",
+        "study-04-4",
+        "study-07-4",
+        "study-10-4",
+        "study-09-2",
+        "study-07-1",
+        "study-06-4",
+        "study-05-1",
+        "study-05-3",
+        "study-09-3"
+      ],
+      "provider_calls": 0,
+      "human_labels_generated": 0
+    },
+    {
+      "status": "PLAN_ONLY",
+      "seed": 42,
+      "offset": 30,
+      "judge_prompt_version": "candidate-v2",
+      "selected_ids": [
+        "study-10-2",
+        "study-08-2",
+        "study-07-3",
+        "study-09-5",
+        "study-03-4",
+        "study-10-5",
+        "study-10-3",
+        "study-01-3",
+        "study-06-3",
+        "study-08-3"
+      ],
+      "provider_calls": 0,
+      "human_labels_generated": 0
+    },
+    {
+      "status": "PLAN_ONLY",
+      "seed": 42,
+      "offset": 40,
+      "judge_prompt_version": "candidate-v2",
+      "selected_ids": [
+        "study-02-1",
+        "study-07-5",
+        "study-02-2",
+        "study-02-4",
+        "study-03-5",
+        "study-04-1",
+        "study-04-3",
+        "study-01-2",
+        "study-02-3",
+        "study-09-1"
+      ],
+      "provider_calls": 0,
+      "human_labels_generated": 0
+    }
+  ],
+  "limitations": [
+    "Request a new explicit budget before any provider calls.",
+    "Disjoint response IDs cover the remaining convenience sample; underlying questions overlap earlier runs.",
+    "These plans do not establish generalization to new questions or human RAG review completion."
+  ]
+}

@@ -1,4 +1,4 @@
-"""Local demonstration API; with optional PostgreSQL persistence; no public authentication."""
+"""Local demonstration API with persistence and optional single-owner access control."""
 
 import asyncio
 import json
@@ -13,6 +13,7 @@ from sqlalchemy import func, select
 from sqlalchemy.exc import SQLAlchemyError
 from starlette.responses import JSONResponse
 
+from agenteval.access import OwnerAccess, validate_access_token
 from agenteval.database import Database, DatasetConflict, MissingRecord
 from agenteval.domain import EvaluationRequest, EvaluationResult, StrictModel
 from agenteval.jobs import JobQueue, QueueBusy, QueueFull, SubmissionConflict
@@ -79,7 +80,11 @@ def create_app(
     timeout_seconds: float = 30,
     database_url: str | None = None,
     queue_capacity: int | None = None,
+    access_token: str | None = None,
 ) -> FastAPI:
+    token = access_token if access_token is not None else os.getenv("AGENTEVAL_ACCESS_TOKEN", "")
+    validate_access_token(token)
+
     @asynccontextmanager
     async def lifespan(app):
         async with provider_context(provider, timeout_seconds) as selected:
@@ -105,6 +110,7 @@ def create_app(
 
     app = FastAPI(title="AgentEval", version="0.1.0", lifespan=lifespan)
     app.add_middleware(BodyLimit)
+    app.add_middleware(OwnerAccess, token=token)
 
     @app.exception_handler(OSError)
     @app.exception_handler(TimeoutError)

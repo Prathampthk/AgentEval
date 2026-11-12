@@ -1,0 +1,207 @@
+{
+  "kind": "deliberately-induced-timeout",
+  "expected_sqlstate": "57014",
+  "observed_at": 51978.523070667,
+  "sql_and_transaction_records": [
+    {
+      "kind": "sql-operation",
+      "process_id": 7,
+      "backend_pid": 2214,
+      "operation": "insert",
+      "start": 51978.503894,
+      "end": 51978.504422333,
+      "error_type": null,
+      "sqlstate": null
+    },
+    {
+      "kind": "sql-operation",
+      "process_id": 7,
+      "backend_pid": 2214,
+      "operation": "insert",
+      "start": 51978.505016583,
+      "end": 51978.505452917,
+      "error_type": null,
+      "sqlstate": null
+    },
+    {
+      "kind": "sql-operation",
+      "process_id": 7,
+      "backend_pid": 2214,
+      "operation": "select",
+      "start": 51978.506548042,
+      "end": 51978.506816333,
+      "error_type": null,
+      "sqlstate": null
+    },
+    {
+      "kind": "sql-operation",
+      "process_id": 7,
+      "backend_pid": 2214,
+      "operation": "select",
+      "start": 51978.507267292,
+      "end": 51978.507522625,
+      "error_type": null,
+      "sqlstate": null
+    },
+    {
+      "kind": "sql-operation",
+      "process_id": 7,
+      "backend_pid": 2214,
+      "operation": "other",
+      "start": 51978.507933458,
+      "end": 51978.508067625,
+      "error_type": null,
+      "sqlstate": null
+    },
+    {
+      "kind": "sql-operation",
+      "process_id": 7,
+      "backend_pid": 2214,
+      "operation": "select",
+      "start": 51978.508122542,
+      "end": 51978.50825075,
+      "error_type": null,
+      "sqlstate": null
+    },
+    {
+      "kind": "sql-operation",
+      "process_id": 7,
+      "backend_pid": 2214,
+      "operation": "select",
+      "start": 51978.508725292,
+      "end": 51978.509062875,
+      "error_type": null,
+      "sqlstate": null
+    },
+    {
+      "kind": "sql-operation",
+      "process_id": 7,
+      "backend_pid": 2214,
+      "operation": "select",
+      "start": 51978.509208125,
+      "end": 51978.509281208,
+      "error_type": null,
+      "sqlstate": null
+    },
+    {
+      "kind": "sql-operation",
+      "process_id": 7,
+      "backend_pid": 2214,
+      "operation": "select",
+      "start": 51978.5094945,
+      "end": 51978.509600708,
+      "error_type": null,
+      "sqlstate": null
+    },
+    {
+      "kind": "sql-operation",
+      "process_id": 7,
+      "backend_pid": 2214,
+      "operation": "select",
+      "start": 51978.510083625,
+      "end": 51978.51046825,
+      "error_type": null,
+      "sqlstate": null
+    },
+    {
+      "kind": "sql-operation",
+      "process_id": 7,
+      "backend_pid": 2214,
+      "operation": "insert",
+      "start": 51978.511079667,
+      "end": 51978.511537292,
+      "error_type": null,
+      "sqlstate": null
+    },
+    {
+      "kind": "sql-operation",
+      "process_id": 7,
+      "backend_pid": 2214,
+      "operation": "insert",
+      "start": 51978.512007,
+      "end": 51978.512366,
+      "error_type": null,
+      "sqlstate": null
+    },
+    {
+      "kind": "sql-operation",
+      "process_id": 7,
+      "backend_pid": 2214,
+      "operation": "select",
+      "start": 51978.512902083,
+      "end": 51978.513036875,
+      "error_type": null,
+      "sqlstate": null
+    },
+    {
+      "kind": "sql-operation",
+      "process_id": 7,
+      "backend_pid": 2214,
+      "operation": "run_lock",
+      "start": 51978.513288167,
+      "end": 51978.5140395,
+      "error_type": null,
+      "sqlstate": null
+    },
+    {
+      "kind": "sql-operation",
+      "process_id": 7,
+      "backend_pid": 2216,
+      "operation": "other",
+      "start": 51978.518046083,
+      "end": 51978.518253542,
+      "error_type": null,
+      "sqlstate": null
+    },
+    {
+      "kind": "sql-operation",
+      "process_id": 7,
+      "backend_pid": 2215,
+      "operation": "select",
+      "start": 51978.517663458,
+      "end": 51978.522862708,
+      "error_type": null,
+      "sqlstate": null
+    },
+    {
+      "kind": "sql-operation",
+      "process_id": 7,
+      "backend_pid": 2216,
+      "operation": "run_lock",
+      "start": 51978.518422958,
+      "end": 51980.022132001,
+      "error_type": "Error",
+      "sqlstate": "57014"
+    },
+    {
+      "kind": "run-lock-transaction",
+      "process_id": 7,
+      "backend_pid": 2214,
+      "lock_returned": 51978.514045708,
+      "transaction_end_started": 51980.022606167,
+      "outcome": "commit"
+    }
+  ],
+  "blocker_snapshot": [
+    {
+      "pid": 2214,
+      "state": "idle in transaction",
+      "wait_event_type": "Client",
+      "wait_event": "ClientRead",
+      "transaction_age_seconds": 0.009857,
+      "query_age_seconds": 0.008825,
+      "blockers": []
+    },
+    {
+      "pid": 2216,
+      "state": "active",
+      "wait_event_type": "Lock",
+      "wait_event": "transactionid",
+      "transaction_age_seconds": 0.00473,
+      "query_age_seconds": 0.004013,
+      "blockers": [
+        2214
+      ]
+    }
+  ]
+}

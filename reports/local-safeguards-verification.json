@@ -1,0 +1,65 @@
+{
+  "base_revision": "e49cfef",
+  "scope": "Optional owner gate and repeatable controlled lock capture",
+  "full_container_suite": {
+    "passed": 193,
+    "warnings": 1,
+    "seconds": 18.63
+  },
+  "host_unit_suite": {
+    "passed": 129,
+    "integration_deselected": 64
+  },
+  "owner_gate_http_smoke": {
+    "status": "PASS",
+    "checks": [
+      {
+        "path": "/health/live",
+        "authenticated": false,
+        "status": 200
+      },
+      {
+        "path": "/health/ready",
+        "authenticated": false,
+        "status": 401
+      },
+      {
+        "path": "/health/ready",
+        "authenticated": true,
+        "status": 200
+      },
+      {
+        "path": "/dashboard/",
+        "authenticated": false,
+        "status": 401
+      },
+      {
+        "path": "/dashboard/",
+        "authenticated": true,
+        "status": 200
+      }
+    ],
+    "provider_calls": 0
+  },
+  "lock_capture_manifest": "reports/lock-reproduction-manifest.json",
+  "lock_capture_summary": "reports/lock-reproduction-local-summary.json",
+  "provider_calls": 0,
+  "human_decisions_generated": 0,
+  "ruff_lint": "PASS",
+  "ruff_format": "PASS",
+  "source_sha256": {
+    "src/agenteval/access.py": "827ebfe151539aea73ca131b6672f089492d61a9be43afd4dae574430b5b1971",
+    "src/agenteval/api.py": "db19ef1ad05a6748c8867af94aa050bf7115786580b22db7794587a5d9f0ab6c",
+    "compose.private.yaml": "ee17c12e4a21c6a65b8f2345ea846e1705f261f81b04acb31c911a517002389e",
+    "scripts/create_access_token.py": "390509ed8e13af142d63ab1da52596a8a8a0e60feede6eb4f02c8ae34dcfc914",
+    "scripts/capture_lock_reproduction.py": "f39dd675113c9bbf38d849daf81f562898cc688d613185c1a00527c62a422af2",
+    "tests/test_owner_access.py": "a1d1422710de7af6b131d31cdc1b51273a6062d1fa0616b61728ec92957f7ac9",
+    "tests/test_lock_capture.py": "bbdc8760ad6e31d31d6279ce9812c355c9106b621b326a325bfebc86defde7f8",
+    "tests/integration/test_lock_diagnostics.py": "6f66fcc2f83394cad443813f9fae8c2f09dc4047a3c8dc1741d4cfdca8b5578f"
+  },
+  "limits": [
+    "Single-owner HTTP Basic is optional and requires loopback or trusted TLS; no multi-user isolation or public deployment is claimed.",
+    "The full suite preceded adding optional positive-control JSON export; the final export was exercised successfully by the reproduction bundle.",
+    "No recurrence leaves the historical lock-timeout cause unresolved."
+  ]
+}

@@ -1,6 +1,6 @@
 # Container deployment
 
-This is a controlled, local deployment. The API binds only `127.0.0.1:8011`; authentication, TLS termination, ingress limits, provider budgets, backup/restore and high availability must be supplied before public deployment. Passing simulated tests does not establish production readiness.
+This is a controlled, local deployment. The API binds only `127.0.0.1:8011`; an optional single-owner access gate is available below. TLS termination, multi-user isolation, ingress limits, provider budgets, operational backup/restore and high availability must be supplied before public deployment. Passing simulated tests does not establish production readiness.
 
 ```bash
 python scripts/compose_env.py
@@ -15,6 +15,20 @@ The credential generator preserves existing `.local/compose.env` and creates it 
 Images and dependency versions are pinned. Builds accept a public CA bundle through BuildKit secret `proxy_ca` (`AGENTEVAL_BUILD_CA`, default ignored `.local/build-ca.crt`, copied from the system bundle by the credential setup script); TLS verification stays enabled. Keeping the build-secret source inside the workspace avoids newer Bake filesystem-read entitlement failures without granting external filesystem access. Fake mode is deliberate and makes no billable calls. Live mode needs explicit provider configuration, credentials, trusted outbound TLS and budget controls; credentials must never enter an image.
 
 `docker compose ... down` stops the stack without deleting its database volume. Never add `-v` to an operational teardown unless data deletion is intended. Stop old workers/API before schema-changing releases; mixed-version workers are unsupported.
+
+## Optional single-owner access gate
+
+Run `python scripts/create_access_token.py` to generate ignored `.local/access.env` with mode 0600. It preserves an existing file and never prints the token. To enable the gate on the local fake stack, use both env files and overlay consistently:
+
+```bash
+docker compose --env-file .local/compose.env --env-file .local/access.env -f compose.yaml -f compose.private.yaml up -d --wait api worker
+```
+
+Build the current API image first. In the browser, use username `owner` and the token value from your protected local file as the password. Do not paste it into chat, commit it, put it into a URL or print resolved Compose configuration. Command clients can use `curl --user owner http://127.0.0.1:8011/health/ready`, which prompts for the password. Existing smoke scripts target the unprotected fake demonstration by default; they do not automatically read owner credentials.
+
+The gate protects API routes, schema/docs and dashboard assets before reading request bodies. Only `/health/live` remains unauthenticated, returning a static liveness response. Protected responses use `Cache-Control: no-store`; the authenticated readiness check works through the overlay. Invalid nonempty tokens fail application startup. Without `AGENTEVAL_ACCESS_TOKEN`, the legacy loopback demonstration remains open. Use only a trusted local configuration: removing the overlay/token disables protection. Rotate by replacing the token securely and restarting every API replica together; this credential has installation-wide owner access, no per-user roles or tenant isolation.
+
+HTTP Basic is appropriate here only on loopback or behind trusted TLS ingress. The gate adds no public TLS, account lifecycle, brute-force protection, distributed provider quota or production certification. It never stores Gemini keys in browser code, and it does not authorize public hosting. Keep loopback binding and complete the separate release gaps before exposing a service.
 
 ## Reproducible process benchmark
 

@@ -1,0 +1,39 @@
+{
+  "status": "CAPTURED",
+  "simulated": true,
+  "provider_calls": 0,
+  "positive_control": "Deliberate 1.5-second lock timeout; not a spontaneous recurrence.",
+  "uninjected_sweep": {
+    "jobs_per_variant": 1000,
+    "repetitions": 2,
+    "workers": [
+      4,
+      16
+    ]
+  },
+  "steps": [
+    {
+      "name": "controlled-lock-attribution",
+      "returncode": 0
+    },
+    {
+      "name": "uninjected-sweep",
+      "returncode": 0
+    },
+    {
+      "name": "summary",
+      "returncode": 0
+    }
+  ],
+  "source_sha256": {
+    "scripts/capture_lock_reproduction.py": "f39dd675113c9bbf38d849daf81f562898cc688d613185c1a00527c62a422af2",
+    "tests/integration/test_lock_diagnostics.py": "6f66fcc2f83394cad443813f9fae8c2f09dc4047a3c8dc1741d4cfdca8b5578f",
+    "src/agenteval/diagnostics.py": "2684e6b796c52d8d417fa62cd34ef6aaa9c651dde43b68bc31c290aa3ddf8c9c",
+    "src/agenteval/platform_benchmark.py": "c456c303334e62e138077d40cd0cda8427b554429a9a6e9b4e6c2ef618387479"
+  },
+  "limitations": [
+    "No recurrence leaves the historical root cause unresolved.",
+    "Run on comparable controlled hardware with WAL I/O timing enabled and no concurrent workload.",
+    "Cluster-wide WAL counters and sampled wait graphs cannot attribute one transaction's storage delay."
+  ]
+}
