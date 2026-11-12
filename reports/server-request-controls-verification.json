@@ -1,0 +1,169 @@
+{
+  "base_revision": "a4bd284",
+  "scope": "Persistent private single-host SDK admission controls, verified offline",
+  "full_container_suite": {
+    "passed": 211,
+    "warnings": 1,
+    "seconds": 19.69
+  },
+  "host_unit_suite": {
+    "passed": 147,
+    "integration_deselected": 64,
+    "warnings": 2,
+    "seconds": 1.55
+  },
+  "ruff_lint": "PASS",
+  "ruff_format": "PASS",
+  "real_provider_requests": 0,
+  "live_activation_performed": false,
+  "cloud_resources_created": 0,
+  "remote_deployment_performed": false,
+  "shared_container_rehearsal": {
+    "status": "PASS",
+    "scope": "Synthetic fake-provider calls through budget wrapper in two separate containers sharing one persistent volume",
+    "real_provider_calls": 0,
+    "api_after_first": {
+      "attempt_ceiling": 2,
+      "requests_per_minute": 100,
+      "concurrency": 1,
+      "attempts_reserved": 1,
+      "active_or_uncertain": 0,
+      "attempts_remaining": 1
+    },
+    "worker_after_second": {
+      "attempt_ceiling": 2,
+      "requests_per_minute": 100,
+      "concurrency": 1,
+      "attempts_reserved": 2,
+      "active_or_uncertain": 0,
+      "attempts_remaining": 0
+    },
+    "third_admission": "provider_budget_exhausted"
+  },
+  "tls_rehearsal": {
+    "status": "PASS",
+    "TLS_verification_enabled": true,
+    "provider_calls": 0,
+    "checks": [
+      "trusted TLS",
+      "owner gate",
+      "dashboard",
+      "32-KiB body bound",
+      "simulated provider",
+      "untrusted CA rejected"
+    ],
+    "portfolio": {
+      "status": "PASS",
+      "recorded_at_utc": "2026-11-12T03:42:32.570062+00:00",
+      "simulated": true,
+      "live_provider_calls": 0,
+      "dataset_id": "1bc79b1e-577d-41b2-9033-10c72f2985db",
+      "runs": [
+        {
+          "label": "baseline",
+          "run_id": "19383467-ec56-4685-9cd7-b83cbe7486b0",
+          "accepted_results": 2
+        },
+        {
+          "label": "candidate",
+          "run_id": "d6ee37c4-4fa2-498f-982e-5d323e8753ed",
+          "accepted_results": 2
+        }
+      ],
+      "comparison": {
+        "outcome": "PASS",
+        "paired_cases": 2,
+        "reasons": [],
+        "policy": {
+          "max_pass_rate_drop": 0.05,
+          "max_correctness_drop": 0.25,
+          "min_cases": 1,
+          "max_latency_ratio": null,
+          "max_token_ratio": null
+        },
+        "simulated": true,
+        "metrics": {
+          "baseline_pass_rate": 1.0,
+          "candidate_pass_rate": 1.0,
+          "baseline_correctness": 2.0,
+          "candidate_correctness": 2.0,
+          "baseline_latency_ms": 0.043958501919405535,
+          "candidate_latency_ms": 0.02260400287923403
+        }
+      },
+      "checks": [
+        "fake-provider preflight",
+        "idempotent replay",
+        "queued completion",
+        "comparison"
+      ],
+      "limits": [
+        "Four accepted simulated results; not accuracy or throughput evidence.",
+        "Repeated demos retain their own runs; no data is deleted.",
+        "Human labels, live RAG, crash recovery and public safeguards are separate evidence."
+      ]
+    }
+  },
+  "encrypted_database_and_ledger_backup": {
+    "status": "VERIFIED_LOCAL_RESTORE",
+    "project": "agenteval-budget-check",
+    "provider_calls": 0,
+    "started_at_utc": "2026-11-12T03:42:32.815649+00:00",
+    "scope": "Quiesced PostgreSQL dump, encrypted locally, restored into a new temporary database for count/schema checks. No offsite or host-loss claim.",
+    "snapshot_counts": {
+      "datasets": 1,
+      "runs": 2,
+      "jobs": 4,
+      "results": 4,
+      "documents": 0,
+      "chunks": 0,
+      "migration": "0004"
+    },
+    "plaintext_sha256": "2f927f42e358ac3cf7616147732ac52f4c282304e3f08322cb3645e2f129e883",
+    "encrypted_sha256": "558bc96b11ff91655f4e6603556e1eaf51238a48035141d2df4cd1cac1aca7f8",
+    "encrypted_bytes": 35340,
+    "budget_snapshot_configured": true,
+    "budget_snapshot_sha256": "6bbd7ce9c2797995c0dfead33511528b8d91465890cbd6e5a8997e2e44be16f1",
+    "budget_snapshot_note": "Retained as minimum known history only; never roll back an allowance without reconciling post-snapshot usage. Not automatically restored.",
+    "restored_counts": {
+      "datasets": 1,
+      "runs": 2,
+      "jobs": 4,
+      "results": 4,
+      "documents": 0,
+      "chunks": 0,
+      "migration": "0004"
+    },
+    "finished_at_utc": "2026-11-12T03:42:36.094847+00:00"
+  },
+  "post_backup_readiness": {
+    "status": "PASS",
+    "TLS_verification_enabled": true,
+    "provider_calls": 0,
+    "checks": [
+      "trusted TLS",
+      "owner gate",
+      "dashboard",
+      "32-KiB body bound",
+      "simulated provider",
+      "untrusted CA rejected"
+    ]
+  },
+  "source_sha256": {
+    "src/agenteval/server_budget.py": "15865294933fab65fa01b0a1857a3c73cea16c4b4252b094b782e97bd58557a9",
+    "src/agenteval/runtime.py": "f3d5fa5dce3c6e14ed6d86ac014e3f82b562d19a333e7128647618e5e5151866",
+    "src/agenteval/api.py": "aad7ebab7a29cb7aa26a3cb8b68b70b5b26e35860729de2cf46a04f5c3612221",
+    "compose.server.yaml": "5657a7f4268460804faa5abc0b2b2671f3fcd4d5e6f370f1373525e34cc58968",
+    "compose.server-live.yaml": "6a52ddeaca66d8eb9d03e0877f2ae182d7fa7c649b2ead5d5bac91694ac594d9",
+    "Dockerfile": "25b33ce97bd423fa1c3b9ec61eeaaa0c58ad38db9effafbf2f2e4e0e62c1012c",
+    "scripts/backup_private_server.py": "4980ef4767317f592a6e0fe250f993207bfc19323b56c21e8eb04a3f09b1015d",
+    "scripts/private_server_smoke.py": "259dec2a68d1066911d342a7ad28c62c4d035f304f3803a5548837ab93a0061c",
+    "tests/test_server_budget.py": "9ea571e2b4d13cec0c321a3903cd72dc0bdaab5ce2eef8dea95d3b2bc1c7ae6e"
+  },
+  "limits": [
+    "Admission controls cover replicas sharing one local Docker volume, not multiple hosts or outside tools using the same key.",
+    "An attempt ceiling is not a monetary cost cap or provider quota/free-tier certification.",
+    "Unknown external outcomes remain possible; uncertain reservations require explicit operator reconciliation without refund.",
+    "No live-key/provider quota test was performed."
+  ]
+}

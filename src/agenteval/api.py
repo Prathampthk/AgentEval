@@ -3,6 +3,7 @@
 import asyncio
 import json
 import logging
+import math
 import os
 from contextlib import asynccontextmanager
 from pathlib import Path
@@ -34,6 +35,22 @@ from agenteval.runtime import provider_context
 from agenteval.service import evaluate
 
 logger = logging.getLogger("agenteval")
+
+
+def provider_http_status(exc):
+    if exc.category in {"provider_budget_exhausted", "provider_rate_limited", "provider_capacity"}:
+        return 429
+    if exc.category == "provider_budget_unavailable":
+        return 503
+    return 504 if exc.category == "timeout" else 502
+
+
+def provider_retry_headers(exc):
+    return (
+        {"Retry-After": str(max(1, math.ceil(exc.retry_after_seconds)))}
+        if exc.retry_after_seconds is not None
+        else {}
+    )
 
 
 class ComparisonRequest(StrictModel):
@@ -181,8 +198,9 @@ def create_app(
         except ProviderError as exc:
             logger.warning('{"event":"provider_failure","category":"%s"}', exc.category)
             raise HTTPException(
-                504 if exc.category == "timeout" else 502,
+                provider_http_status(exc),
                 {"category": exc.category, "retryable": exc.retryable},
+                headers=provider_retry_headers(exc),
             ) from None
 
     @app.post("/datasets", response_model=DatasetView, status_code=201)
@@ -265,7 +283,8 @@ def create_app(
     async def provider_failure(request, exc):
         return JSONResponse(
             {"detail": {"category": exc.category, "retryable": exc.retryable}},
-            status_code=504 if exc.category == "timeout" else 502,
+            status_code=provider_http_status(exc),
+            headers=provider_retry_headers(exc),
         )
 
     @app.post("/documents", status_code=201)

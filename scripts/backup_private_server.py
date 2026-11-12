@@ -1,6 +1,7 @@
 """Encrypted private-server snapshot with isolated restore verification; never restore over app data."""
 
 import argparse
+import base64
 import fcntl
 import hashlib
 import json
@@ -76,8 +77,8 @@ def _backup(project, output, key_path):
             ]
         )
     )
-    if actual != {"private": "1", "provider": "fake"}:
-        raise ValueError("Running API does not match private simulated profile")
+    if actual.get("private") != "1" or actual.get("provider") not in {"fake", "gemini"}:
+        raise ValueError("Running API does not match private server profile")
     output.mkdir(parents=True, exist_ok=False, mode=0o700)
     if not key_path.exists():
         key_path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
@@ -129,6 +130,33 @@ def _backup(project, output, key_path):
                 encrypted_bytes=len(encrypted),
             )
             checkpoint()
+            budget_snapshot = json.loads(
+                run(
+                    [
+                        "run",
+                        "--rm",
+                        "--no-deps",
+                        "-T",
+                        "api",
+                        "python",
+                        "-m",
+                        "agenteval.server_budget",
+                        "snapshot",
+                    ]
+                )
+            )
+            report["budget_snapshot_configured"] = budget_snapshot["configured"]
+            if budget_snapshot["configured"]:
+                budget_raw = base64.b64decode(budget_snapshot["sqlite_base64"], validate=True)
+                budget_encrypted = encrypt_snapshot(
+                    budget_raw, key, output / "provider-budget.sqlite3.fernet"
+                )
+                if Fernet(key).decrypt(budget_encrypted) != budget_raw:
+                    raise ValueError("Budget snapshot encryption round trip failed")
+                report["budget_snapshot_sha256"] = hashlib.sha256(budget_raw).hexdigest()
+                report["budget_snapshot_note"] = (
+                    "Retained as minimum known history only; never roll back an allowance without reconciling post-snapshot usage. Not automatically restored."
+                )
         finally:
             # Restart existing containers only; never rebuild/recreate while restoring availability.
             run(["start", "api", "worker"])

@@ -5,11 +5,17 @@ services:
     environment:
       AGENTEVAL_PROVIDER: fake
       AGENTEVAL_PRIVATE_SERVER: '1'
+      AGENTEVAL_SERVER_BUDGET_DB: /budgets/provider.sqlite3
+    volumes:
+      - provider-budget:/budgets
   worker:
     environment:
       AGENTEVAL_PROVIDER: fake
       AGENTEVAL_PRIVATE_SERVER: '1'
       AGENTEVAL_WORKER_CONCURRENCY: '1'
+      AGENTEVAL_SERVER_BUDGET_DB: /budgets/provider.sqlite3
+    volumes:
+      - provider-budget:/budgets
   proxy:
     image: agenteval-private-proxy:local
     build:
@@ -34,3 +40,4 @@ services:
 volumes:
   proxy-data:
   proxy-config:
+  provider-budget:

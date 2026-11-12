@@ -85,10 +85,8 @@ def check(project, port, *, read_only=False):
         request("/health/live", authenticated=False, expected=200)
         request("/health/ready", authenticated=False, expected=401)
         ready = request("/health/ready", expected=200)
-        if (
-            ready["provider"] != "fake"
-            or ready["simulated"] is not True
-            or ready["database"] != "ready"
+        if ready["database"] != "ready" or (
+            not read_only and (ready["provider"] != "fake" or ready["simulated"] is not True)
         ):
             raise ValueError("Private preview must use a ready simulated provider")
         request("/dashboard/", authenticated=False, expected=401)

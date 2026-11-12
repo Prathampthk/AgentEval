@@ -84,7 +84,8 @@ async def test_private_server_blocks_live_provider_before_client_creation(monkey
     monkeypatch.setenv("AGENTEVAL_PRIVATE_SERVER", "1")
     monkeypatch.setenv("AGENTEVAL_PROVIDER", "gemini")
     monkeypatch.delenv("GEMINI_API_KEY", raising=False)
-    with pytest.raises(RuntimeError, match="requires a simulated provider"):
+    monkeypatch.delenv("AGENTEVAL_SERVER_BUDGET_DB", raising=False)
+    with pytest.raises(RuntimeError, match="requires a configured persistent request budget"):
         async with provider_context():
             pytest.fail("Live provider must not start")
     async with provider_context(FakeProvider()) as provider:

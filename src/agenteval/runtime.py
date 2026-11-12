@@ -1,5 +1,6 @@
 """Shared provider wiring for the API and worker entry points."""
 
+import asyncio
 import os
 from contextlib import asynccontextmanager
 
@@ -17,6 +18,7 @@ async def connection_timeout_bounds(request):
 
 @asynccontextmanager
 async def provider_context(provided=None, timeout_seconds=30, judge_prompt_version=None):
+    budget = None
     if os.getenv("AGENTEVAL_PRIVATE_SERVER") == "1":
         simulated = (
             provided.simulated
@@ -24,9 +26,15 @@ async def provider_context(provided=None, timeout_seconds=30, judge_prompt_versi
             else os.getenv("AGENTEVAL_PROVIDER", "fake") == "fake"
         )
         if not simulated:
-            raise RuntimeError(
-                "Private server profile requires a simulated provider until shared live-request controls are configured"
-            )
+            from agenteval.server_budget import ServerBudget
+
+            path = os.getenv("AGENTEVAL_SERVER_BUDGET_DB")
+            if not path:
+                raise RuntimeError(
+                    "Private live provider requires a configured persistent request budget"
+                )
+            budget = ServerBudget(path)
+            await asyncio.to_thread(budget.validate)
     client = None
     selected = provided
     if selected is None:
@@ -58,6 +66,10 @@ async def provider_context(provided=None, timeout_seconds=30, judge_prompt_versi
             selected = GeminiProvider(client, model, judge_prompt_version=version)
         else:
             raise RuntimeError("AGENTEVAL_PROVIDER must be fake or gemini")
+    if budget is not None:
+        from agenteval.server_budget import BudgetProvider
+
+        selected = BudgetProvider(selected, budget)
     try:
         yield selected
     finally:

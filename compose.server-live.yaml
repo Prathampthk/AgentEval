@@ -1,0 +1,12 @@
+# Use only after the three private-server files AND explicit request-budget approval.
+# Configure the persistent budget with the simulated profile before enabling this overlay.
+services:
+  api:
+    environment: &private_live
+      AGENTEVAL_PROVIDER: gemini
+      AGENTEVAL_MODEL: ${AGENTEVAL_MODEL:?Choose a model after budget approval}
+      AGENTEVAL_EMBEDDING_MODEL: ${AGENTEVAL_EMBEDDING_MODEL:-gemini-embedding-001}
+      AGENTEVAL_JUDGE_PROMPT: ${AGENTEVAL_JUDGE_PROMPT:-candidate-v2}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:?Provide a key privately after approval}
+  worker:
+    environment: *private_live

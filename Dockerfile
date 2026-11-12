@@ -26,6 +26,7 @@ COPY deploy/ ./deploy/
 COPY reports/judge_validation.json ./reports/judge_validation.json
 COPY --from=frontend /build/dist/ ./frontend/dist/
 RUN chmod -R a+rX /app && groupadd --gid 10001 agenteval && useradd --uid 10001 --gid 10001 --no-create-home agenteval
+RUN mkdir /budgets && chown 10001:10001 /budgets && chmod 700 /budgets
 USER 10001:10001
 CMD ["uvicorn", "agenteval.api:app", "--host", "0.0.0.0", "--port", "8000", "--no-proxy-headers", "--limit-concurrency", "64", "--backlog", "128"]
 
