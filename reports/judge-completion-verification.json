@@ -1,0 +1,27 @@
+{
+  "base_revision": "5c11fdb",
+  "scope": "Completion of predeclared response-level judge study and fifty-pair dashboard",
+  "new_judge_requests": 30,
+  "responses_saved": 30,
+  "automatic_retries": false,
+  "source_and_frozen_label_hashes": "MATCH",
+  "selection_checks": "All fifty source IDs occur exactly once; remaining batches match the predeclared disjoint plans",
+  "judge_analysis_and_contract_tests": {
+    "passed": 8
+  },
+  "frontend_format": "PASS",
+  "frontend_build": "PASS",
+  "packaged_browser_workflow": {
+    "passed": 1,
+    "seconds": 3.1,
+    "provider": "fake",
+    "scope": "Queue completion, comparison and fifty paired study decisions displayed"
+  },
+  "backend_verification_reference": "reports/private-server-verification.json",
+  "backend_source_changed_for_completion": false,
+  "data_sha256": {
+    "reports/live-judge-candidate-v2-all50.json": "039de094dee14f7ee7770bcc4104ccb4d40e86451179bed101c096479e5feb74",
+    "reports/judge_validation.json": "374af41d0ae212566edeaa8977baee30d2eb6b40119a6655a3e421eaa498d5e6",
+    "reports/judge-completion-provenance.json": "a30f99a65b93f256cb39a738b55f490c84651b4427082426c8e9cdee384bcb64"
+  }
+}

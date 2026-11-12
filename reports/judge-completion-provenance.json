@@ -1,0 +1,22 @@
+{
+  "status": "COMPLETED",
+  "collection_plan": "reports/judge-remaining-validation-plan.json",
+  "authorized_new_attempt_ceiling": 30,
+  "new_requests_started": 30,
+  "new_responses_saved": 30,
+  "automatic_retries": false,
+  "human_labels_generated": 0,
+  "source_sha256": "e4488704bf763bbee07d71964a20399008c34df088ea151d02f1f36f89ef86bd",
+  "labels_sha256": "764d7e4b36f52bd46a3cb83c9ac2aa1f5da93ec2ddc5917084c96859f1d61e63",
+  "saved_new_response_usage": {
+    "input_tokens": 10172,
+    "output_tokens": 1638
+  },
+  "usage_scope": "Successful saved judgment responses only; not monetary cost or remaining quota.",
+  "batch_metadata": [
+    "reports/live-judge-remaining-batch-20.meta.json",
+    "reports/live-judge-remaining-batch-30.meta.json",
+    "reports/live-judge-remaining-batch-40.meta.json"
+  ],
+  "prediction_sha256": "133a2892b08f5fbe61e77f78ebe7577bbd8323c0fcf9288cce3e36e57a8e9230"
+}

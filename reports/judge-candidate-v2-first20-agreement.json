@@ -1,0 +1,30 @@
+{
+  "status": "MEASURED",
+  "positive_class": "quality_pass",
+  "example_count": 50,
+  "human_labeled": 50,
+  "paired_count": 20,
+  "simulated_judge": false,
+  "judge_prompt_version": "candidate-v2",
+  "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+  "confusion_matrix": {
+    "tp": 5,
+    "tn": 15,
+    "fp": 0,
+    "fn": 0
+  },
+  "agreement": 1.0,
+  "precision": 1.0,
+  "recall": 1.0,
+  "false_positive_rate": 0.0,
+  "false_negative_rate": 0.0,
+  "disagreements": [],
+  "limitation": "A small controlled sample is not representative of all LLM applications.",
+  "scope": "10 development responses and 10 response-level holdout responses. Questions can overlap.",
+  "sample_reports": {
+    "development": "reports/judge-candidate-v2-agreement.json",
+    "holdout": "reports/judge-holdout-agreement.json",
+    "baseline_v1": "reports/judge-baseline-v1-agreement.json"
+  },
+  "unpaired_labeled_examples": 30
+}

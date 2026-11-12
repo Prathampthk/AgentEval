@@ -3,13 +3,13 @@
   "positive_class": "quality_pass",
   "example_count": 50,
   "human_labeled": 50,
-  "paired_count": 20,
+  "paired_count": 50,
   "simulated_judge": false,
   "judge_prompt_version": "candidate-v2",
   "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
   "confusion_matrix": {
-    "tp": 5,
-    "tn": 15,
+    "tp": 10,
+    "tn": 40,
     "fp": 0,
     "fn": 0
   },
@@ -20,11 +20,13 @@
   "false_negative_rate": 0.0,
   "disagreements": [],
   "limitation": "A small controlled sample is not representative of all LLM applications.",
-  "scope": "10 development responses and 10 response-level holdout responses. Questions can overlap.",
+  "scope": "10 development responses and 40 response-level validation responses (10 earlier holdout plus 30 predeclared remaining responses). Underlying questions overlap; ten-question convenience sample.",
   "sample_reports": {
     "development": "reports/judge-candidate-v2-agreement.json",
-    "holdout": "reports/judge-holdout-agreement.json",
+    "earlier_holdout": "reports/judge-holdout-agreement.json",
+    "remaining": "reports/judge-remaining-candidate-v2-agreement.json",
+    "validation40": "reports/judge-candidate-v2-validation40-agreement.json",
     "baseline_v1": "reports/judge-baseline-v1-agreement.json"
   },
-  "unpaired_labeled_examples": 30
+  "unpaired_labeled_examples": 0
 }

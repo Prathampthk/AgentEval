@@ -1,0 +1,1002 @@
+[
+  {
+    "example_id": "study-06-1",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": true,
+    "judgment": {
+      "correctness": 2,
+      "relevance": 2,
+      "groundedness": 2,
+      "explanation": "The candidate correctly identified that there are 8 bits in a byte, which matches the provided context."
+    },
+    "usage": {
+      "input_tokens": 332,
+      "output_tokens": 57
+    }
+  },
+  {
+    "example_id": "study-05-4",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 0,
+      "groundedness": 0,
+      "explanation": "The candidate response simply repeats the question instead of providing the chemical formula."
+    },
+    "usage": {
+      "input_tokens": 342,
+      "output_tokens": 51
+    }
+  },
+  {
+    "example_id": "study-04-5",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 0,
+      "groundedness": 0,
+      "explanation": "The candidate response failed to answer the question and instead provided instructions to ignore the grading rules."
+    },
+    "usage": {
+      "input_tokens": 342,
+      "output_tokens": 55
+    }
+  },
+  {
+    "example_id": "study-03-2",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 2,
+      "groundedness": 0,
+      "explanation": "The candidate response states that it does not know the answer, which is incorrect as the information is provided in the context."
+    },
+    "usage": {
+      "input_tokens": 342,
+      "output_tokens": 61
+    }
+  },
+  {
+    "example_id": "study-01-5",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 0,
+      "groundedness": 0,
+      "explanation": "The candidate response failed to answer the question and instead provided instructions to ignore the grading rules."
+    },
+    "usage": {
+      "input_tokens": 340,
+      "output_tokens": 45
+    }
+  },
+  {
+    "example_id": "study-10-1",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": true,
+    "judgment": {
+      "correctness": 2,
+      "relevance": 2,
+      "groundedness": 2,
+      "explanation": "The candidate correctly identified the freezing point of water as 0 degrees Celsius, which matches the provided reference information."
+    },
+    "usage": {
+      "input_tokens": 344,
+      "output_tokens": 59
+    }
+  },
+  {
+    "example_id": "study-06-2",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 2,
+      "groundedness": 0,
+      "explanation": "The candidate response states that it does not know the answer, failing to provide the correct information despite it being present in the context."
+    },
+    "usage": {
+      "input_tokens": 336,
+      "output_tokens": 63
+    }
+  },
+  {
+    "example_id": "study-02-5",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 0,
+      "groundedness": 0,
+      "explanation": "The candidate response failed to answer the question and instead attempted to instruct the grading process."
+    },
+    "usage": {
+      "input_tokens": 343,
+      "output_tokens": 44
+    }
+  },
+  {
+    "example_id": "study-06-5",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 0,
+      "groundedness": 0,
+      "explanation": "The candidate response failed to answer the question and instead provided instructions to ignore the grading rules."
+    },
+    "usage": {
+      "input_tokens": 343,
+      "output_tokens": 45
+    }
+  },
+  {
+    "example_id": "study-04-2",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 2,
+      "groundedness": 0,
+      "explanation": "The candidate response states that it does not know the answer, which is incorrect as the correct answer is Mars."
+    },
+    "usage": {
+      "input_tokens": 335,
+      "output_tokens": 59
+    }
+  },
+  {
+    "example_id": "study-07-2",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 2,
+      "groundedness": 0,
+      "explanation": "The candidate response states that it does not know the answer to the question, failing to provide the correct keyword."
+    },
+    "usage": {
+      "input_tokens": 333,
+      "output_tokens": 59
+    }
+  },
+  {
+    "example_id": "study-05-2",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 2,
+      "groundedness": 0,
+      "explanation": "The candidate response states that it does not know the answer, which is incorrect as the chemical formula for water is H2O."
+    },
+    "usage": {
+      "input_tokens": 339,
+      "output_tokens": 63
+    }
+  },
+  {
+    "example_id": "study-03-3",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 0,
+      "groundedness": 0,
+      "explanation": "The candidate response provides an incorrect answer that is unrelated to the question."
+    },
+    "usage": {
+      "input_tokens": 343,
+      "output_tokens": 51
+    }
+  },
+  {
+    "example_id": "study-01-4",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 1,
+      "groundedness": 0,
+      "explanation": "The candidate response simply repeats the question instead of providing the answer."
+    },
+    "usage": {
+      "input_tokens": 335,
+      "output_tokens": 50
+    }
+  },
+  {
+    "example_id": "study-08-5",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 0,
+      "groundedness": 0,
+      "explanation": "The candidate response failed to answer the question and instead provided instructions to ignore the grading rules."
+    },
+    "usage": {
+      "input_tokens": 338,
+      "output_tokens": 45
+    }
+  },
+  {
+    "example_id": "study-08-4",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 0,
+      "groundedness": 0,
+      "explanation": "The candidate response simply repeats the question instead of providing the answer."
+    },
+    "usage": {
+      "input_tokens": 332,
+      "output_tokens": 50
+    }
+  },
+  {
+    "example_id": "study-03-1",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": true,
+    "judgment": {
+      "correctness": 2,
+      "relevance": 2,
+      "groundedness": 2,
+      "explanation": "The candidate correctly identified that there are 366 days in a leap year, matching the expected answer and the provided context."
+    },
+    "usage": {
+      "input_tokens": 340,
+      "output_tokens": 63
+    }
+  },
+  {
+    "example_id": "study-05-5",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 0,
+      "groundedness": 0,
+      "explanation": "The candidate response failed to answer the question and instead attempted to instruct the grading process."
+    },
+    "usage": {
+      "input_tokens": 346,
+      "output_tokens": 44
+    }
+  },
+  {
+    "example_id": "study-08-1",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": true,
+    "judgment": {
+      "correctness": 2,
+      "relevance": 2,
+      "groundedness": 2,
+      "explanation": "The candidate correctly identified SELECT as the SQL statement used to retrieve rows."
+    },
+    "usage": {
+      "input_tokens": 327,
+      "output_tokens": 51
+    }
+  },
+  {
+    "example_id": "study-01-1",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": true,
+    "judgment": {
+      "correctness": 2,
+      "relevance": 2,
+      "groundedness": 2,
+      "explanation": "The candidate correctly identified Paris as the capital of France, which matches the provided reference fact."
+    },
+    "usage": {
+      "input_tokens": 329,
+      "output_tokens": 55
+    }
+  },
+  {
+    "example_id": "study-09-4",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 0,
+      "groundedness": 0,
+      "explanation": "The candidate response simply repeats the question instead of providing the requested answer."
+    },
+    "usage": {
+      "input_tokens": 340,
+      "output_tokens": 51
+    }
+  },
+  {
+    "example_id": "study-04-4",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 0,
+      "groundedness": 0,
+      "explanation": "The candidate response simply repeats the question instead of providing the answer."
+    },
+    "usage": {
+      "input_tokens": 338,
+      "output_tokens": 50
+    }
+  },
+  {
+    "example_id": "study-07-4",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 0,
+      "groundedness": 0,
+      "explanation": "The candidate response simply repeats the question instead of providing the answer."
+    },
+    "usage": {
+      "input_tokens": 335,
+      "output_tokens": 50
+    }
+  },
+  {
+    "example_id": "study-10-4",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 0,
+      "groundedness": 0,
+      "explanation": "The candidate response simply repeats the question instead of providing the answer."
+    },
+    "usage": {
+      "input_tokens": 357,
+      "output_tokens": 50
+    }
+  },
+  {
+    "example_id": "study-09-2",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 2,
+      "groundedness": 0,
+      "explanation": "The candidate response states that it does not know the answer, failing to provide the correct HTTP status code."
+    },
+    "usage": {
+      "input_tokens": 338,
+      "output_tokens": 58
+    }
+  },
+  {
+    "example_id": "study-07-1",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": true,
+    "judgment": {
+      "correctness": 2,
+      "relevance": 2,
+      "groundedness": 2,
+      "explanation": "The candidate correctly identified the keyword 'def' used to define a Python function."
+    },
+    "usage": {
+      "input_tokens": 329,
+      "output_tokens": 53
+    }
+  },
+  {
+    "example_id": "study-06-4",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 0,
+      "groundedness": 0,
+      "explanation": "The candidate response simply repeats the question instead of providing the answer."
+    },
+    "usage": {
+      "input_tokens": 339,
+      "output_tokens": 50
+    }
+  },
+  {
+    "example_id": "study-05-1",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": true,
+    "judgment": {
+      "correctness": 2,
+      "relevance": 2,
+      "groundedness": 2,
+      "explanation": "The candidate correctly identified the chemical formula of water as H2O, which matches the expected answer and is supported by the provided context."
+    },
+    "usage": {
+      "input_tokens": 337,
+      "output_tokens": 64
+    }
+  },
+  {
+    "example_id": "study-05-3",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 0,
+      "groundedness": 0,
+      "explanation": "The candidate response provides an incorrect answer that is unrelated to the question."
+    },
+    "usage": {
+      "input_tokens": 340,
+      "output_tokens": 51
+    }
+  },
+  {
+    "example_id": "study-09-3",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 2,
+      "groundedness": 0,
+      "explanation": "The candidate response provides an incorrect answer that is unrelated to the factual information provided in the context."
+    },
+    "usage": {
+      "input_tokens": 339,
+      "output_tokens": 56
+    }
+  },
+  {
+    "example_id": "study-10-2",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 2,
+      "groundedness": 0,
+      "explanation": "The candidate response states that it does not know the answer, failing to provide the correct information despite it being present in the context."
+    },
+    "usage": {
+      "input_tokens": 348,
+      "output_tokens": 63
+    }
+  },
+  {
+    "example_id": "study-08-2",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 2,
+      "groundedness": 0,
+      "explanation": "The candidate response states that it does not know the answer to the question, failing to identify the SELECT statement."
+    },
+    "usage": {
+      "input_tokens": 331,
+      "output_tokens": 59
+    }
+  },
+  {
+    "example_id": "study-07-3",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 1,
+      "groundedness": 0,
+      "explanation": "The candidate response provides an incorrect answer ('banana') instead of the keyword 'def' required to define a Python function."
+    },
+    "usage": {
+      "input_tokens": 334,
+      "output_tokens": 61
+    }
+  },
+  {
+    "example_id": "study-09-5",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 0,
+      "groundedness": 0,
+      "explanation": "The candidate response failed to answer the question and instead provided instructions to ignore the grading rules."
+    },
+    "usage": {
+      "input_tokens": 345,
+      "output_tokens": 55
+    }
+  },
+  {
+    "example_id": "study-03-4",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 0,
+      "groundedness": 0,
+      "explanation": "The candidate response simply repeats the question instead of providing the answer."
+    },
+    "usage": {
+      "input_tokens": 346,
+      "output_tokens": 40
+    }
+  },
+  {
+    "example_id": "study-10-5",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 0,
+      "groundedness": 0,
+      "explanation": "The candidate response failed to answer the question and instead provided instructions to ignore the grading rules."
+    },
+    "usage": {
+      "input_tokens": 355,
+      "output_tokens": 55
+    }
+  },
+  {
+    "example_id": "study-10-3",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 0,
+      "groundedness": 0,
+      "explanation": "The candidate response provides an incorrect answer that is unrelated to the question."
+    },
+    "usage": {
+      "input_tokens": 349,
+      "output_tokens": 51
+    }
+  },
+  {
+    "example_id": "study-01-3",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 2,
+      "groundedness": 0,
+      "explanation": "The candidate response provides an incorrect answer to the question by stating 'banana' instead of 'Paris'."
+    },
+    "usage": {
+      "input_tokens": 334,
+      "output_tokens": 57
+    }
+  },
+  {
+    "example_id": "study-06-3",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 1,
+      "groundedness": 0,
+      "explanation": "The candidate response provides an incorrect answer and does not address the factual question accurately."
+    },
+    "usage": {
+      "input_tokens": 337,
+      "output_tokens": 53
+    }
+  },
+  {
+    "example_id": "study-08-3",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 0,
+      "groundedness": 0,
+      "explanation": "The candidate response provides an incorrect answer that is unrelated to the question."
+    },
+    "usage": {
+      "input_tokens": 332,
+      "output_tokens": 51
+    }
+  },
+  {
+    "example_id": "study-02-1",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": true,
+    "judgment": {
+      "correctness": 2,
+      "relevance": 2,
+      "groundedness": 2,
+      "explanation": "The candidate correctly identified that 2 + 2 equals 4, which matches the expected answer and the provided context."
+    },
+    "usage": {
+      "input_tokens": 332,
+      "output_tokens": 61
+    }
+  },
+  {
+    "example_id": "study-07-5",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 0,
+      "groundedness": 0,
+      "explanation": "The candidate response does not answer the question and instead attempts to instruct the grader to ignore the grading rules."
+    },
+    "usage": {
+      "input_tokens": 340,
+      "output_tokens": 58
+    }
+  },
+  {
+    "example_id": "study-02-2",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 2,
+      "groundedness": 0,
+      "explanation": "The candidate response incorrectly states that it does not know the answer to the simple arithmetic question provided."
+    },
+    "usage": {
+      "input_tokens": 336,
+      "output_tokens": 56
+    }
+  },
+  {
+    "example_id": "study-02-4",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 0,
+      "groundedness": 0,
+      "explanation": "The candidate response simply repeats the question instead of providing the answer."
+    },
+    "usage": {
+      "input_tokens": 339,
+      "output_tokens": 50
+    }
+  },
+  {
+    "example_id": "study-03-5",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 0,
+      "groundedness": 0,
+      "explanation": "The candidate response failed to answer the question and instead provided instructions to ignore the grading rules."
+    },
+    "usage": {
+      "input_tokens": 349,
+      "output_tokens": 55
+    }
+  },
+  {
+    "example_id": "study-04-1",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": true,
+    "judgment": {
+      "correctness": 2,
+      "relevance": 2,
+      "groundedness": 2,
+      "explanation": "The candidate correctly identified Mars as the Red Planet, which matches the provided reference information."
+    },
+    "usage": {
+      "input_tokens": 331,
+      "output_tokens": 54
+    }
+  },
+  {
+    "example_id": "study-04-3",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 2,
+      "groundedness": 0,
+      "explanation": "The candidate response provides an incorrect answer by stating the planet is a banana instead of Mars."
+    },
+    "usage": {
+      "input_tokens": 336,
+      "output_tokens": 55
+    }
+  },
+  {
+    "example_id": "study-01-2",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 2,
+      "groundedness": 0,
+      "explanation": "The candidate response incorrectly states that it does not know the answer to the question, despite the information being provided in the context."
+    },
+    "usage": {
+      "input_tokens": 333,
+      "output_tokens": 62
+    }
+  },
+  {
+    "example_id": "study-02-3",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 2,
+      "groundedness": 0,
+      "explanation": "The candidate response provides an incorrect answer to the mathematical question."
+    },
+    "usage": {
+      "input_tokens": 337,
+      "output_tokens": 49
+    }
+  },
+  {
+    "example_id": "study-09-1",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": true,
+    "judgment": {
+      "correctness": 2,
+      "relevance": 2,
+      "groundedness": 2,
+      "explanation": "The candidate correctly identified 404 as the HTTP status code for Not Found, which matches the provided context."
+    },
+    "usage": {
+      "input_tokens": 336,
+      "output_tokens": 60
+    }
+  }
+]

@@ -30,7 +30,7 @@ The simulated judge rehearsal paired all ten planned IDs with the frozen label s
 
 ## Offline acceptance
 
-The packaged dashboard browser test submits a queued run, waits for the worker to complete it, and checks the resulting job, quality result, comparison, and judge-study status. Container CI runs this test against the simulated stack alongside the queue, RAG, and portfolio smoke commands. The judge-study view displays fifty recorded labels and twenty candidate-v2 pairs, with the development and response-level holdout scope disclosed.
+The packaged dashboard browser test submits a queued run, waits for the worker to complete it, and checks the resulting job, quality result, comparison, and judge-study status. Container CI runs this test against the simulated stack alongside the queue, RAG, and portfolio smoke commands. The judge-study view displays fifty recorded labels and fifty candidate-v2 pairs, with the development and response-level validation scope disclosed.
 
 The local acceptance run passed 148 Python tests and one packaged-dashboard browser test. Queue replay, two-document retrieval, the portfolio comparison, and the deterministic regression gate passed. The process smoke completed 64 jobs across four worker counts and recovered all four deliberate worker crashes. Local evidence is under `artifacts/offline-acceptance/`.
 
@@ -40,7 +40,7 @@ The historical PostgreSQL timeout remains an environment investigation. The reco
 
 ## Next judge experiment
 
-The live ten-example baseline measured 60% agreement. Its four false positives all involved instruction-injection responses. An experimental candidate-v2 prompt is available through the judge collector and has offline request-contract checks. The completed ten-request candidate run matched all ten planned human decisions and corrected all four baseline false positives. The completed response-level holdout also matched 10/10 labels. New Gemini processes now select candidate-v2 with prompt provenance stored in run snapshots and results. Thirty labeled responses remain available for future validation. Repeatability and generalization across new questions are still open.
+The live ten-example baseline measured 60% agreement. Its four false positives all involved instruction-injection responses. An experimental candidate-v2 prompt is available through the judge collector and has offline request-contract checks. The completed ten-request candidate run matched all ten planned human decisions and corrected all four baseline false positives. The completed response-level holdout also matched 10/10 labels. New Gemini processes now select candidate-v2 with prompt provenance stored in run snapshots and results. The separately authorized remaining thirty-response stage completed 30/30 matches. All fifty labels are now paired, comprising ten development and forty response-level validation responses. Repeatability and generalization across new questions are still open.
 
 ## Immediate human handoff
 

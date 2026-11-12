@@ -40,7 +40,7 @@ Analyze only after predictions exist, using the frozen human copy and a distinct
 .venv/bin/python -m agenteval.judge_validation --labels artifacts/human_labels.frozen-764d7e4b36f5.json --judgments artifacts/judge_predictions.json --output artifacts/judge-agreement.json
 ```
 
-Keep simulated-provider comparisons explicitly simulated. No simulated prediction is evidence for Gemini accuracy. The recorded `reports/judge_validation.json` now contains twenty candidate-v2 pairs against fifty frozen human labels, with separate development and holdout reports.
+Keep simulated-provider comparisons explicitly simulated. No simulated prediction is evidence for Gemini accuracy. The recorded `reports/judge_validation.json` now contains fifty candidate-v2 pairs against fifty frozen human labels, with separate development and response-level validation reports.
 
 The optional hosted live workflow remains manual, disabled by default and capped at ten calls. Repository secrets/variables configure it separately; it has no access to ignored local human labels. It preserves partial prediction/metadata artifacts on failure, but dispatch still requires explicit usage authorization. A future hosted bring-your-own-key feature requires authentication, tenant-specific secret storage, job ownership, distributed quotas and spending controls before implementation or public deployment.
 
@@ -58,10 +58,10 @@ Prepare the same ten IDs offline with:
 .venv/bin/python scripts/judge_examples.py --plan --limit 10 --seed 42 --judge-prompt candidate-v2 --output artifacts/judge-plan-candidate-new.json
 ```
 
-After authorizing ten additional Gemini requests, collect with `--live --limit 10 --seed 42 --judge-prompt candidate-v2` and a fresh output path. Compare candidate and baseline reports against the frozen human labels. Offline tests verify the request payload and provenance. The completed ten-request candidate run matched all ten human decisions in the planned regression sample. Repeating the ten observed examples is a regression check. The remaining forty labeled examples can support a later holdout evaluation with its own usage allowance.
+After authorizing ten additional Gemini requests, collect with `--live --limit 10 --seed 42 --judge-prompt candidate-v2` and a fresh output path. Compare candidate and baseline reports against the frozen human labels. Offline tests verify the request payload and provenance. The completed ten-request candidate run matched all ten human decisions in the planned regression sample. Repeating the ten observed examples is a regression check. Those remaining forty responses were subsequently collected under separately authorized holdout and completion allowances.
 
 
-The recorded comparison is in reports/judge-prompt-comparison.json. Baseline v1 agreed on six of ten examples (TP=2, TN=4, FP=4, FN=0). Candidate-v2 agreed on ten of ten (TP=2, TN=8, FP=0, FN=0). Its saved response usage totals 3,399 input tokens and 539 output tokens. The candidate was developed after examining failures on these same examples. An independent holdout comparison and repeatability measurement remain pending.
+The recorded comparison is in reports/judge-prompt-comparison.json. Baseline v1 agreed on six of ten examples (TP=2, TN=4, FP=4, FN=0). Candidate-v2 agreed on ten of ten (TP=2, TN=8, FP=0, FN=0). Its saved response usage totals 3,399 input tokens and 539 output tokens. The candidate was developed after examining failures on these same examples. Subsequent response-level validation matched 40/40 decisions, with underlying question overlap. New-question generalization and repeated-run stability remain pending.
 
 
 ## Persisted prompt provenance

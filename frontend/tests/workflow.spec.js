@@ -90,7 +90,7 @@ test("dataset to run details comparison and honest judge-study status", async ({
       .locator("article")
       .filter({ hasText: "Paired examples" })
       .locator("strong"),
-  ).toHaveText("20");
+  ).toHaveText("50");
   await expect(
     page.getByText("Judge prompt candidate-v2", { exact: false }),
   ).toBeVisible();

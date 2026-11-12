@@ -197,7 +197,7 @@ See [benchmark methodology](docs/BENCHMARK_METHODOLOGY.md), [measured report](do
 
 `bash scripts/setup_environment.sh` installs the pinned Python and frontend dependencies, builds the dashboard, starts the owned local pgvector database (unless an external app URL is configured), and applies migrations. Read [the demonstration steps](docs/DEMO.md) and [final review](docs/FINAL_REVIEW.md). Processes still need explicit startup; setup does not publish the environment.
 
-Human review is complete: 50 labels were supplied, and the ten-example live Gemini sample measured 60% agreement, with four false positives and zero false negatives. Further paid calls require a budget review; the two recorded smoke evaluations do not establish the remaining allowance because failed/discarded requests are outside accepted-result usage. The dashboard report covers twenty candidate-v2 pairs, including ten development and ten response-level holdout examples.
+Human review is complete: 50 labels were supplied, and the ten-example live Gemini sample measured 60% agreement, with four false positives and zero false negatives. Further paid calls require a budget review; the two recorded smoke evaluations do not establish the remaining allowance because failed/discarded requests are outside accepted-result usage. The dashboard report covers all fifty candidate-v2 pairs: ten development and forty response-level validation responses, with overlapping underlying questions.
 
 ## Fault-tolerant platform verification
 
@@ -206,13 +206,13 @@ See [container deployment and verification](docs/DEPLOYMENT.md), [delivery seman
 
 Latest follow-up: [lock contention investigation and hosted CI](docs/LOCK_CONTENTION_REVIEW.md). The latest non-root container suite passed 195 tests ([verification](reports/private-server-verification.json)). Both hosted workflows passed at `0031224`; earlier Bake recovery evidence is retained. The historical lock-timeout outlier remains unresolved; optional diagnostic capture is now available without changing default queue execution.
 
-Repeatable fake-provider portfolio walkthrough: [demo steps](docs/DEMO.md), `.venv/bin/python scripts/portfolio_demo.py`. All 50 human labels are complete, with twenty paired candidate-v2 predictions; [separate validation plans](docs/NEXT_VALIDATION.md) cover live RAG and deployment safeguards without authorizing paid calls or public release.
+Repeatable fake-provider portfolio walkthrough: [demo steps](docs/DEMO.md), `.venv/bin/python scripts/portfolio_demo.py`. All 50 human labels are complete, with fifty paired candidate-v2 predictions; [separate validation plans](docs/NEXT_VALIDATION.md) cover live RAG and deployment safeguards without authorizing paid calls or public release.
 
 Prepare the next RAG study offline with `.venv/bin/python scripts/prepare_rag_study.py`. It freezes a six-document/eight-question synthetic fixture and leaves every human-review decision blank. See [study preparation](docs/RAG.md#broader-offline-study-preparation) before collecting answers; no live calls are made by this command.
 
 Gemini free-tier preparation and bring-your-own-key configuration: [provider configuration](docs/PROVIDER_CONFIGURATION.md). Collection now preserves partial results and usage, refuses existing outputs, and caps live samples at ten calls. Free-tier eligibility and remaining quota must be checked in the provider project before expanding live testing.
 
-Latest live validation: [judge comparison](reports/judge_validation.json) and [RAG smoke](reports/live-rag-smoke.json). The RAG run retrieved and cited both fixture documents, with Recall@2 and Hit Rate@2 of 1.0. All four historical v1 disagreements involved instruction-injection responses; candidate-v2 matched all twenty development/holdout decisions.
+Latest live validation: [judge comparison](reports/judge_validation.json) and [RAG smoke](reports/live-rag-smoke.json). The RAG run retrieved and cited both fixture documents, with Recall@2 and Hit Rate@2 of 1.0. All four historical v1 disagreements involved instruction-injection responses; candidate-v2 matched all fifty development/response-validation decisions.
 
 
 The candidate-v2 judge prompt matched all ten human labels on the same development sample, correcting the four baseline instruction-injection false positives. The response-level holdout subsequently matched 10/10 labels. New Gemini processes use candidate-v2 by default and persist prompt provenance for compatible comparisons. See [prompt comparison](reports/judge-prompt-comparison.json).
@@ -221,6 +221,6 @@ The separately authorized [eight-question live RAG study](reports/live-rag-study
 
 RAG human review currently has zero of eight completed entries. The [offline validator](scripts/summarize_rag_review.py) checks frozen evidence, attribution and strict decisions without filling labels. Follow [review instructions](docs/RAG.md#complete-and-validate-human-review); missing reviews remain pending with null rates.
 
-Optional local [single-owner authentication](docs/DEPLOYMENT.md#optional-single-owner-access-gate) now protects API/docs/dashboard routes. The repeatable [lock reproduction bundle](docs/LOCK_CONTENTION_REVIEW.md#repeatable-positive-control-and-recurrence-bundle) retained four 1,000-job uninjected variants and its positive control; the historical timeout cause remains unresolved. Remaining judge requests are [planned offline](reports/judge-remaining-validation-plan.json) and need a new explicit budget.
+Optional local [single-owner authentication](docs/DEPLOYMENT.md#optional-single-owner-access-gate) now protects API/docs/dashboard routes. The repeatable [lock reproduction bundle](docs/LOCK_CONTENTION_REVIEW.md#repeatable-positive-control-and-recurrence-bundle) retained four 1,000-job uninjected variants and its positive control; the historical timeout cause remains unresolved. The [predeclared remaining judge requests](reports/judge-remaining-validation-plan.json) were subsequently completed under a separate 30-request allowance; [completion provenance](reports/judge-completion-provenance.json) retains the actual counts and usage.
 
 Private single-owner server preparation is in the [server runbook](docs/PRIVATE_SERVER.md): loopback-only TLS through SSH, owner authentication, encrypted local snapshots with isolated restore checks, and optional health/backup timers. This profile is simulated-only until shared live-request controls are configured. It has been verified locally, with no remote deployment.

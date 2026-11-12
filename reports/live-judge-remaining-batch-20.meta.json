@@ -1,0 +1,31 @@
+{
+  "status": "COMPLETED",
+  "started_at_utc": "2026-11-12T03:04:43.102893+00:00",
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-lite",
+  "simulated": false,
+  "judge_prompt_version": "candidate-v2",
+  "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+  "seed": 42,
+  "selected_ids": [
+    "study-09-4",
+    "study-04-4",
+    "study-07-4",
+    "study-10-4",
+    "study-09-2",
+    "study-07-1",
+    "study-06-4",
+    "study-05-1",
+    "study-05-3",
+    "study-09-3"
+  ],
+  "selected_examples_sha256": "d8cc29bb08de51673067edc692ac2762e03156d08b450778a82e7d4f9b585c00",
+  "request_limit": 10,
+  "requests_started": 10,
+  "responses_saved": 10,
+  "delay_seconds": 13.0,
+  "automatic_retries": false,
+  "billing_tier_verified": false,
+  "usage_scope": "Successful saved responses only; failed/uncertain calls may incur usage.",
+  "finished_at_utc": "2026-11-12T03:06:51.284608+00:00"
+}
