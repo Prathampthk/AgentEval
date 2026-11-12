@@ -17,6 +17,16 @@ async def connection_timeout_bounds(request):
 
 @asynccontextmanager
 async def provider_context(provided=None, timeout_seconds=30, judge_prompt_version=None):
+    if os.getenv("AGENTEVAL_PRIVATE_SERVER") == "1":
+        simulated = (
+            provided.simulated
+            if provided is not None
+            else os.getenv("AGENTEVAL_PROVIDER", "fake") == "fake"
+        )
+        if not simulated:
+            raise RuntimeError(
+                "Private server profile requires a simulated provider until shared live-request controls are configured"
+            )
     client = None
     selected = provided
     if selected is None:

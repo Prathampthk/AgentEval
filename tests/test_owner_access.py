@@ -76,3 +76,16 @@ def test_default_loopback_demo_remains_usable(monkeypatch):
     monkeypatch.delenv("AGENTEVAL_ACCESS_TOKEN", raising=False)
     with TestClient(create_app(FakeProvider())) as client:
         assert client.get("/health/ready").status_code == 200
+
+
+async def test_private_server_blocks_live_provider_before_client_creation(monkeypatch):
+    from agenteval.runtime import provider_context
+
+    monkeypatch.setenv("AGENTEVAL_PRIVATE_SERVER", "1")
+    monkeypatch.setenv("AGENTEVAL_PROVIDER", "gemini")
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+    with pytest.raises(RuntimeError, match="requires a simulated provider"):
+        async with provider_context():
+            pytest.fail("Live provider must not start")
+    async with provider_context(FakeProvider()) as provider:
+        assert provider.simulated

@@ -51,6 +51,12 @@ jobs:
           AGENTEVAL_E2E_URL: http://127.0.0.1:8011
       - run: docker compose --env-file .local/compose.env --profile verification run --rm tests
       - run: docker compose --env-file .local/compose.env --profile benchmark run --rm benchmark python -m agenteval.platform_benchmark --jobs 16 --repetitions 1 --workers 1 4 8 16 --output reports/platform-ci-smoke.json
+      - run: python scripts/create_access_token.py
+      - name: Verify private single-owner TLS profile
+        run: |
+          docker compose -p agenteval-private-ci --env-file .local/compose.env --env-file .local/access.env -f compose.yaml -f compose.private.yaml -f compose.server.yaml build proxy
+          docker compose -p agenteval-private-ci --env-file .local/compose.env --env-file .local/access.env -f compose.yaml -f compose.private.yaml -f compose.server.yaml up -d --wait api worker proxy
+          python scripts/private_server_smoke.py --project agenteval-private-ci --output artifacts/private-server-ci-smoke.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -59,6 +65,9 @@ jobs:
             reports/platform-ci-smoke.json
             artifacts/rag-ci-smoke.json
             artifacts/portfolio-ci-smoke.json
+            artifacts/private-server-ci-smoke.json
             frontend/test-results/
       - if: always()
         run: docker compose --env-file .local/compose.env down
+      - if: always()
+        run: docker compose -p agenteval-private-ci --env-file .local/compose.env --env-file .local/access.env -f compose.yaml -f compose.private.yaml -f compose.server.yaml down

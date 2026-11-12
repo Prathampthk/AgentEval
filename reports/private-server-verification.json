@@ -1,0 +1,144 @@
+{
+  "base_revision": "6358ae0",
+  "scope": "Private single-owner server preparation; verified locally, not remotely deployed",
+  "full_container_suite": {
+    "passed": 195,
+    "warnings": 1,
+    "seconds": 19.19
+  },
+  "host_unit_suite": {
+    "passed": 131,
+    "integration_deselected": 64,
+    "warnings": 2,
+    "seconds": 0.93
+  },
+  "tls_smoke": {
+    "status": "PASS",
+    "TLS_verification_enabled": true,
+    "provider_calls": 0,
+    "checks": [
+      "trusted TLS",
+      "owner gate",
+      "dashboard",
+      "32-KiB body bound",
+      "simulated provider",
+      "untrusted CA rejected"
+    ],
+    "portfolio": {
+      "status": "PASS",
+      "recorded_at_utc": "2026-11-12T03:00:10.900942+00:00",
+      "simulated": true,
+      "live_provider_calls": 0,
+      "dataset_id": "2a03927c-81bd-4840-a38c-c58eea03bf5d",
+      "runs": [
+        {
+          "label": "baseline",
+          "run_id": "234756af-00ee-4a76-a61a-06e5f1d88500",
+          "accepted_results": 2
+        },
+        {
+          "label": "candidate",
+          "run_id": "511017db-0cf2-4fda-9ed6-f921ff37db20",
+          "accepted_results": 2
+        }
+      ],
+      "comparison": {
+        "outcome": "PASS",
+        "paired_cases": 2,
+        "reasons": [],
+        "policy": {
+          "max_pass_rate_drop": 0.05,
+          "max_correctness_drop": 0.25,
+          "min_cases": 1,
+          "max_latency_ratio": null,
+          "max_token_ratio": null
+        },
+        "simulated": true,
+        "metrics": {
+          "baseline_pass_rate": 1.0,
+          "candidate_pass_rate": 1.0,
+          "baseline_correctness": 2.0,
+          "candidate_correctness": 2.0,
+          "baseline_latency_ms": 0.0718749979569111,
+          "candidate_latency_ms": 0.05495800360222347
+        }
+      },
+      "checks": [
+        "fake-provider preflight",
+        "idempotent replay",
+        "queued completion",
+        "comparison"
+      ],
+      "limits": [
+        "Four accepted simulated results; not accuracy or throughput evidence.",
+        "Repeated demos retain their own runs; no data is deleted.",
+        "Human labels, live RAG, crash recovery and public safeguards are separate evidence."
+      ]
+    }
+  },
+  "post_backup_readiness": {
+    "status": "PASS",
+    "TLS_verification_enabled": true,
+    "provider_calls": 0,
+    "checks": [
+      "trusted TLS",
+      "owner gate",
+      "dashboard",
+      "32-KiB body bound",
+      "simulated provider",
+      "untrusted CA rejected"
+    ]
+  },
+  "encrypted_backup_restore": {
+    "status": "VERIFIED_LOCAL_RESTORE",
+    "project": "agenteval-private-preview",
+    "provider_calls": 0,
+    "started_at_utc": "2026-11-12T03:03:08.398221+00:00",
+    "scope": "Quiesced PostgreSQL dump, encrypted locally, restored into a new temporary database for count/schema checks. No offsite or host-loss claim.",
+    "snapshot_counts": {
+      "datasets": 1,
+      "runs": 4,
+      "jobs": 8,
+      "results": 8,
+      "documents": 0,
+      "chunks": 0,
+      "migration": "0004"
+    },
+    "plaintext_sha256": "51113304235904dc7f7706b08e2a5c655a94a938e6f5c86864b5aad21f7e1e7f",
+    "encrypted_sha256": "f16d787fa41c333b5a6f5f1f223d877b6235585124ba85d273ea0e22c1ab4751",
+    "encrypted_bytes": 36300,
+    "restored_counts": {
+      "datasets": 1,
+      "runs": 4,
+      "jobs": 8,
+      "results": 8,
+      "documents": 0,
+      "chunks": 0,
+      "migration": "0004"
+    },
+    "finished_at_utc": "2026-11-12T03:03:11.193951+00:00"
+  },
+  "ruff_lint": "PASS",
+  "ruff_format": "PASS",
+  "live_provider_calls_by_private_profile": 0,
+  "remote_deployment_performed": false,
+  "systemd_templates_installed": false,
+  "source_sha256": {
+    "compose.server.yaml": "2770054986b1bc194ba746780aa2e92d14b15e26177c17c08c6866e780bb4c37",
+    "deploy/Dockerfile.proxy": "ab016a1c2f66bf6356c7259f47374cedf72272f77d3d3d2c1d1ba5c09bb8c2d6",
+    "deploy/Caddyfile": "c013d7c616ec677f5d20de8127a2e3be882190f8181b9bff9c8eb8028c5d4088",
+    "scripts/private_server_smoke.py": "68992b0bc29403946efe5aaa3ec5eae47922e237aab5c616715f4f6f36eb488a",
+    "scripts/backup_private_server.py": "73cd625916d7f0007b1bbfafdf85e03a405a8dd54b62c51398d977a7c9e6e5e8",
+    "src/agenteval/runtime.py": "cf8d1e4ae1e5b8f11e00231ce4db5f6bd6b6aa4947d32ce02ca2d798567294aa",
+    "tests/test_owner_access.py": "c6f7518ff62fbb1ebc01e1888c131c6cb39a455bc7a2fa17ad92db799e404032",
+    "tests/test_private_backup.py": "484e75713ad5564aadb4d5a9b411d12893bce1e4c51202284850e021b856eda1",
+    "pyproject.toml": "ed31f7f5d7132e1546b6c8cd1056877e19bd1f09f25076fde12492a58d4e9390",
+    ".github/workflows/compose.yml": "8818ab0d7670fe1539394dc4754642a09cc1005ba89c55d5cc1452a7bd818327"
+  },
+  "remaining": [
+    "Live server providers remain blocked pending shared request controls.",
+    "Offsite backup destination, key escrow, retention and separate-host recovery are not configured.",
+    "Remote host, SSH access and installing timers remain operator handoffs.",
+    "Human RAG review is still pending."
+  ]
+}

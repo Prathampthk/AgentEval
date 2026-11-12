@@ -45,3 +45,7 @@ The live ten-example baseline measured 60% agreement. Its four false positives a
 ## Immediate human handoff
 
 The live eight-answer RAG packet is saved under ignored `artifacts/rag-study-live-2026-11-12/human_review_answers.json`. Zero of eight reviews are complete. Fill only the decision, reviewer and notes fields as described in [RAG review instructions](RAG.md#complete-and-validate-human-review). The offline validator is implemented and tested; it can summarize the saved human decisions once supplied. No additional provider calls are needed for this step. The historical database timeout and public-release gaps remain separate.
+
+## Selected deployment target: private single-owner server
+
+The [private-server runbook](PRIVATE_SERVER.md) now has locally verified TLS/SSH access, owner authentication, encrypted snapshot/isolated restore checks and optional monitoring/backup timer templates. No remote host has been deployed or timer installed. The private profile intentionally rejects live providers until shared live-request controls are implemented. Offsite backup destination, key escrow, retention, remote host/access and separate-host recovery remain operator inputs. Existing local Gemini experiments are separate and require their own explicit request allowances.

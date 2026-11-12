@@ -1,0 +1,29 @@
+{
+    admin off
+    auto_https disable_redirects
+    skip_install_trust
+    servers {
+        protocols h1 h2
+        max_header_size 16KB
+        timeouts {
+            read_header 5s
+            read_body 15s
+            write 120s
+            idle 60s
+        }
+    }
+}
+
+https://localhost:8443 {
+    tls internal
+    request_body {
+        max_size 32KiB
+    }
+    header -Server
+    reverse_proxy api:8000 {
+        transport http {
+            dial_timeout 5s
+            response_header_timeout 100s
+        }
+    }
+}

@@ -1,0 +1,12 @@
+[Unit]
+Description=Verify private AgentEval TLS and readiness without creating data
+After=docker.service
+
+[Service]
+Type=oneshot
+User=agenteval
+WorkingDirectory=/opt/agenteval
+ExecStart=/usr/bin/python3 scripts/private_server_smoke.py --project agenteval-private --read-only
+TimeoutStartSec=60s
+NoNewPrivileges=true
+PrivateTmp=true

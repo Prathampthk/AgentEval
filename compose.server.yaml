@@ -1,0 +1,36 @@
+# Use after compose.yaml and compose.private.yaml. No public listener is added.
+services:
+  api:
+    ports: !reset []
+    environment:
+      AGENTEVAL_PROVIDER: fake
+      AGENTEVAL_PRIVATE_SERVER: '1'
+  worker:
+    environment:
+      AGENTEVAL_PROVIDER: fake
+      AGENTEVAL_PRIVATE_SERVER: '1'
+      AGENTEVAL_WORKER_CONCURRENCY: '1'
+  proxy:
+    image: agenteval-private-proxy:local
+    build:
+      context: .
+      dockerfile: deploy/Dockerfile.proxy
+    ports: ["127.0.0.1:${AGENTEVAL_TLS_PORT:-8443}:8443"]
+    volumes:
+      - proxy-data:/data
+      - proxy-config:/config
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    restart: unless-stopped
+    healthcheck:
+      test: [CMD, env, SSL_CERT_FILE=/data/caddy/pki/authorities/local/root.crt, wget, -q, --spider, -T, '3', 'https://localhost:8443/health/live']
+      interval: 5s
+      timeout: 4s
+      retries: 12
+    depends_on:
+      api: {condition: service_healthy}
+volumes:
+  proxy-data:
+  proxy-config:
