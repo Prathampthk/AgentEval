@@ -1,0 +1,14 @@
+# Review-only Ubuntu 24.04 drop-in proposal; not automatically installed.
+# First verify a separate non-root administrator's SSH key and recovery-console access.
+# Validate effective configuration and a SECOND login before closing the existing session.
+PubkeyAuthentication yes
+PasswordAuthentication no
+KbdInteractiveAuthentication no
+PermitRootLogin no
+X11Forwarding no
+AllowAgentForwarding no
+AllowTcpForwarding local
+PermitOpen 127.0.0.1:8443
+GatewayPorts no
+MaxAuthTries 3
+LoginGraceTime 30

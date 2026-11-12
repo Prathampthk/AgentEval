@@ -1,0 +1,69 @@
+{
+  "status": "PREPARATION_ONLY_APPROVAL_REQUIRED",
+  "pricing_checked_client_date": "2026-11-11",
+  "client_timezone": "America/Chicago",
+  "target_os": "Ubuntu 24.04 LTS",
+  "provider_selected": null,
+  "ssh_hostname": null,
+  "offsite_destination": null,
+  "provisioning_approved": false,
+  "cloud_resources_created": 0,
+  "ssh_connections_attempted": 0,
+  "live_deployment_attempted": false,
+  "additional_provider_calls": 0,
+  "configuration_checks": [
+    "Planning JSON parses and unselected fields remain null",
+    "Approval flags false",
+    "Compose render retains no API/DB published ports and loopback-only TLS",
+    "Private server provider remains fake"
+  ],
+  "prices_usd_monthly": {
+    "DigitalOcean_Basic_4GiB": {
+      "vm": 24,
+      "weekly_backup": 4.8,
+      "weekly_total": 28.8,
+      "daily_backup": 7.2,
+      "daily_total": 31.2
+    },
+    "Linode_Shared_4GB": {
+      "vm": 24,
+      "backup": 5,
+      "total": 29
+    },
+    "DigitalOcean_Basic_2GiB": {
+      "vm": 12,
+      "weekly_total": 14.4,
+      "daily_total": 15.6
+    },
+    "Linode_Shared_2GB": {
+      "vm": 12,
+      "backup": 2.5,
+      "total": 14.5
+    }
+  },
+  "price_exclusions": [
+    "Tax",
+    "Region-specific differences and overage",
+    "Independent offsite storage/restore charges",
+    "Gemini usage"
+  ],
+  "sources": [
+    "https://www.digitalocean.com/pricing/droplets",
+    "https://docs.digitalocean.com/products/backups/details/pricing/",
+    "https://www.akamai.com/cloud/pricing/cpu",
+    "https://www.akamai.com/cloud/pricing/backups",
+    "https://techdocs.akamai.com/cloud-computing/docs/getting-started-with-the-linode-backup-service",
+    "https://www.backblaze.com/cloud-storage/pricing"
+  ],
+  "runtime_verification_reference": "reports/private-server-verification.json",
+  "templates_sha256": {
+    "deploy/server-plan.example.json": "907e61391c952a96238fb27bf38cce900046977112cc55d630725a781aac7bbb",
+    "deploy/server.env.example": "bbc9d5b5126ce00df4521a5bfaac567dcaab1d9c89fcbf5e1c3114f91c5bbf98",
+    "deploy/sshd-private.conf.example": "e87979270ff9776140de6d97dd8c5507695a9d7dd2e985f3acbdd0bc66981417"
+  },
+  "limits": [
+    "No provider reliability benchmark or Ubuntu host provisioning was performed.",
+    "SSH hardening is a review-only template; effective host configuration must be verified before installation.",
+    "The private server profile still blocks live providers pending shared request controls."
+  ]
+}

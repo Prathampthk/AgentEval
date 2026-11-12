@@ -49,3 +49,5 @@ The live eight-answer RAG packet is saved under ignored `artifacts/rag-study-liv
 ## Selected deployment target: private single-owner server
 
 The [private-server runbook](PRIVATE_SERVER.md) now has locally verified TLS/SSH access, owner authentication, encrypted snapshot/isolated restore checks and optional monitoring/backup timer templates. No remote host has been deployed or timer installed. The private profile intentionally rejects live providers until shared live-request controls are implemented. Offsite backup destination, key escrow, retention, remote host/access and separate-host recovery remain operator inputs. Existing local Gemini experiments are separate and require their own explicit request allowances.
+
+The user has selected preparation only for a proposed Ubuntu 24.04 LTS host, with no server or offsite destination yet chosen. Provider-independent templates retain null infrastructure fields and false approval flags. See `docs/HOSTING_OPTIONS.md` for the two-provider price/trade-off comparison and `deploy/server-plan.example.json` for unselected values. No resources may be provisioned or live deployment attempted without later explicit approval.

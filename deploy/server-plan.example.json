@@ -1,0 +1,32 @@
+{
+  "status": "PROPOSED_NOT_PROVISIONED",
+  "target_os": "Ubuntu 24.04 LTS",
+  "hosting_provider": null,
+  "region": null,
+  "instance_plan": null,
+  "ssh_hostname": null,
+  "ssh_user": null,
+  "owner_public_ip_cidrs": [],
+  "proposed_capacity": {
+    "shared_vcpus": 2,
+    "ram_gb": 4,
+    "disk_gb": 80,
+    "basis": "Planning allowance for building and running the small Compose stack; not a measured production capacity guarantee"
+  },
+  "application_directory": "/opt/agenteval",
+  "compose_project": "agenteval-private",
+  "tls_bind_address": "127.0.0.1",
+  "tls_port": 8443,
+  "provider_mode": "fake",
+  "offsite_backup": {
+    "transport": null,
+    "destination": null,
+    "credential_profile_name": null,
+    "key_escrow_location": null,
+    "retention_policy": null
+  },
+  "monthly_budget_and_currency": null,
+  "provisioning_approved": false,
+  "deployment_approved": false,
+  "instructions": "Planning template only. Null/empty fields are intentionally unselected. Never put passwords, private keys or API tokens in this file. No script provisions resources from this plan."
+}
