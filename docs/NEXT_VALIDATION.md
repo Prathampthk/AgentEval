@@ -41,3 +41,7 @@ The historical PostgreSQL timeout remains an environment investigation. The reco
 ## Next judge experiment
 
 The live ten-example baseline measured 60% agreement. Its four false positives all involved instruction-injection responses. An experimental candidate-v2 prompt is available through the judge collector and has offline request-contract checks. The completed ten-request candidate run matched all ten planned human decisions and corrected all four baseline false positives. The completed response-level holdout also matched 10/10 labels. New Gemini processes now select candidate-v2 with prompt provenance stored in run snapshots and results. Thirty labeled responses remain available for future validation. Repeatability and generalization across new questions are still open.
+
+## Immediate human handoff
+
+The live eight-answer RAG packet is saved under ignored `artifacts/rag-study-live-2026-11-12/human_review_answers.json`. Zero of eight reviews are complete. Fill only the decision, reviewer and notes fields as described in [RAG review instructions](RAG.md#complete-and-validate-human-review). The offline validator is implemented and tested; it can summarize the saved human decisions once supplied. No additional provider calls are needed for this step. The historical database timeout and public-release gaps remain separate.

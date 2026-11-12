@@ -1,0 +1,41 @@
+{
+  "status": "HUMAN_REVIEW_PENDING",
+  "fixture_sha256": "d7172662509f32c2cc9ca44dca23752d76b53ecaf6f7327f29ca14c7e2044bbc",
+  "review_file_sha256": "09df95fd595b30cd6822a9bac5285e20d7039af44b4c789912c5e7c453648443",
+  "collection_sha256": "8293eccbf7888ddf3380542949e1dfdd5419eb2c89cd8e9b2ea845ca98009ca2",
+  "question_count": 8,
+  "reviewed_count": 0,
+  "pending_question_ids": [
+    "aurora-signal",
+    "aurora-leader",
+    "borealis-signal",
+    "supply-seal",
+    "supply-count",
+    "superseded-signal",
+    "unknown-date",
+    "unknown-budget"
+  ],
+  "groups": {
+    "answerable": {
+      "total": 6,
+      "reviewed": 0,
+      "answer_supported": 0,
+      "citations_supported": 0,
+      "appropriate_abstention": 0,
+      "answer_supported_rate": null,
+      "citations_supported_rate": null,
+      "appropriate_abstention_rate": null
+    },
+    "unanswerable": {
+      "total": 2,
+      "reviewed": 0,
+      "answer_supported": 0,
+      "citations_supported": 0,
+      "appropriate_abstention": 0,
+      "answer_supported_rate": null,
+      "citations_supported_rate": null,
+      "appropriate_abstention_rate": null
+    }
+  },
+  "scope": "User-supplied decisions only; no labels generated. Rates use fully reviewed rows in each group; absent reviews yield null rates. Reviewer identifiers and notes are excluded."
+}

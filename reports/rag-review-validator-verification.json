@@ -1,0 +1,23 @@
+{
+  "base_revision": "74285e0",
+  "scope": "Offline RAG human-review validation; actual decisions remain unreviewed",
+  "full_container_suite": {
+    "passed": 176,
+    "warnings": 1,
+    "seconds": 18.7
+  },
+  "host_unit_suite": {
+    "passed": 112,
+    "integration_deselected": 64,
+    "warnings": 2,
+    "seconds": 0.93
+  },
+  "ruff_lint": "PASS",
+  "ruff_format": "PASS",
+  "provider_calls_made": 0,
+  "human_decisions_generated": 0,
+  "source_sha256": {
+    "scripts/summarize_rag_review.py": "f37ad28b644beb8101ee941914eb66412284edf64de71eaff2a6dc89a045efed",
+    "tests/test_rag_review_validation.py": "acea72775c8f61838761ef3741f373401e8cc68079913704e8f1159bad88e523"
+  }
+}
