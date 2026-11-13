@@ -51,6 +51,8 @@ jobs:
           AGENTEVAL_E2E_URL: http://127.0.0.1:8011
       - run: docker compose --env-file .local/compose.env --profile verification run --rm tests
       - run: docker compose --env-file .local/compose.env --profile benchmark run --rm benchmark python -m agenteval.platform_benchmark --jobs 16 --repetitions 1 --workers 1 4 8 16 --output reports/platform-ci-smoke.json
+      - name: Rehearse the one-command demo
+        run: python scripts/run_demo.py
       - run: python scripts/create_access_token.py
       - name: Verify private single-owner TLS profile
         run: |
@@ -66,8 +68,11 @@ jobs:
             artifacts/rag-ci-smoke.json
             artifacts/portfolio-ci-smoke.json
             artifacts/private-server-ci-smoke.json
+            artifacts/demo-*/report.json
             frontend/test-results/
       - if: always()
         run: docker compose --env-file .local/compose.env down
+      - if: always()
+        run: docker compose -p agenteval-demo --env-file .local/compose.env -f compose.yaml down
       - if: always()
         run: docker compose -p agenteval-private-ci --env-file .local/compose.env --env-file .local/access.env -f compose.yaml -f compose.private.yaml -f compose.server.yaml down

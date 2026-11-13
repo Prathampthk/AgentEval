@@ -1,0 +1,344 @@
+{
+  "base_revision": "a2ffcad",
+  "status": "DEMO_READY",
+  "scope": "Local simulated demonstration; no deployment or live provider evaluation",
+  "full_container_suite": {
+    "passed": 225,
+    "warnings": 1,
+    "seconds": 20.0
+  },
+  "host_unit_suite": {
+    "passed": 158,
+    "integration_deselected": 67,
+    "warnings": 2,
+    "seconds": 1.5
+  },
+  "packaged_browser_workflow": {
+    "passed": 1,
+    "seconds": 7.4,
+    "scope": "Queue completion, run details, comparison and fifty paired study decisions"
+  },
+  "ruff_lint": "PASS",
+  "ruff_format": "PASS",
+  "frontend_format": "PASS",
+  "real_provider_calls": 0,
+  "human_decisions_generated": 0,
+  "first_rehearsal": {
+    "status": "DEMO_READY",
+    "stage": "complete",
+    "simulated": true,
+    "provider_calls": 0,
+    "human_labels_generated": 0,
+    "started_at_utc": "2026-11-13T04:03:51.618099+00:00",
+    "portfolio": {
+      "status": "PASS",
+      "recorded_at_utc": "2026-11-13T04:04:05.467478+00:00",
+      "simulated": true,
+      "live_provider_calls": 0,
+      "dataset_id": "badccc16-1069-40fb-8780-67a247835e1d",
+      "runs": [
+        {
+          "label": "baseline",
+          "run_id": "aa1c4e00-b725-4a92-94a6-02088095bb8f",
+          "accepted_results": 2
+        },
+        {
+          "label": "candidate",
+          "run_id": "f8c74f3c-c3e1-466e-8f18-225c25a038ac",
+          "accepted_results": 2
+        }
+      ],
+      "comparison": {
+        "outcome": "PASS",
+        "paired_cases": 2,
+        "reasons": [],
+        "policy": {
+          "max_pass_rate_drop": 0.05,
+          "max_correctness_drop": 0.25,
+          "min_cases": 1,
+          "max_latency_ratio": null,
+          "max_token_ratio": null
+        },
+        "simulated": true,
+        "metrics": {
+          "baseline_pass_rate": 1.0,
+          "candidate_pass_rate": 1.0,
+          "baseline_correctness": 2.0,
+          "candidate_correctness": 2.0,
+          "baseline_latency_ms": 0.04139600059716031,
+          "candidate_latency_ms": 0.07299950084416196
+        }
+      },
+      "checks": [
+        "fake-provider preflight",
+        "idempotent replay",
+        "queued completion",
+        "comparison"
+      ],
+      "limits": [
+        "Four accepted simulated results; not accuracy or throughput evidence.",
+        "Repeated demos retain their own runs; no data is deleted.",
+        "Human labels, live RAG, crash recovery and public safeguards are separate evidence."
+      ]
+    },
+    "policy_scenarios": {
+      "status": "PASS",
+      "simulated": true,
+      "live_provider_calls": 0,
+      "scope": "Three fake-provider evaluations; score regression and prompt mismatch are synthetic fixtures, not observed model behavior.",
+      "scenarios": [
+        {
+          "name": "equivalent fake runs",
+          "expected": "PASS",
+          "comparison": {
+            "outcome": "PASS",
+            "paired_cases": 3,
+            "reasons": [],
+            "policy": {
+              "max_pass_rate_drop": 0.05,
+              "max_correctness_drop": 0.25,
+              "min_cases": 1,
+              "max_latency_ratio": null,
+              "max_token_ratio": null
+            },
+            "simulated": true,
+            "metrics": {
+              "baseline_pass_rate": 1.0,
+              "candidate_pass_rate": 1.0,
+              "baseline_correctness": 2.0,
+              "candidate_correctness": 2.0,
+              "baseline_latency_ms": 0.0,
+              "candidate_latency_ms": 0.0
+            }
+          }
+        },
+        {
+          "name": "synthetic score regression",
+          "expected": "FAIL",
+          "comparison": {
+            "outcome": "FAIL",
+            "paired_cases": 3,
+            "reasons": [
+              "Pass-rate regression",
+              "Correctness regression"
+            ],
+            "policy": {
+              "max_pass_rate_drop": 0.05,
+              "max_correctness_drop": 0.25,
+              "min_cases": 1,
+              "max_latency_ratio": null,
+              "max_token_ratio": null
+            },
+            "simulated": true,
+            "metrics": {
+              "baseline_pass_rate": 1.0,
+              "candidate_pass_rate": 0.0,
+              "baseline_correctness": 2.0,
+              "candidate_correctness": 0.0,
+              "baseline_latency_ms": 0.0,
+              "candidate_latency_ms": 0.0
+            }
+          }
+        },
+        {
+          "name": "synthetic prompt mismatch",
+          "expected": "INCONCLUSIVE",
+          "comparison": {
+            "outcome": "INCONCLUSIVE",
+            "paired_cases": 3,
+            "reasons": [
+              "Incompatible judge_prompt_version"
+            ],
+            "policy": {
+              "max_pass_rate_drop": 0.05,
+              "max_correctness_drop": 0.25,
+              "min_cases": 1,
+              "max_latency_ratio": null,
+              "max_token_ratio": null
+            },
+            "simulated": true,
+            "metrics": {}
+          }
+        }
+      ]
+    },
+    "dashboard": "http://127.0.0.1:8013/dashboard/",
+    "limits": [
+      "Four queued fake results and synthetic policy scenarios demonstrate mechanics only.",
+      "The fifty-pair live study is recorded evidence; this rehearsal makes no live calls.",
+      "RAG answer/citation human review and the historical lock-timeout cause remain separate."
+    ]
+  },
+  "second_rehearsal": {
+    "status": "DEMO_READY",
+    "stage": "complete",
+    "simulated": true,
+    "provider_calls": 0,
+    "human_labels_generated": 0,
+    "started_at_utc": "2026-11-13T04:05:35.253338+00:00",
+    "portfolio": {
+      "status": "PASS",
+      "recorded_at_utc": "2026-11-13T04:05:46.837708+00:00",
+      "simulated": true,
+      "live_provider_calls": 0,
+      "dataset_id": "badccc16-1069-40fb-8780-67a247835e1d",
+      "runs": [
+        {
+          "label": "baseline",
+          "run_id": "b7491dd7-b1e4-46e8-8f07-40a1ee7c6b7f",
+          "accepted_results": 2
+        },
+        {
+          "label": "candidate",
+          "run_id": "cbd6101d-e32d-43f3-a91c-4a25537bef73",
+          "accepted_results": 2
+        }
+      ],
+      "comparison": {
+        "outcome": "PASS",
+        "paired_cases": 2,
+        "reasons": [],
+        "policy": {
+          "max_pass_rate_drop": 0.05,
+          "max_correctness_drop": 0.25,
+          "min_cases": 1,
+          "max_latency_ratio": null,
+          "max_token_ratio": null
+        },
+        "simulated": true,
+        "metrics": {
+          "baseline_pass_rate": 1.0,
+          "candidate_pass_rate": 1.0,
+          "baseline_correctness": 2.0,
+          "candidate_correctness": 2.0,
+          "baseline_latency_ms": 0.033500007702969015,
+          "candidate_latency_ms": 0.027082489395979792
+        }
+      },
+      "checks": [
+        "fake-provider preflight",
+        "idempotent replay",
+        "queued completion",
+        "comparison"
+      ],
+      "limits": [
+        "Four accepted simulated results; not accuracy or throughput evidence.",
+        "Repeated demos retain their own runs; no data is deleted.",
+        "Human labels, live RAG, crash recovery and public safeguards are separate evidence."
+      ]
+    },
+    "policy_scenarios": {
+      "status": "PASS",
+      "simulated": true,
+      "live_provider_calls": 0,
+      "scope": "Three fake-provider evaluations; score regression and prompt mismatch are synthetic fixtures, not observed model behavior.",
+      "scenarios": [
+        {
+          "name": "equivalent fake runs",
+          "expected": "PASS",
+          "comparison": {
+            "outcome": "PASS",
+            "paired_cases": 3,
+            "reasons": [],
+            "policy": {
+              "max_pass_rate_drop": 0.05,
+              "max_correctness_drop": 0.25,
+              "min_cases": 1,
+              "max_latency_ratio": null,
+              "max_token_ratio": null
+            },
+            "simulated": true,
+            "metrics": {
+              "baseline_pass_rate": 1.0,
+              "candidate_pass_rate": 1.0,
+              "baseline_correctness": 2.0,
+              "candidate_correctness": 2.0,
+              "baseline_latency_ms": 0.0,
+              "candidate_latency_ms": 0.0
+            }
+          }
+        },
+        {
+          "name": "synthetic score regression",
+          "expected": "FAIL",
+          "comparison": {
+            "outcome": "FAIL",
+            "paired_cases": 3,
+            "reasons": [
+              "Pass-rate regression",
+              "Correctness regression"
+            ],
+            "policy": {
+              "max_pass_rate_drop": 0.05,
+              "max_correctness_drop": 0.25,
+              "min_cases": 1,
+              "max_latency_ratio": null,
+              "max_token_ratio": null
+            },
+            "simulated": true,
+            "metrics": {
+              "baseline_pass_rate": 1.0,
+              "candidate_pass_rate": 0.0,
+              "baseline_correctness": 2.0,
+              "candidate_correctness": 0.0,
+              "baseline_latency_ms": 0.0,
+              "candidate_latency_ms": 0.0
+            }
+          }
+        },
+        {
+          "name": "synthetic prompt mismatch",
+          "expected": "INCONCLUSIVE",
+          "comparison": {
+            "outcome": "INCONCLUSIVE",
+            "paired_cases": 3,
+            "reasons": [
+              "Incompatible judge_prompt_version"
+            ],
+            "policy": {
+              "max_pass_rate_drop": 0.05,
+              "max_correctness_drop": 0.25,
+              "min_cases": 1,
+              "max_latency_ratio": null,
+              "max_token_ratio": null
+            },
+            "simulated": true,
+            "metrics": {}
+          }
+        }
+      ]
+    },
+    "dashboard": "http://127.0.0.1:8013/dashboard/",
+    "limits": [
+      "Four queued fake results and synthetic policy scenarios demonstrate mechanics only.",
+      "The fifty-pair live study is recorded evidence; this rehearsal makes no live calls.",
+      "RAG answer/citation human review and the historical lock-timeout cause remain separate."
+    ]
+  },
+  "first_runs_survived_second_launcher": [
+    {
+      "run_id": "aa1c4e00-b725-4a92-94a6-02088095bb8f",
+      "status": "COMPLETED",
+      "results_retained": 2
+    },
+    {
+      "run_id": "f8c74f3c-c3e1-466e-8f18-225c25a038ac",
+      "status": "COMPLETED",
+      "results_retained": 2
+    }
+  ],
+  "screenshot": "reports/demo-dashboard.png",
+  "source_sha256": {
+    "scripts/run_demo.py": "519f983c794324932c4ea4ba7d770efc79a91dd80ed0fbb45d455bdb7804d677",
+    "scripts/portfolio_demo.py": "7b289ee629ae56d80b8eac2c7ceef36c766a20720602b45e20520859cc36e506",
+    "tests/test_demo_launcher.py": "6e46d001d8a83e1b0bf0a9183322ccc5ffe048974ca1570b3be81b82dc5971db",
+    "tests/integration/test_queued_request_budget.py": "828b89fcb7dccbe53e3a261e95a561215924c28929cf2ea44c8fbd5fb3abc61b",
+    ".github/workflows/compose.yml": "b060428fe35ba2b1f72a0380d4251b1a308478e24a001f0ee6bbf6904c821122"
+  },
+  "screenshot_sha256": "f3ea5fde251202d1e10faa2eb95a9dffd32d1700d9ca4c34a35ba4c2cc622d79",
+  "limits": [
+    "Fake results and synthetic policy cases demonstrate mechanics, not live-model accuracy or throughput.",
+    "The recorded fifty-response study covers ten underlying questions; human RAG review is still pending.",
+    "Private hosting, new paid testing and broader hardening remain separate from demo readiness."
+  ]
+}

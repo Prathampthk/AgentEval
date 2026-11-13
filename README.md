@@ -1,9 +1,19 @@
 # AgentEval
 
-A local AI evaluation and regression-testing platform with durable PostgreSQL jobs, bounded workers, a pgvector RAG target, regression checks and a React dashboard. Live evidence includes two Gemini evaluation smokes, a ten-example comparison with human labels, and a two-document RAG smoke.
+A local AI evaluation and regression-testing platform with durable PostgreSQL jobs, bounded workers, a pgvector RAG target, regression checks and a React dashboard. Recorded live evidence includes a fifty-response judge study against frozen human labels and a small RAG collection; their scope and pending human RAG review are documented separately.
 **Core stack:** a local FastAPI evaluation workflow, PostgreSQL persistence, and a durable job queue with a configurable bounded worker pool. Gemini adapter contracts and a small live generation/judgment smoke sample are verified.
 
-## Run locally
+## Start the demo
+
+With Python 3.12+ and a local Docker engine running:
+
+```bash
+python3 scripts/run_demo.py
+```
+
+Open **http://127.0.0.1:8013/dashboard/**. The launcher builds and rehearses a separate fake-provider stack, prints the completed run IDs and saves fresh evidence. No API key, cloud server or host Node installation is required. Initial image/dependency downloads need network access. Existing application stacks and demo database history are preserved. See the [five-minute walkthrough](docs/DEMO.md) for the presentation and stop/restart commands.
+
+## Run locally for development
 
 Requires Python 3.12+. From the repository root:
 
@@ -204,7 +214,7 @@ Human review is complete: 50 labels were supplied, and the ten-example live Gemi
 See [container deployment and verification](docs/DEPLOYMENT.md), [delivery semantics](docs/JOB_EXECUTION_SEMANTICS.md) and [résumé evidence](RESUME_EVIDENCE.md) for the current backend upgrade. The new process sweep benchmarks **1, 4, 8 and 16 independent processes**, separately from the historical 1-vs-16 async-lane report above. Active queues have configurable capacity and retry hints; worker execution has fixed per-process bounds. Compose defaults to simulated providers and a loopback-only API. External side effects may repeat after crashes; no exactly-once external execution or public production-readiness claim is made.
 
 
-Latest follow-up: [lock contention investigation and hosted CI](docs/LOCK_CONTENTION_REVIEW.md). The latest non-root container suite passed 211 tests ([verification](reports/server-request-controls-verification.json)). Both hosted workflows passed at `0031224`; earlier Bake recovery evidence is retained. The historical lock-timeout outlier remains unresolved; optional diagnostic capture is now available without changing default queue execution.
+Latest follow-up: [lock contention investigation and hosted CI](docs/LOCK_CONTENTION_REVIEW.md). The latest non-root container suite passed 225 tests ([verification](reports/demo-readiness-verification.json)). Both hosted workflows passed at `0031224`; earlier Bake recovery evidence is retained. The historical lock-timeout outlier remains unresolved; optional diagnostic capture is now available without changing default queue execution.
 
 Repeatable fake-provider portfolio walkthrough: [demo steps](docs/DEMO.md), `.venv/bin/python scripts/portfolio_demo.py`. All 50 human labels are complete, with fifty paired candidate-v2 predictions; [separate validation plans](docs/NEXT_VALIDATION.md) cover live RAG and deployment safeguards without authorizing paid calls or public release.
 
