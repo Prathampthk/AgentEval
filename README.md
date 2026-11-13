@@ -13,6 +13,8 @@ python3 scripts/run_demo.py
 
 Open **http://127.0.0.1:8013/dashboard/**. The launcher builds and rehearses a separate fake-provider stack, prints the completed run IDs and saves fresh evidence. No API key, cloud server or host Node installation is required. Initial image/dependency downloads need network access. Existing application stacks and demo database history are preserved. See the [five-minute walkthrough](docs/DEMO.md) for the presentation and stop/restart commands.
 
+For completed deliverables and the remaining evaluation/hosting prerequisites, see [project completion](docs/PROJECT_COMPLETION.md).
+
 ## Run locally for development
 
 Requires Python 3.12+. From the repository root:
@@ -62,7 +64,7 @@ GitHub Actions defines the same deterministic checks with an isolated PostgreSQL
 
 ## Operating limits
 
-Local/controlled demonstration only: an optional single-owner gate is available in [deployment instructions](docs/DEPLOYMENT.md#optional-single-owner-access-gate). Bind to loopback; do not expose this API publicly. Request bodies are capped at 32 KiB; fields have individual length limits. Each process admits at most four evaluations and rejects excess requests with HTTP 429. This is not a global worker limit or durable queue. Each provider operation has a 30-second application deadline; two sequential operations may take about 60 seconds. The SDK also receives a request timeout. Separate connection, job, lease and run deadlines belong to later work.
+Local/controlled demonstration only: an optional single-owner gate is available in [deployment instructions](docs/DEPLOYMENT.md#optional-single-owner-access-gate). Bind to loopback; do not expose this API publicly. Request bodies are capped at 32 KiB; fields have individual length limits. Each process admits at most four evaluations and rejects excess requests with HTTP 429. This is not a global worker limit or durable queue. Each provider operation has a 30-second application deadline; two sequential operations may take about 60 seconds. The SDK also receives a request timeout. Connection bounds, job leases, retry budgets and queued-run deadlines are implemented; their scopes are described below.
 
 `/health/live` confirms API liveness. `/health/ready` reports provider configuration and checks migration readiness when PostgreSQL is configured; it does **not verify Gemini connectivity**. Provider failures produce sanitized HTTP 502 or 504 errors; poor answers produce normal evaluation results with `passed=false`. No automatic application retries are implemented. No request/answer/key content is deliberately logged by application events.
 
@@ -171,7 +173,7 @@ The isolated PostgreSQL tests now include disabling test-database connections, t
 
 The default database image now includes pgvector; apply migration 0004 with the administrative migration command. Use POST /documents with `title` and plain-text `content`, then POST /rag/ask with `question` and optional `k`. POST /rag/evaluate also accepts `expected_answer` and `expected_document_ids` and returns Recall@K, Hit Rate@K and answer evaluation. Source document/chunk IDs accompany retrieval results.
 
-Fake embeddings are deterministic word hashes, explicitly simulated; Gemini embedding contracts are tested but live embeddings have not run. See [RAG methodology](docs/RAG.md). Existing SQL data was preserved during the local container image change.
+Fake embeddings are deterministic word hashes, explicitly simulated; Gemini embedding contracts and the recorded two-document smoke and six-document study are verified within their small fixture scopes. See [RAG methodology](docs/RAG.md). Existing SQL data was preserved during the local container image change.
 
 ## Regression checks
 

@@ -1,23 +1,20 @@
 # Deliverable status
 
-Latest platform evidence: [engineering review](PLATFORM_REVIEW.md), [verification record](../reports/platform-verification.json), [résumé evidence](../RESUME_EVIDENCE.md). Production readiness remains unverified; hosted workflows later passed on cb28a72 and 0b84e4d (see LOCK_CONTENTION_REVIEW.md); the 16-process benchmark lock-timeout outlier needs further diagnosis.
+The local portfolio demo is ready. This index supersedes earlier blocked-label/live-evidence status; original experiment reports remain historical evidence. See [completion and remaining work](PROJECT_COMPLETION.md).
 
-| Deliverable | Status | Evidence |
+| Deliverable | Current scope | Evidence |
 |---|---|---|
-| Backend and evaluation engine | VERIFIED locally with simulation | 134 passing backend tests locally; prior 127 container suite retained as historical evidence; domain/service/API |
-| PostgreSQL migrations and persistence | VERIFIED | Migrations 0001–0004; real PostgreSQL integration tests |
-| Durable worker / idempotency / leases / recovery | VERIFIED in controlled scenarios | JOB_EXECUTION_SEMANTICS.md; RELIABILITY_TESTING.md |
-| Bounded concurrency | VERIFIED process-local | 16 active evaluations, bounded tasks, cancellation/drain tests |
-| Gemini generation/judgment/embeddings adapter | CONTRACT TESTED; live BLOCKED | SDK tests; no secure key/model binding active |
-| RAG target | VERIFIED with simulated embeddings | pgvector ingestion/retrieval/HTTP tests; RAG.md |
-| Regression checker | VERIFIED locally | PASS/FAIL/INCONCLUSIVE tests and deterministic demo gate |
-| GitHub Actions | VERIFIED on cb28a72 and application revision 0b84e4d | Deterministic tests/build/gate; optional budget-capped manual live workflow |
-| React dashboard | VERIFIED core Chromium flow | Production build, dataset/run/details/comparison/study browser test |
-| Automated suite | VERIFIED | 134 backend tests locally; prior 127-test container suite and 1 browser workflow retained as historical evidence |
-| Reliability evidence | VERIFIED, scoped | Real process exit, database connection interruption, fencing, rollback, cancellation and shutdown |
-| Benchmark runner and report | VERIFIED simulated | 12,000 accepted process-sweep jobs; 1,000 per variant, 3 repetitions at 1/4/8/16 processes; PLATFORM_BENCHMARK_REPORT.md. Historical async-lane report retained separately |
-| Human-vs-AI judge report | BLOCKED on actual labels and live predictions | 50 unlabeled examples; report explicitly BLOCKED and accuracy null |
-| Architecture / decisions / demo | DOCUMENTED | ARCHITECTURE.md, ENGINEERING_DECISIONS.md, DEMO.md |
-| Résumé audit | UPDATED with evidence boundaries | RESUME_CLAIMS_AUDIT.md; no exactly-once/live-quality claims |
+| Backend, PostgreSQL and migrations | Implemented and integration-tested | [Database schema](DATABASE_SCHEMA.md), [latest implementation verification](../reports/private-refusal-verification.json) |
+| Durable queue and bounded workers | Controlled idempotency, leases, fencing, recovery and shutdown | [Execution semantics](JOB_EXECUTION_SEMANTICS.md), [reliability](RELIABILITY_TESTING.md) |
+| Gemini adapter | Offline contracts plus narrow live evidence | [Smoke record](../reports/live-gemini-smoke.json), [provider configuration](PROVIDER_CONFIGURATION.md) |
+| Human judge study | 50 genuine labels paired; 10 development + 40 response-level validation matches | [Methodology and limitations](HUMAN_LABELING.md) |
+| RAG and human review | Six synthetic documents, eight questions; user-reviewed support/abstention | [RAG](RAG.md), [review completion](../reports/rag-human-review-completion.json) |
+| Regression checker | Deterministic PASS/FAIL/INCONCLUSIVE cases | [Regression policy](REGRESSION_POLICY.md) |
+| Dashboard and demo | Core Chromium flow; repeated launcher and retained history | [Demo](DEMO.md), [rehearsal evidence](../reports/demo-readiness-verification.json) |
+| Automated verification | Latest full local container suite: 232 passed; hosted checks passed at 3d20f0a | [Implementation checks](../reports/private-refusal-verification.json), [GitHub checks](https://github.com/Prathampthk/AgentEval/actions) |
+| Simulated performance | Measured controlled async/process workloads; no live throughput claim | [Process report](PLATFORM_BENCHMARK_REPORT.md), [historical async report](BENCHMARK_REPORT.md) |
+| Timeout investigation | Instrumentation/positive control verified; historical cause unresolved | [Lock review](LOCK_CONTENTION_REVIEW.md) |
+| Private hosting preparation | Docker/TLS/auth/budget/local encrypted restore prepared; remote unprovisioned | [Private runbook](PRIVATE_SERVER.md), [request controls](SERVER_REQUEST_CONTROLS.md) |
+| Claims and evidence | Scope and limitations disclosed | [Claims audit](RESUME_CLAIMS_AUDIT.md), [limitations](KNOWN_LIMITATIONS.md) |
 
-Remaining outside action: securely enter a replacement GEMINI_API_KEY and a supported AGENTEVAL_MODEL in cloud environment settings, and supply actual reviewed human labels. The authorized live budget is at most 10 evaluations; zero live calls have been executed in this work. A full 50-example live study requires its own budget decision. Do not populate human labels with generated answers.
+New questions and repeated live trials need a fresh request allowance and genuine human ground truth. A server, offsite destination and provisioning approval are still required for remote operational acceptance. Neither is required to present the local fake-provider demo.

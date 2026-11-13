@@ -1,6 +1,6 @@
-# Prioritized implementation plan
+# Implementation plan and completion status
 
-Milestones 1–5 and 7–10 are implemented and locally verified. Milestone 6 software and labeling materials are prepared, but the human study is BLOCKED on actual human labels and live-judge predictions. Milestone 11 review and demonstration documentation are complete for the local/simulated scope; live Gemini validation remains blocked on secure credentials/model. Work was committed and pushed in milestone increments; no results were fabricated.
+The eleven local portfolio milestones below are implemented with scoped evidence. Human judge labeling, live judge collection and genuine human RAG review are complete. The local demo requires no API key. This is completion of the controlled portfolio scope, not production certification.
 
 | Priority | Milestone | Exit evidence |
 |---|---|---|
@@ -17,10 +17,7 @@ Milestones 1–5 and 7–10 are implemented and locally verified. Milestone 6 so
 | 10 | Performance | Equivalent 1,000-job simulated runs at concurrency 1 and 16; repeated raw measurements and honest analysis; cache experiment only if justified |
 | 11 | Final review | Security/architecture review, demonstration, limitations, evidence-linked résumé audit |
 
-During milestone 1, add dependency configuration, local install/run commands, deterministic CI checks and a README. Prepare and verify the cloud environment against those actual commands, then save tested install/start instructions. Use the existing isolated checkout; no worktree is needed. PostgreSQL setup begins when persistence is implemented. Live Gemini checks require a selected model and securely configured credentials; routine tests must not require paid calls.
 
-For each milestone, explain problem, alternatives, decision, implementation, verification, trade-offs and learning takeaway. Seek approval before major architectural changes. Keep implementation work reviewable and the application working at each completed stage.
+The original milestone ordering is retained above as design intent. Current deliverable evidence is indexed in [DELIVERABLES.md](DELIVERABLES.md); remaining work and its prerequisites are in [PROJECT_COMPLETION.md](PROJECT_COMPLETION.md). Historical milestone reports retain their original measurements and status at collection time.
 
-Milestone 6 tooling increment: 50 unlabeled examples, a strict human-label template, optional judge runner and tested agreement analysis exist. The actual human study remains BLOCKED; independent RAG/regression/dashboard work continues without inventing labels.
-
-Milestones 7–10 are implemented: pgvector RAG target, compatible-run regression checker/CI definitions, tested React dashboard, and completed 1,000-job simulated benchmark with three repetitions per configuration. Human-study measurements and live-provider checks remain external prerequisites, not fabricated completed milestones. Final security/architecture review is documented in FINAL_REVIEW.md.
+New work should remain a small verified increment. Routine checks use fake providers; new live collection needs a fresh explicit allowance. Private-server preparation is complete locally, while provisioning and remote operational acceptance require the owner's provider choice and approval. No generated decisions may be presented as human labels.
