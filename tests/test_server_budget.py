@@ -252,3 +252,81 @@ def test_exhausted_or_missing_budget_blocks_http_before_dispatch(tmp_path, missi
     assert response.status_code == (503 if missing else 429)
     provider.generate.assert_not_awaited()
     assert str(path) not in response.text
+
+
+@pytest.mark.parametrize("damage", ["missing-row", "fractional", "non-numeric", "out-of-range"])
+def test_policy_damage_after_startup_blocks_dispatch_without_spending(tmp_path, damage):
+    import sqlite3
+
+    budget = configure(tmp_path / "budget.sqlite3", 10, 100, 1)
+    budget.validate()
+    with sqlite3.connect(budget.path) as connection:
+        if damage == "missing-row":
+            connection.execute("DELETE FROM policy")
+        else:
+            value = {
+                "fractional": 2.5,
+                "non-numeric": "SYNTHETIC_PRIVATE_VALUE",
+                "out-of-range": 100001,
+            }[damage]
+            connection.execute("UPDATE policy SET ceiling=?", (value,))
+    inner = FakeProvider()
+    inner.generate = AsyncMock()
+    with TestClient(create_app(BudgetProvider(inner, budget))) as client:
+        response = client.post(
+            "/evaluations",
+            json={
+                "dataset_name": "synthetic",
+                "dataset_version": "1",
+                "test_case_id": "one",
+                "question": "fixture",
+                "expected_answer": "fixture",
+            },
+        )
+    assert response.status_code == 503
+    assert response.json()["detail"]["category"] == "provider_budget_unavailable"
+    assert "SYNTHETIC_PRIVATE_VALUE" not in response.text
+    inner.generate.assert_not_awaited()
+    with sqlite3.connect(budget.path) as connection:
+        assert connection.execute("SELECT count(*) FROM attempts").fetchone() == (0,)
+    with pytest.raises(ProviderError, match="provider_budget_unavailable"):
+        budget.status()
+
+
+def test_operator_can_inspect_and_reconcile_without_refund_when_policy_is_missing(tmp_path):
+    import sqlite3
+
+    path = tmp_path / "budget.sqlite3"
+    budget = configure(path, 5, 100, 1)
+    identifier = budget.reserve("judge")
+    with sqlite3.connect(path) as connection:
+        connection.execute("DELETE FROM policy")
+
+    def command(*args):
+        return json.loads(
+            subprocess.run(
+                [sys.executable, "-m", "agenteval.server_budget", "--path", str(path), *args],
+                capture_output=True,
+                text=True,
+                check=True,
+            ).stdout
+        )
+
+    assert command("inspect-active")[0]["id"] == identifier
+    result = command(
+        "reconcile",
+        "--attempt",
+        identifier,
+        "--confirm-workers-stopped",
+        "--confirm-provider-usage-reviewed",
+    )
+    assert result == {
+        "reconciled_attempts": 1,
+        "attempts_refunded": 0,
+        "policy_status": "unavailable",
+    }
+    with pytest.raises(ProviderError):
+        budget.reserve("generate")
+    configure(path, 2, 100, 1)
+    assert budget.status()["attempts_reserved"] == 1
+    assert budget.status()["attempts_remaining"] == 1

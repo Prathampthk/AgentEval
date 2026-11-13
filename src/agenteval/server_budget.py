@@ -37,24 +37,27 @@ class ServerBudget:
             if connection:
                 connection.close()
 
+    @staticmethod
+    def _policy(connection):
+        row = connection.execute("SELECT ceiling,rpm,concurrency FROM policy WHERE id=1").fetchone()
+        if (
+            row is None
+            or not all(type(value) is int for value in row)
+            or not (1 <= row[0] <= 100000 and 1 <= row[1] <= 1000 and 1 <= row[2] <= 4)
+        ):
+            raise ValueError("Invalid server budget policy")
+        return row
+
     def validate(self):
         with self.connection() as connection:
-            row = connection.execute(
-                "SELECT ceiling,rpm,concurrency FROM policy WHERE id=1"
-            ).fetchone()
-            if row is None or not (
-                1 <= row[0] <= 100000 and 1 <= row[1] <= 1000 and 1 <= row[2] <= 4
-            ):
-                raise ValueError("Invalid server budget policy")
+            self._policy(connection)
 
     def reserve(self, operation):
         if operation not in {"generate", "judge", "embed"}:
             raise ValueError("Unknown provider operation")
         with self.connection() as connection:
             now = time.time()
-            ceiling, rpm, concurrency = connection.execute(
-                "SELECT ceiling,rpm,concurrency FROM policy WHERE id=1"
-            ).fetchone()
+            ceiling, rpm, concurrency = self._policy(connection)
             total, active = connection.execute(
                 "SELECT count(*),count(*) FILTER (WHERE finished IS NULL) FROM attempts"
             ).fetchone()
@@ -94,9 +97,7 @@ class ServerBudget:
 
     def status(self):
         with self.connection() as connection:
-            policy = connection.execute(
-                "SELECT ceiling,rpm,concurrency FROM policy WHERE id=1"
-            ).fetchone()
+            policy = self._policy(connection)
             total, active = connection.execute(
                 "SELECT count(*),count(*) FILTER (WHERE finished IS NULL) FROM attempts"
             ).fetchone()
@@ -245,10 +246,26 @@ def main():
             if args.command == "configure"
             else ServerBudget(args.path)
         )
-        budget.validate()
         if args.command == "inspect-active":
             print(json.dumps(budget.active()))
-        elif args.command == "snapshot":
+            return
+        if args.command == "reconcile":
+            budget.reconcile(args.attempt)
+            try:
+                print(json.dumps(budget.status()))
+            except ProviderError:
+                print(
+                    json.dumps(
+                        {
+                            "reconciled_attempts": len(args.attempt),
+                            "attempts_refunded": 0,
+                            "policy_status": "unavailable",
+                        }
+                    )
+                )
+            return
+        budget.validate()
+        if args.command == "snapshot":
             print(
                 json.dumps(
                     {
@@ -258,8 +275,6 @@ def main():
                 )
             )
         else:
-            if args.command == "reconcile":
-                budget.reconcile(args.attempt)
             print(json.dumps(budget.status()))
     except (ValueError, ProviderError):
         parser.error("Budget unavailable or policy rejected; no provider requests were made")

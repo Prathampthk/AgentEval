@@ -101,6 +101,8 @@ def create_app(
 ) -> FastAPI:
     token = access_token if access_token is not None else os.getenv("AGENTEVAL_ACCESS_TOKEN", "")
     validate_access_token(token)
+    if os.getenv("AGENTEVAL_PRIVATE_SERVER") == "1" and not token:
+        raise ValueError("Private server requires an owner access token")
 
     @asynccontextmanager
     async def lifespan(app):

@@ -1,6 +1,6 @@
 # Private single-owner server preparation
 
-This profile targets **Ubuntu 24.04 LTS**, one trusted owner, Docker Compose 2.24.4+, Python 3.12+, and SSH key access. The OS is proposed; no host, SSH hostname, provider, region or offsite destination has been selected or provisioned. It is tested locally, not remotely deployed. It publishes only TLS on `127.0.0.1:8443`; API and PostgreSQL ports are unpublished. Access it through an SSH tunnel. No DNS, public ingress or public certificate request is needed. All application routes require the owner credential except static `/health/live`.
+This profile targets **Ubuntu 24.04 LTS**, one trusted owner, Docker Compose 2.24.4+, Python 3.12+, and SSH key access. The OS is proposed; no host, SSH hostname, provider, region or offsite destination has been selected or provisioned. It is tested locally, not remotely deployed. It publishes only TLS on `127.0.0.1:8443`; API and PostgreSQL ports are unpublished. Access it through an SSH tunnel. No DNS, public ingress or public certificate request is needed. All application routes require the owner credential except static `/health/live`. Setting private-server mode without an owner token now fails application construction, even if the owner overlay is accidentally omitted; the ordinary loopback-only simulated demo remains usable without that private-mode setting.
 
 ## Provider-independent planning and approval
 

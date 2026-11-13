@@ -78,6 +78,17 @@ def test_default_loopback_demo_remains_usable(monkeypatch):
         assert client.get("/health/ready").status_code == 200
 
 
+@pytest.mark.parametrize("token", [None, ""])
+def test_private_mode_requires_owner_token_even_without_overlay(monkeypatch, token):
+    monkeypatch.setenv("AGENTEVAL_PRIVATE_SERVER", "1")
+    monkeypatch.delenv("AGENTEVAL_ACCESS_TOKEN", raising=False)
+    with pytest.raises(ValueError, match="requires an owner access token"):
+        create_app(FakeProvider(), access_token=token)
+    with TestClient(create_app(FakeProvider(), access_token=TOKEN)) as client:
+        assert client.get("/health/ready").status_code == 401
+        assert client.get("/health/ready", auth=("owner", TOKEN)).status_code == 200
+
+
 async def test_private_server_blocks_live_provider_before_client_creation(monkeypatch):
     from agenteval.runtime import provider_context
 

@@ -1,0 +1,38 @@
+{
+  "base_revision": "7752eef",
+  "scope": "Private startup authentication and damaged-ledger refusal/recovery",
+  "full_container_suite": {
+    "passed": 232,
+    "warnings": 1,
+    "seconds": 21.99
+  },
+  "host_unit_suite": {
+    "passed": 165,
+    "integration_deselected": 67,
+    "warnings": 2,
+    "seconds": 1.71
+  },
+  "ruff_lint": "PASS",
+  "ruff_format": "PASS",
+  "real_provider_requests": 0,
+  "cloud_resources_created": 0,
+  "live_activation_performed": false,
+  "checks": [
+    "Private mode rejects missing or explicitly empty owner token before startup",
+    "Valid private owner token continues to gate authenticated routes",
+    "Default local fake demo remains usable",
+    "Damaged policy is revalidated on each admission/status read and returns 503 without dispatch or new reservations",
+    "Explicit operator inspection/reconciliation remains possible with a missing policy row while preserving spent attempts"
+  ],
+  "source_sha256": {
+    "src/agenteval/api.py": "89d25d0c4235cf4599f6a1d994db6d05f5f93e70a7d238163728bbf200878489",
+    "src/agenteval/server_budget.py": "ba94d03f948f96dfa642ebdc0ddc5fb8c5ea64e27fdff5313a13fde488904258",
+    "tests/test_owner_access.py": "913bfb6807bc86fcbee74b88d5bd4b621f55c32038f11e884fefc34545a19e98",
+    "tests/test_server_budget.py": "af486a2d180668f25a24ba788d6f31a7732ca033cd7fb580f92b2fd7183add73"
+  },
+  "limits": [
+    "Synthetic providers and deliberately damaged local test ledgers only; no real key or provider quota test.",
+    "Reconciliation flags are operator attestations and never establish exactly-once external execution.",
+    "Human RAG review, original-environment timeout recurrence and approved remote deployment remain separate."
+  ]
+}
