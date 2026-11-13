@@ -1,0 +1,20 @@
+{
+  "status": "USER_REVIEWS_COMPLETE",
+  "recorded_at_utc": "2026-11-13T04:45:44.524781+00:00",
+  "source": "User supplied and confirmed saved decisions; validated without editing reviews.",
+  "review_count": 8,
+  "review_file_sha256": "462c14e38e5e9e38efaf62aee0e0100bd0497a372225a16b01901236f2a287b1",
+  "frozen_local_copy": "artifacts/rag-study-live-2026-11-12/human_review_answers.frozen-462c14e38e5e.json",
+  "fixture_sha256": "d7172662509f32c2cc9ca44dca23752d76b53ecaf6f7327f29ca14c7e2044bbc",
+  "collection_sha256": "8293eccbf7888ddf3380542949e1dfdd5419eb2c89cd8e9b2ea845ca98009ca2",
+  "human_decisions_generated_by_agent": 0,
+  "provider_calls_for_completion": 0,
+  "raw_review_file_unchanged": true,
+  "privacy": "Raw reviewer identifiers and notes remain ignored; only aggregates and hashes are committed.",
+  "prior_status_report": "reports/rag-human-review-status.json",
+  "summary": "reports/rag-human-review-completion.json",
+  "limits": [
+    "Review instructions omitted AI judge scores; reviewer blinding was instructed, not independently verified.",
+    "Single user review of a small authored synthetic corpus; no inter-rater or generalization claim."
+  ]
+}

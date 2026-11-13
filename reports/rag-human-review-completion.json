@@ -1,0 +1,34 @@
+{
+  "status": "HUMAN_REVIEW_COMPLETE",
+  "fixture_sha256": "d7172662509f32c2cc9ca44dca23752d76b53ecaf6f7327f29ca14c7e2044bbc",
+  "review_file_sha256": "462c14e38e5e9e38efaf62aee0e0100bd0497a372225a16b01901236f2a287b1",
+  "collection_sha256": "8293eccbf7888ddf3380542949e1dfdd5419eb2c89cd8e9b2ea845ca98009ca2",
+  "question_count": 8,
+  "reviewed_count": 8,
+  "pending_question_ids": [],
+  "groups": {
+    "answerable": {
+      "total": 6,
+      "reviewed": 6,
+      "answer_supported": 6,
+      "citations_supported": 6,
+      "appropriate_abstention": 0,
+      "answer_supported_rate": 1.0,
+      "citations_supported_rate": 1.0,
+      "appropriate_abstention_rate": null
+    },
+    "unanswerable": {
+      "total": 2,
+      "reviewed": 2,
+      "answer_supported": 2,
+      "citations_supported": 2,
+      "appropriate_abstention": 2,
+      "answer_supported_rate": 1.0,
+      "citations_supported_rate": 1.0,
+      "appropriate_abstention_rate": 1.0
+    }
+  },
+  "scope": "User-supplied decisions only; no labels generated. Rates use fully reviewed rows in each group; absent reviews yield null rates. Reviewer identifiers and notes are excluded.",
+  "limitation": "One user review of eight answers from six synthetic documents; no representative accuracy, inter-rater calibration or general citation-faithfulness claim.",
+  "unanswerable_citation_scope": "Unanswerable citation assessments are separate from citation support for the six factual answers; do not pool them into a factual citation-accuracy claim."
+}

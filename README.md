@@ -1,6 +1,6 @@
 # AgentEval
 
-A local AI evaluation and regression-testing platform with durable PostgreSQL jobs, bounded workers, a pgvector RAG target, regression checks and a React dashboard. Recorded live evidence includes a fifty-response judge study against frozen human labels and a small RAG collection; their scope and pending human RAG review are documented separately.
+A local AI evaluation and regression-testing platform with durable PostgreSQL jobs, bounded workers, a pgvector RAG target, regression checks and a React dashboard. Recorded live evidence includes a fifty-response judge study against frozen human labels and a small RAG collection; their scope and completed human RAG review are documented separately.
 **Core stack:** a local FastAPI evaluation workflow, PostgreSQL persistence, and a durable job queue with a configurable bounded worker pool. Gemini adapter contracts and a small live generation/judgment smoke sample are verified.
 
 ## Start the demo
@@ -227,9 +227,9 @@ Latest live validation: [judge comparison](reports/judge_validation.json) and [R
 
 The candidate-v2 judge prompt matched all ten human labels on the same development sample, correcting the four baseline instruction-injection false positives. The response-level holdout subsequently matched 10/10 labels. New Gemini processes use candidate-v2 by default and persist prompt provenance for compatible comparisons. See [prompt comparison](reports/judge-prompt-comparison.json).
 
-The separately authorized [eight-question live RAG study](reports/live-rag-study-v1-summary.json) completed 28 attempted operations. All six answerable queries retrieved their expected documents at K=3; answer/citation/abstention review is pending. No further provider requests are authorized by that completed run.
+The separately authorized [eight-question live RAG study](reports/live-rag-study-v1-summary.json) completed 28 attempted operations. All six answerable queries retrieved their expected documents at K=3; the subsequent human review is complete on this small synthetic fixture. No further provider requests are authorized by that completed run.
 
-RAG human review currently has zero of eight completed entries. The [offline validator](scripts/summarize_rag_review.py) checks frozen evidence, attribution and strict decisions without filling labels. Follow [review instructions](docs/RAG.md#complete-and-validate-human-review); missing reviews remain pending with null rates.
+[Human RAG review is complete](reports/rag-human-review-completion.json): the user marked all six answerable responses and their citations as supported, and both unanswerable responses as appropriate abstentions. The raw decisions were preserved privately and validated against frozen evidence. This eight-answer synthetic sample does not establish general RAG accuracy.
 
 Optional local [single-owner authentication](docs/DEPLOYMENT.md#optional-single-owner-access-gate) now protects API/docs/dashboard routes. The repeatable [lock reproduction bundle](docs/LOCK_CONTENTION_REVIEW.md#repeatable-positive-control-and-recurrence-bundle) retained four 1,000-job uninjected variants and its positive control; the historical timeout cause remains unresolved. The [predeclared remaining judge requests](reports/judge-remaining-validation-plan.json) were subsequently completed under a separate 30-request allowance; [completion provenance](reports/judge-completion-provenance.json) retains the actual counts and usage.
 

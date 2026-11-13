@@ -53,9 +53,9 @@ For failure/recovery, present committed controlled evidence or use dedicated tes
 
 ## Presentation boundaries and next hardening work
 
-Show these as three separate evidence types: the running fake queue/comparison workflow; the explicitly synthetic PASS/FAIL/INCONCLUSIVE policy cases; and the recorded fifty-response Gemini judge study. The last matched all fifty frozen human decisions, split into ten development and forty response-level validation responses across only ten underlying questions. It is not fifty independent questions or general model accuracy. The eight-question live RAG collection is saved, but its genuine human answer/citation/abstention review remains pending.
+Show these as separate evidence types: the running fake queue/comparison workflow; the explicitly synthetic PASS/FAIL/INCONCLUSIVE policy cases; and the recorded fifty-response Gemini judge study. The last matched all fifty frozen human decisions, split into ten development and forty response-level validation responses across only ten underlying questions. It is not fifty independent questions or general model accuracy. The eight-question live RAG collection now also has completed genuine human review: 6/6 answerable answers and citation assessments were marked supported, and 2/2 unanswerable answers were marked appropriate abstentions. Show [the aggregate review](../reports/rag-human-review-completion.json) separately; it is one user review of a small synthetic corpus.
 
-After the demo milestone, continue with that human review, new-question/repeated-run evaluation under a separately approved budget, recurrence capture for the unresolved historical PostgreSQL timeout, and approved server/backup operations. Private hosting remains unprovisioned. Local admission controls and encrypted restore checks are verified safeguards, not a claim that every failure mode has been eliminated.
+After the demo milestone and completed human review, continue with new-question/repeated-run evaluation under a separately approved budget, recurrence capture for the unresolved historical PostgreSQL timeout, and approved server/backup operations. Private hosting remains unprovisioned. Local admission controls and encrypted restore checks are verified safeguards, not a claim that every failure mode has been eliminated.
 
 ## Verified rehearsal
 
