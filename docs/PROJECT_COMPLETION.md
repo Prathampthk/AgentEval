@@ -27,6 +27,10 @@ The local portfolio project is ready to demonstrate. Run `python3 scripts/run_de
 
 All earlier live collection allowances are consumed. Free-tier eligibility and remaining project quota are not established by a successful request. Admission counters are separate from provider billing. No new provider calls, paid resources or live deployment follow automatically from this checklist.
 
+## Prepared next evaluation
+
+The [new-question pilot](NEW_QUESTION_STUDY.md) now has a frozen offline plan and an empty genuine-human review packet: ten synthetic responses across five new questions, with three repetitions proposed. No labels or provider calls were generated. Human review, a dedicated collector/analysis and fresh request authorization remain pending.
+
 ## Public service is a separate scope
 
 Multi-user authorization, tenant isolation, public ingress/abuse controls, cross-host quotas, comprehensive security review and availability/recovery targets are not part of the private single-owner demo. Define and authorize that scope before implementing or publishing it. No exactly-once external execution claim is justified.
