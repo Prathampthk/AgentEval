@@ -1,0 +1,21 @@
+{
+  "scope": "Offline pilot analysis integrity",
+  "host_unit_tests": {
+    "passed": 184,
+    "integration_deselected": 67,
+    "seconds": 1.75
+  },
+  "ruff_lint": "PASS",
+  "ruff_format": "PASS",
+  "recorded_live_analysis_recomputed": "Identical to committed report using private frozen human labels",
+  "provider_calls": 0,
+  "checks": [
+    "Reject incomplete, duplicate, unreviewed, unattributed or incompatible human label sets before measuring",
+    "Require explicit compatible prediction rubric",
+    "Reject blank provider/model/prompt provenance, including consistently blank fields"
+  ],
+  "limits": [
+    "Human identity and blinding remain operator attestations; schema validation cannot establish their truth.",
+    "No new database integration or live-provider validation was needed for this offline analysis change."
+  ]
+}

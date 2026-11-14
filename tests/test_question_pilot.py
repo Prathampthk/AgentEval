@@ -120,3 +120,53 @@ def test_repeatability_keeps_repetitions_separate(study):
         analyze(rows, labels, invalid)
     with pytest.raises(ValueError, match="exact frozen IDs"):
         analyze(rows, labels, [reps[0], reps[1], reps[2][:-1]])
+
+
+@pytest.mark.parametrize(
+    "invalid", ["missing", "duplicate", "unreviewed", "unattributed", "rubric"]
+)
+def test_analysis_rejects_incomplete_or_incompatible_human_ground_truth(study, invalid):
+    _, rows = module["load_plan"](study)
+    labels = [
+        {
+            "example_id": r["example_id"],
+            "human_pass": False,
+            "labeler": "synthetic-test",
+            "rubric_version": "v1",
+        }
+        for r in rows
+    ]
+    if invalid == "missing":
+        labels.pop()
+    elif invalid == "duplicate":
+        labels.append(labels[0].copy())
+    elif invalid == "unreviewed":
+        labels[0]["human_pass"] = None
+    elif invalid == "unattributed":
+        labels[0]["labeler"] = " "
+    else:
+        labels[0]["rubric_version"] = "other"
+    with pytest.raises(ValueError):
+        analyze(rows, labels, [predictions(rows) for _ in range(3)])
+
+
+@pytest.mark.parametrize(
+    "field", ["provider", "model", "judge_prompt_version", "judge_prompt_sha256", "rubric_version"]
+)
+def test_analysis_rejects_blank_provenance_even_when_consistent(study, field):
+    _, rows = module["load_plan"](study)
+    labels = [
+        {
+            "example_id": r["example_id"],
+            "human_pass": False,
+            "labeler": "synthetic-test",
+            "rubric_version": "v1",
+        }
+        for r in rows
+    ]
+    reps = [predictions(rows) for _ in range(3)]
+    for rep in reps:
+        for row in rep:
+            row[field] = " "
+    with pytest.raises(ValueError):
+        analyze(rows, labels, reps)

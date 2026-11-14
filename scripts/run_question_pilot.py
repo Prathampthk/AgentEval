@@ -37,7 +37,11 @@ def load_plan(folder):
 
 
 def validate_labels(path, rows):
-    labels = [HumanLabel.model_validate(r).model_dump() for r in json.loads(path.read_text())]
+    return validate_label_rows(json.loads(path.read_text()), rows)
+
+
+def validate_label_rows(raw_labels, rows):
+    labels = [HumanLabel.model_validate(r).model_dump() for r in raw_labels]
     ids = [r["example_id"] for r in labels]
     if len(set(ids)) != len(ids) or set(ids) != {r["example_id"] for r in rows}:
         raise ValueError("Labels must cover each frozen response exactly once")
@@ -53,6 +57,9 @@ def analyze(rows, labels, repetitions):
     if len(repetitions) != 3:
         raise ValueError("Three complete repetitions required")
     ids = {r["example_id"] for r in rows}
+    if not rows or len(ids) != len(rows):
+        raise ValueError("Nonempty unique source examples required")
+    labels = validate_label_rows(labels, rows)
     configurations = set()
     for predictions in repetitions:
         keys = [r["example_id"] for r in predictions]
@@ -61,6 +68,11 @@ def analyze(rows, labels, repetitions):
         for r in predictions:
             if type(r.get("passed")) is not bool or type(r.get("simulated")) is not bool:
                 raise ValueError("Strict prediction decisions and simulation flags required")
+            if r.get("rubric_version") != "v1":
+                raise ValueError("Every prediction requires the explicit v1 rubric")
+            for key in ("provider", "model", "judge_prompt_version", "judge_prompt_sha256"):
+                if not isinstance(r.get(key), str) or not r[key].strip():
+                    raise ValueError("Nonempty provider/model/prompt configuration required")
             configurations.add(
                 tuple(
                     r.get(k)

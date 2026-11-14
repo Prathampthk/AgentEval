@@ -27,9 +27,9 @@ The local portfolio project is ready to demonstrate. Run `python3 scripts/run_de
 
 All earlier live collection allowances are consumed. Free-tier eligibility and remaining project quota are not established by a successful request. Admission counters are separate from provider billing. No new provider calls, paid resources or live deployment follow automatically from this checklist.
 
-## Prepared next evaluation
+## Completed new-question pilot
 
-The [new-question pilot](NEW_QUESTION_STUDY.md) now has a frozen offline plan and an empty genuine-human review packet: ten synthetic responses across five new questions, with three repetitions proposed. No labels or provider calls were generated. The dedicated collector/analysis is implemented and offline-tested. Genuine human review is now complete: ten validated decisions (five pass, five fail), preserved privately with [aggregate provenance](../reports/new-question-human-review-completion.json). The separately authorized live collection subsequently completed: three repetitions each matched all ten decisions, with all ten binary decisions stable. See [completion evidence](../reports/new-question-live-completion.json). The thirty-attempt allowance is consumed. Broader representative evaluation remains distinct from this synthetic pilot.
+The [new-question pilot](NEW_QUESTION_STUDY.md) began with a frozen offline plan and an empty genuine-human review packet: ten synthetic responses across five new questions, with three repetitions proposed. Preparation generated no human decisions and made no provider calls. The dedicated collector/analysis is implemented and offline-tested. Genuine human review is now complete: ten validated decisions (five pass, five fail), preserved privately with [aggregate provenance](../reports/new-question-human-review-completion.json). The separately authorized live collection subsequently completed: three repetitions each matched all ten decisions, with all ten binary decisions stable. See [completion evidence](../reports/new-question-live-completion.json). The thirty-attempt allowance is consumed. Broader representative evaluation remains distinct from this synthetic pilot.
 
 ## Public service is a separate scope
 
