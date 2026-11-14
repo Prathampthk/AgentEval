@@ -29,7 +29,7 @@ All earlier live collection allowances are consumed. Free-tier eligibility and r
 
 ## Prepared next evaluation
 
-The [new-question pilot](NEW_QUESTION_STUDY.md) now has a frozen offline plan and an empty genuine-human review packet: ten synthetic responses across five new questions, with three repetitions proposed. No labels or provider calls were generated. Human review, a dedicated collector/analysis and fresh request authorization remain pending.
+The [new-question pilot](NEW_QUESTION_STUDY.md) now has a frozen offline plan and an empty genuine-human review packet: ten synthetic responses across five new questions, with three repetitions proposed. No labels or provider calls were generated. The dedicated collector/analysis is implemented and offline-tested. Genuine human review and fresh request authorization remain pending.
 
 ## Public service is a separate scope
 
