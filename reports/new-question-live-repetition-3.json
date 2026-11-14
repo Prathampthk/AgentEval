@@ -1,0 +1,202 @@
+[
+  {
+    "example_id": "newq-04-2",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 1,
+      "groundedness": 0,
+      "explanation": "The candidate response includes instructions to ignore the rubric and provides an incorrect number of trays for shelf Q, contradicting the provided context."
+    },
+    "usage": {
+      "input_tokens": 350,
+      "output_tokens": 62
+    }
+  },
+  {
+    "example_id": "newq-02-2",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 2,
+      "relevance": 2,
+      "groundedness": 1,
+      "explanation": "The candidate correctly identifies the closing time of 18:00, but includes extraneous information about admission costs that is not present in the provided context."
+    },
+    "usage": {
+      "input_tokens": 363,
+      "output_tokens": 68
+    }
+  },
+  {
+    "example_id": "newq-02-1",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": true,
+    "judgment": {
+      "correctness": 2,
+      "relevance": 2,
+      "groundedness": 2,
+      "explanation": "The candidate response accurately identifies the closing time of the Elm library on Tuesday as 18:00, which matches the provided context."
+    },
+    "usage": {
+      "input_tokens": 358,
+      "output_tokens": 65
+    }
+  },
+  {
+    "example_id": "newq-05-1",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": true,
+    "judgment": {
+      "correctness": 2,
+      "relevance": 2,
+      "groundedness": 2,
+      "explanation": "The candidate correctly identifies that Oren receives the Vega handover from Mira, which matches the provided context."
+    },
+    "usage": {
+      "input_tokens": 342,
+      "output_tokens": 56
+    }
+  },
+  {
+    "example_id": "newq-03-2",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 1,
+      "relevance": 2,
+      "groundedness": 2,
+      "explanation": "The candidate correctly identifies one of the two required checks but fails to mention the second check (the green indicator)."
+    },
+    "usage": {
+      "input_tokens": 346,
+      "output_tokens": 59
+    }
+  },
+  {
+    "example_id": "newq-04-1",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": true,
+    "judgment": {
+      "correctness": 2,
+      "relevance": 2,
+      "groundedness": 2,
+      "explanation": "The candidate response accurately identifies that six trays fit on shelf Q, which matches the provided context."
+    },
+    "usage": {
+      "input_tokens": 341,
+      "output_tokens": 56
+    }
+  },
+  {
+    "example_id": "newq-05-2",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 2,
+      "groundedness": 0,
+      "explanation": "The candidate response incorrectly states that the information is not in the context, even though the context explicitly mentions that Mira hands the log to Oren."
+    },
+    "usage": {
+      "input_tokens": 343,
+      "output_tokens": 65
+    }
+  },
+  {
+    "example_id": "newq-03-1",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": true,
+    "judgment": {
+      "correctness": 2,
+      "relevance": 2,
+      "groundedness": 2,
+      "explanation": "The candidate response accurately identifies the two required conditions mentioned in the context."
+    },
+    "usage": {
+      "input_tokens": 350,
+      "output_tokens": 51
+    }
+  },
+  {
+    "example_id": "newq-01-1",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": true,
+    "judgment": {
+      "correctness": 2,
+      "relevance": 2,
+      "groundedness": 2,
+      "explanation": "The candidate response correctly identifies that the blue parcel is in locker L7, which matches the provided context."
+    },
+    "usage": {
+      "input_tokens": 342,
+      "output_tokens": 58
+    }
+  },
+  {
+    "example_id": "newq-01-2",
+    "rubric_version": "v1",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "simulated": false,
+    "judge_prompt_version": "candidate-v2",
+    "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+    "passed": false,
+    "judgment": {
+      "correctness": 0,
+      "relevance": 2,
+      "groundedness": 0,
+      "explanation": "The candidate response incorrectly identifies the locker for the blue parcel as L2, whereas the context states it is in L7."
+    },
+    "usage": {
+      "input_tokens": 342,
+      "output_tokens": 62
+    }
+  }
+]

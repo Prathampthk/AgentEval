@@ -1,0 +1,31 @@
+{
+  "status": "COMPLETED",
+  "started_at_utc": "2026-11-14T21:33:03.518090+00:00",
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-lite",
+  "simulated": false,
+  "judge_prompt_version": "candidate-v2",
+  "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+  "seed": 42,
+  "selected_ids": [
+    "newq-04-2",
+    "newq-02-2",
+    "newq-02-1",
+    "newq-05-1",
+    "newq-03-2",
+    "newq-04-1",
+    "newq-05-2",
+    "newq-03-1",
+    "newq-01-1",
+    "newq-01-2"
+  ],
+  "selected_examples_sha256": "e4aad7278883bf01a15a977b26b93d1d6a2c7670926fc2a2715e4ea552205fa9",
+  "request_limit": 10,
+  "requests_started": 10,
+  "responses_saved": 10,
+  "delay_seconds": 13.0,
+  "automatic_retries": false,
+  "billing_tier_verified": false,
+  "usage_scope": "Successful saved responses only; failed/uncertain calls may incur usage.",
+  "finished_at_utc": "2026-11-14T21:35:09.927143+00:00"
+}

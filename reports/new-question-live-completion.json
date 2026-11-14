@@ -1,0 +1,72 @@
+{
+  "status": "COMPLETE",
+  "base_revision": "4cf043d",
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-lite",
+  "judge_prompt_version": "candidate-v2",
+  "judge_prompt_sha256": "359401857752e135eedbdd656198049a37929a01f0bd8173ac798d5a5297e7b6",
+  "authorized_attempts": 30,
+  "requests_started": 30,
+  "responses_saved": 30,
+  "automatic_retries": false,
+  "delay_seconds": 13,
+  "fixture_sha256": "9f7362dda21be2f2a0e19a538be208e4cfdedd3737694e8619d3afa657d913e7",
+  "labels_sha256": "9f19abc8a5e7e5ae869103219dbd128fd697fc0cfae353e47563d5ca45d388f3",
+  "usage": {
+    "input_tokens": 10431,
+    "output_tokens": 1806
+  },
+  "usage_scope": "Saved successful judge response metadata only; not an account billing ledger.",
+  "billing_tier_verified": false,
+  "distinct_questions": 5,
+  "responses_per_repetition": 10,
+  "repetitions": 3,
+  "agreement_each_repetition": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "stable_binary_decisions": 10,
+  "human_decisions_generated_by_agent": 0,
+  "raw_review_files_published": false,
+  "evidence": [
+    {
+      "path": "reports/new-question-live-analysis.json",
+      "sha256": "5ea426fb245a67c1c1caa0705b26f204e23c9b9766c3d0c0b4981b2478f11a86"
+    },
+    {
+      "path": "reports/new-question-live-repetition-1.json",
+      "sha256": "efb28cc45b9cef5acc02679cad2c8c56bd3c2e88b5fd35f7d3569a04616ddf12"
+    },
+    {
+      "path": "reports/new-question-live-repetition-1.meta.json",
+      "sha256": "d50c3cc5c247f9d1275605c57a0ef218898714ede7df63967f06ff5f673dbc1b"
+    },
+    {
+      "path": "reports/new-question-live-repetition-2.json",
+      "sha256": "efb28cc45b9cef5acc02679cad2c8c56bd3c2e88b5fd35f7d3569a04616ddf12"
+    },
+    {
+      "path": "reports/new-question-live-repetition-2.meta.json",
+      "sha256": "9ab751a1e83c247c18e8f47b98cf93d7d0673f8a5436d45c4169bd3be1be5e45"
+    },
+    {
+      "path": "reports/new-question-live-repetition-3.json",
+      "sha256": "efb28cc45b9cef5acc02679cad2c8c56bd3c2e88b5fd35f7d3569a04616ddf12"
+    },
+    {
+      "path": "reports/new-question-live-repetition-3.meta.json",
+      "sha256": "535d73078dcecc1778673d707afa498defcc0206244171cbced948f68292179c"
+    }
+  ],
+  "source_sha256": {
+    "scripts/run_question_pilot.py": "95695de6d8c5d9683c3859f34cc2db3dd96efa83d2cc8b696f8484c85da27f1e",
+    "scripts/judge_examples.py": "4262352fccf0942080aa9a72712c49bc0401a2592c4b81b25b99cf1ecda32eee"
+  },
+  "limits": [
+    "Agent-authored synthetic five-question pilot; two responses per question, three repeated judgments. Not thirty independent questions.",
+    "Binary decisions were stable; score and explanation identity were not assessed.",
+    "Single human reviewer; blinding instructed but not independently verified.",
+    "Authorization consumed: no additional requests permitted by this completion."
+  ]
+}

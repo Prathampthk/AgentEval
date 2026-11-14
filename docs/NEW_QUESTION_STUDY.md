@@ -14,9 +14,9 @@ The helper creates a new ignored `artifacts/judge-new-questions/` directory, fre
 
 Read `artifacts/judge-new-questions/human_review_packet.json`. For each example, compare its response with its question, expected answer and context. In `artifacts/judge-new-questions/human_labels.json`, set only `human_pass`, `labeler` and optional `notes`. Follow the strict v1 rubric in [HUMAN_LABELING.md](HUMAN_LABELING.md): a passing response must be fully correct, relevant and supported; partial correctness, unsupported additions and abstention fail. Use a personal reviewer identifier; keep ambiguous cases in notes. Leave undecided responses null. Do not inspect categories or future model predictions before reviewing. The agent must not fill these decisions.
 
-Before collection, validate all ten genuine labels and attribution, preserve the original and freeze a read-only private snapshot/hash. Confirm references and disclose that a single reviewer and synthetic facts limit the study. The user subsequently completed all ten reviews: five pass and five fail. Both original local files were preserved and read-only private snapshots retained; reference fields and duplicate decisions in the packet match the labels. See [completion provenance](../reports/new-question-human-review-completion.json). Blinding and semantic independence were not independently verified. No model predictions have been collected for this pilot.
+Before collection, validate all ten genuine labels and attribution, preserve the original and freeze a read-only private snapshot/hash. Confirm references and disclose that a single reviewer and synthetic facts limit the study. The user subsequently completed all ten reviews: five pass and five fail. Both original local files were preserved and read-only private snapshots retained; reference fields and duplicate decisions in the packet match the labels. See [completion provenance](../reports/new-question-human-review-completion.json). Blinding and semantic independence were not independently verified. The subsequently authorized collection is recorded below.
 
-## Proposed collection protocol — not authorized
+## Predeclared collection protocol (historical preparation)
 
 Use the frozen ten-response packet in three sequential repetitions with candidate-v2 and one fixed model/configuration. Proposed successful-path size is 30 judge operations. Agree a fresh attempted-request ceiling and check provider project quota/billing first; earlier allowances are consumed. Retain failed/uncertain attempts, stop at the first failure, disable automatic retry and preserve every repetition under a new output path. Pacing should be confirmed against current provider limits at authorization time.
 
@@ -35,3 +35,9 @@ Predeclare analysis before seeing predictions: report each repetition's confusio
 ## Other acceptance boundaries
 
 The hardware-dependent lock recurrence, approved private-server installation and offsite recovery remain separate. See [project completion](PROJECT_COMPLETION.md). This study preparation authorizes none of those operations.
+
+## Completed authorized collection
+
+The separately authorized 30-attempt stage completed with 30 saved Gemini responses, no recorded failures and no automatic retries, using candidate-v2 and `gemini-3.1-flash-lite` with 13-second pacing. Each of three repetitions matched all ten frozen human decisions (TP=5, TN=5, FP=0, FN=0); all ten binary decisions were stable across repetitions. This is five synthetic questions with two responses each, not thirty independent examples or representative accuracy. Scores and explanation identity were not assessed for stability.
+
+[Completion provenance](../reports/new-question-live-completion.json) links each raw repetition, attempt metadata and recomputed analysis, with fixture/label hashes. Reviewer details remain private. Successful response usage is not a billing ledger; free-tier eligibility remains unverified. The 30-attempt allowance is consumed; no further calls are authorized.
