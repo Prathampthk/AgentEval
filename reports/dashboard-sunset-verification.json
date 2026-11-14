@@ -1,0 +1,17 @@
+{
+  "theme": "Sunset: plum, peach, coral and burnt orange",
+  "checks": {
+    "production_build": "PASS",
+    "prettier": "PASS",
+    "browser_workflow": "PASS (1 test, 2.5 seconds)",
+    "desktop_1440px": "No page overflow",
+    "mobile_390px": "No page overflow",
+    "fake_demo_rehearsal": "PASS"
+  },
+  "provider_calls": 0,
+  "previews": [
+    "reports/dashboard-sunset-desktop.png",
+    "reports/dashboard-sunset-mobile.png"
+  ],
+  "scope": "Palette adjustment; semantic status colors retained."
+}

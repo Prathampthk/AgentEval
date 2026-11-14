@@ -1,12 +1,12 @@
 :root {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  color: #292b28;
-  background: #f5f4f0;
+  color: #352b35;
+  background: #fbf1eb;
   font-synthesis: none;
-  --ink: #292b28;
-  --muted: #696b64;
-  --line: #e1e1d9;
-  --accent: #a3442b;
+  --ink: #352b35;
+  --muted: #78646b;
+  --line: #ebd8ce;
+  --accent: #b4492e;
 }
 * {
   box-sizing: border-box;
@@ -35,7 +35,7 @@ button {
     border-color 150ms;
 }
 button:hover:not(:disabled) {
-  background: #84351f;
+  background: #92351f;
 }
 button:disabled {
   opacity: 0.45;
@@ -53,8 +53,8 @@ a:focus-visible {
 aside {
   width: 232px;
   flex-shrink: 0;
-  background: #252925;
-  color: #eeeee7;
+  background: linear-gradient(165deg, #543044 0%, #382936 65%);
+  color: #fff0e5;
   padding: 34px 20px 24px;
   display: flex;
   flex-direction: column;
@@ -76,8 +76,8 @@ aside {
   justify-content: center;
   width: 34px;
   height: 34px;
-  background: #e8e7db;
-  color: #252925;
+  background: #f9c59e;
+  color: #382936;
   font-family: Georgia, serif;
   font-size: 26px;
   letter-spacing: -4px;
@@ -85,15 +85,15 @@ aside {
   border-radius: 7px;
 }
 .brand-mark span {
-  color: #a3442b;
+  color: #b4492e;
 }
 .aside-note {
-  color: #aaafa5;
+  color: #cbb0bb;
   font-size: 11px;
   margin: 12px 0 54px 45px;
 }
 .nav-label {
-  color: #9ba197;
+  color: #c3a1ae;
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 1.7px;
@@ -109,33 +109,33 @@ nav button {
   gap: 13px;
   text-align: left;
   background: transparent;
-  color: #c0c5bb;
+  color: #e0c4cd;
   padding: 13px 14px;
   font-weight: 400;
   border: 1px solid transparent;
 }
 nav button:hover:not(:disabled) {
-  background: #30362f;
+  background: #493343;
   color: #fff;
 }
 nav button.active {
-  color: #f8f7f0;
-  background: #3b4239;
-  border-color: #4b5347;
+  color: #fff2e7;
+  background: #704454;
+  border-color: #9a6270;
 }
 nav button.active svg {
-  color: #dfb795;
+  color: #ffc798;
 }
 .aside-bottom {
   margin-top: auto;
   padding: 22px 10px 0;
-  border-top: 1px solid #42473e;
+  border-top: 1px solid #624553;
   font-size: 12px;
-  color: #c4c9bf;
+  color: #e0bdc7;
 }
 .aside-bottom small {
   display: block;
-  color: #9fa697;
+  color: #c5a4b0;
   font-size: 10px;
   line-height: 1.7;
   margin: 10px 0 0 13px;
@@ -145,7 +145,7 @@ nav button.active svg {
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: #b5bf9f;
+  background: #f5ad7b;
   margin: 0 8px 2px 0;
 }
 main {
@@ -170,14 +170,14 @@ main {
   font-weight: 500;
 }
 .breadcrumb-divider {
-  color: #a0a196;
+  color: #bda3a3;
   padding: 0 13px;
 }
 .workspace-tag {
   font-family: ui-monospace, monospace;
   font-size: 9px;
   letter-spacing: 1px;
-  color: #666d5d;
+  color: #84606b;
 }
 header {
   display: flex;
@@ -187,7 +187,7 @@ header {
   padding: 34px 0 25px;
 }
 .eyebrow {
-  color: #76796b;
+  color: #976353;
   font-size: 9px;
   font-weight: 600;
   letter-spacing: 1.7px;
@@ -232,7 +232,7 @@ p {
   margin: 24px 0;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: #fffefa;
+  background: #fffaf6;
   overflow: hidden;
 }
 .stats article {
@@ -262,7 +262,7 @@ p {
   gap: 22px;
 }
 section {
-  background: #fffefa;
+  background: #fffaf6;
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 26px;
@@ -271,14 +271,14 @@ section {
 }
 section p {
   line-height: 1.7;
-  color: #64675e;
+  color: #79646a;
 }
 label {
   display: grid;
   gap: 9px;
   font-size: 12px;
   font-weight: 500;
-  color: #4c5146;
+  color: #6b4e59;
   margin-bottom: 20px;
 }
 input,
@@ -286,9 +286,9 @@ textarea,
 select {
   width: 100%;
   padding: 11px 12px;
-  border: 1px solid #d4d7cb;
+  border: 1px solid #dfc8bd;
   border-radius: 5px;
-  background: #fffefa;
+  background: #fffaf6;
   color: var(--ink);
   font-size: 13px;
 }
@@ -297,7 +297,7 @@ textarea {
   font-size: 12px;
   line-height: 1.7;
   resize: vertical;
-  background: #f8f8f2;
+  background: #fbf1ea;
 }
 input:focus,
 textarea:focus,
@@ -314,7 +314,7 @@ table {
 }
 th {
   font-weight: 500;
-  color: #767b6d;
+  color: #936e72;
   font-size: 10px;
   letter-spacing: 0.6px;
   text-transform: uppercase;
@@ -322,7 +322,7 @@ th {
 th,
 td {
   padding: 13px 8px;
-  border-bottom: 1px solid #e9e9e0;
+  border-bottom: 1px solid #f0e0d7;
 }
 th:first-child,
 td:first-child {
@@ -340,17 +340,17 @@ td {
   overflow-wrap: anywhere;
 }
 tbody tr:hover {
-  background: #f6f6ef;
+  background: #fdf0e7;
 }
 .badge {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   padding: 5px 8px;
-  border: 1px solid #e1e3d8;
+  border: 1px solid #e7d4cf;
   border-radius: 4px;
-  background: #f0f1e9;
-  color: #616959;
+  background: #f6e9e5;
+  color: #7d5d68;
   font-size: 9px;
   font-weight: 600;
   letter-spacing: 0.5px;
@@ -394,7 +394,7 @@ tbody tr:hover {
   gap: 14px;
   margin: 23px 0;
   font-size: 12px;
-  color: #565d4f;
+  color: #745661;
 }
 .metric b {
   font-weight: 500;
@@ -403,33 +403,33 @@ tbody tr:hover {
 meter {
   width: 100%;
   height: 8px;
-  accent-color: #778365;
+  accent-color: #cc7855;
 }
 meter::-webkit-meter-bar {
-  background: #eeefe6;
+  background: #f5e2d5;
   border: 0;
   border-radius: 2px;
 }
 meter::-webkit-meter-optimum-value {
-  background: #778365;
+  background: #cc7855;
   border-radius: 2px;
 }
 meter::-moz-meter-bar {
-  background: #778365;
+  background: #cc7855;
 }
 .muted {
-  color: #707568;
+  color: #896d75;
   font-size: 11px;
   line-height: 1.7;
 }
 .secondary {
-  background: #fffefa;
-  border: 1px solid #d5d7cc;
-  color: #4f5748;
+  background: #fffaf6;
+  border: 1px solid #dfc7bf;
+  color: #77505d;
 }
 .secondary:hover:not(:disabled) {
-  background: #eeefe6;
-  border-color: #b6bcaa;
+  background: #f5e2d5;
+  border-color: #bd8e80;
 }
 .secondary > span {
   margin-right: 7px;
@@ -465,14 +465,14 @@ meter::-moz-meter-bar {
   border-color: #ead4c9;
 }
 .notice {
-  color: #60684e;
-  background: #eeefe3;
-  border-color: #dce0cd;
+  color: #855541;
+  background: #fae7d6;
+  border-color: #edceb5;
 }
 .answer {
   padding: 20px;
   border: 1px solid var(--line);
-  border-left: 3px solid #b3bca3;
+  border-left: 3px solid #d69a7b;
   border-radius: 4px;
   margin-top: 20px;
   overflow-wrap: anywhere;
@@ -494,8 +494,8 @@ meter::-moz-meter-bar {
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  background: #edeee4;
-  border-color: #d8dccb;
+  background: linear-gradient(110deg, #fbe4cc, #f4c8b6);
+  border-color: #e9bea0;
   padding: 25px 28px;
 }
 .start-panel h2 {
@@ -517,7 +517,7 @@ meter::-moz-meter-bar {
 }
 footer {
   font-size: 10px;
-  color: #73786a;
+  color: #92737a;
   margin: 16px 0 0;
   padding: 20px 0 0;
   border-top: 1px solid var(--line);
