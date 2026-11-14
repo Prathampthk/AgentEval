@@ -1,0 +1,20 @@
+{
+  "theme": "Warm ivory and charcoal workbench with terracotta actions and olive score indicators",
+  "scope": "Frontend presentation only; existing API and evidence semantics preserved",
+  "checks": {
+    "typescript_production_build": "PASS",
+    "prettier": "PASS",
+    "packaged_browser_workflow": "PASS (1 test, 2.1 seconds)",
+    "mobile_page_overflow": "None across four views at 390px",
+    "mobile_navigation": "354px content / 354px available",
+    "demo_rehearsal": "PASS"
+  },
+  "screenshots": [
+    "reports/dashboard-theme-desktop.png",
+    "reports/dashboard-theme-mobile.png"
+  ],
+  "provider_calls": 0,
+  "limitations": [
+    "Core Chromium flow and visual inspection; not exhaustive cross-browser or accessibility certification."
+  ]
+}

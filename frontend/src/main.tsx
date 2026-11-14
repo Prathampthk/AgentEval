@@ -116,6 +116,57 @@ async function api<T>(
 }
 const number = (value: number | null | undefined, suffix = "") =>
   value == null ? "—" : value.toFixed(2) + suffix;
+function NavIcon({ name }: { name: string }) {
+  const paths: Record<string, React.ReactNode> = {
+    Overview: (
+      <>
+        <rect x="3" y="3" width="6" height="6" rx="1" />
+        <rect x="13" y="3" width="6" height="6" rx="1" />
+        <rect x="3" y="13" width="6" height="6" rx="1" />
+        <rect x="13" y="13" width="6" height="6" rx="1" />
+      </>
+    ),
+    Runs: (
+      <>
+        <path d="M8 4h11M8 11h11M8 18h11" />
+        <circle cx="3" cy="4" r="1" />
+        <circle cx="3" cy="11" r="1" />
+        <circle cx="3" cy="18" r="1" />
+      </>
+    ),
+    Compare: (
+      <>
+        <path d="M3 7h16m-4-4 4 4-4 4M19 15H3m4-4-4 4 4 4" />
+      </>
+    ),
+    "Judge study": (
+      <>
+        <path d="M5 3h12v17l-6-3-6 3zM8 7h6M8 11h4" />
+      </>
+    ),
+  };
+  return (
+    <svg
+      width="19"
+      height="19"
+      viewBox="0 0 22 22"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      {paths[name]}
+    </svg>
+  );
+}
+const viewDescriptions: Record<string, string> = {
+  Overview: "A clear view of your evaluation workspace.",
+  Runs: "Build a dataset. Run an evaluation. Inspect the evidence.",
+  Compare: "See what changed between two evaluation runs.",
+  "Judge study": "Check the judge against human decisions.",
+};
 function App() {
   const [view, setView] = useState("Overview"),
     [datasets, setDatasets] = useState<DataSet[]>([]),
@@ -256,34 +307,47 @@ function App() {
     <div className="shell">
       <aside>
         <div className="brand">
-          A<span>AgentEval</span>
+          <span className="brand-mark" aria-hidden="true">
+            a<span>e</span>
+          </span>
+          <span>AgentEval</span>
         </div>
         <p className="aside-note">Evaluation workspace</p>
-        <nav>
+        <p className="nav-label">WORKSPACE</p>
+        <nav aria-label="Main navigation">
           {["Overview", "Runs", "Compare", "Judge study"].map((item) => (
             <button
               key={item}
               className={view === item ? "active" : ""}
+              aria-current={view === item ? "page" : undefined}
               onClick={() => setView(item)}
             >
+              <NavIcon name={item} />
               {item}
             </button>
           ))}
         </nav>
         <div className="aside-bottom">
-          Local evaluation platform
-          <br />
+          <span className="workspace-indicator" /> Local workspace
           <small>Metrics reflect stored evidence.</small>
         </div>
       </aside>
       <main>
+        <div className="workspace-bar">
+          <span>
+            Workspace <span className="breadcrumb-divider">/</span>{" "}
+            <b>{view}</b>
+          </span>
+          <span className="workspace-tag">LOCAL / CONTROLLED</span>
+        </div>
         <header>
           <div>
-            <p className="eyebrow">AI QUALITY / REGRESSION TESTING</p>
+            <p className="eyebrow">EVALUATION WORKSPACE</p>
             <h1>{view}</h1>
+            <p className="page-description">{viewDescriptions[view]}</p>
           </div>
           <button className="secondary" onClick={() => setTick((t) => t + 1)}>
-            Refresh
+            <span aria-hidden="true">↻</span> Refresh
           </button>
         </header>
         {error && (
@@ -304,9 +368,6 @@ function App() {
                 these are not live-model performance evidence.
               </p>
             )}
-            <p className="intro">
-              Understand your evaluations before deciding what to ship.
-            </p>
             <div className="stats">
               {[
                 ["Evaluation runs", overview?.total_runs],
@@ -393,13 +454,18 @@ function App() {
                 </table>
               </section>
             </div>
-            <section>
-              <h2>Start an evaluation</h2>
-              <p>
-                Create a versioned dataset, submit a run, and inspect individual
-                answers before comparing versions.
-              </p>
-              <button onClick={() => setView("Runs")}>Open runs</button>
+            <section className="start-panel">
+              <div>
+                <p className="eyebrow">NEXT STEP</p>
+                <h2>Put your next version to the test.</h2>
+                <p>
+                  Create a versioned dataset, submit a run, and inspect
+                  individual answers before comparing versions.
+                </p>
+              </div>
+              <button onClick={() => setView("Runs")}>
+                Open runs <span aria-hidden="true">↗</span>
+              </button>
             </section>
           </>
         )}
