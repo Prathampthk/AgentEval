@@ -1,0 +1,33 @@
+{
+  "status": "HUMAN_LABELS_COMPLETE_PREDICTIONS_PENDING",
+  "recorded_at_utc": "2026-11-14T21:25:55.537320+00:00",
+  "human_labeled": 10,
+  "pass": 5,
+  "fail": 5,
+  "distinct_questions": 5,
+  "rubric_version": "v1",
+  "fixture_sha256": "9f7362dda21be2f2a0e19a538be208e4cfdedd3737694e8619d3afa657d913e7",
+  "snapshots": {
+    "human_labels": {
+      "sha256": "9f19abc8a5e7e5ae869103219dbd128fd697fc0cfae353e47563d5ca45d388f3",
+      "frozen_local_copy": "artifacts/judge-new-questions/human_labels.frozen-9f19abc8a5e7.json"
+    },
+    "human_review_packet": {
+      "sha256": "c19b4be577c53181ce3a276efc7ca926361fea7bfbb1c943d7756ef546e8d766",
+      "frozen_local_copy": "artifacts/judge-new-questions/human_review_packet.frozen-c19b4be577c5.json"
+    }
+  },
+  "packet_reference_fields_match_fixture": true,
+  "duplicate_packet_decisions_match_labels": true,
+  "original_files_unchanged": true,
+  "human_decisions_generated_by_agent": 0,
+  "provider_calls": 0,
+  "live_execution_authorized": false,
+  "source": "User confirmed completion; strict schema, ID coverage, attribution and reference integrity validated locally.",
+  "limits": [
+    "Agent-authored synthetic five-question pilot, two responses per question; not representative application data.",
+    "No model agreement or repeatability measured yet.",
+    "Reviewer blinding was instructed, not independently verified.",
+    "Raw reviewer identifiers and notes remain in ignored private artifacts."
+  ]
+}

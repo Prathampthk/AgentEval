@@ -14,7 +14,7 @@ The helper creates a new ignored `artifacts/judge-new-questions/` directory, fre
 
 Read `artifacts/judge-new-questions/human_review_packet.json`. For each example, compare its response with its question, expected answer and context. In `artifacts/judge-new-questions/human_labels.json`, set only `human_pass`, `labeler` and optional `notes`. Follow the strict v1 rubric in [HUMAN_LABELING.md](HUMAN_LABELING.md): a passing response must be fully correct, relevant and supported; partial correctness, unsupported additions and abstention fail. Use a personal reviewer identifier; keep ambiguous cases in notes. Leave undecided responses null. Do not inspect categories or future model predictions before reviewing. The agent must not fill these decisions.
 
-Before collection, validate all ten genuine labels and attribution, preserve the original and freeze a read-only private snapshot/hash. Confirm references and disclose that a single reviewer and synthetic facts limit the study. These steps are still pending; preparation alone is not completed review.
+Before collection, validate all ten genuine labels and attribution, preserve the original and freeze a read-only private snapshot/hash. Confirm references and disclose that a single reviewer and synthetic facts limit the study. The user subsequently completed all ten reviews: five pass and five fail. Both original local files were preserved and read-only private snapshots retained; reference fields and duplicate decisions in the packet match the labels. See [completion provenance](../reports/new-question-human-review-completion.json). Blinding and semantic independence were not independently verified. No model predictions have been collected for this pilot.
 
 ## Proposed collection protocol — not authorized
 
