@@ -1,0 +1,69 @@
+{
+  "status": "LOCAL_DEMO_VERIFIED_WITH_DOCUMENTED_DEPENDENCY_LIMITATION",
+  "tested_revision": "9bd721240ff9d6e402cebd8b27bee1da80aa2e26",
+  "checkout": "Fresh HTTPS clone from GitHub; no pre-existing .local credentials, artifacts or host dependencies copied",
+  "host": "macOS arm64",
+  "host_python": "3.14.2",
+  "container_python": "3.12",
+  "docker_client_server": "29.9.2",
+  "compose": "5.6.1",
+  "isolated_project": "agenteval-demo-grader-20261117",
+  "port": 8014,
+  "full_container_suite": {
+    "passed": 257,
+    "warnings": 1,
+    "seconds": 23.47
+  },
+  "host_unit_suite": {
+    "passed": 190,
+    "integration_deselected": 67,
+    "seconds": 1.77
+  },
+  "packaged_browser_workflow": {
+    "passed": 1,
+    "seconds": 4.1,
+    "browser": "installed Chrome"
+  },
+  "checks": {
+    "fresh_clone_launcher": "PASS",
+    "stop_resume_launcher": "PASS",
+    "original_two_runs_four_results_after_restart": "PASS",
+    "queue_replay_worker_completion": "PASS",
+    "fake_rag_ingestion_retrieval": "PASS",
+    "frontend_locked_install_build_format": "PASS",
+    "ruff_lint_format": "PASS"
+  },
+  "external_provider_calls": 0,
+  "database_volumes_deleted": 0,
+  "original_demo_8013": "Preserved; fresh rehearsal uses separate project/volume",
+  "screenshots": [
+    "reports/grader-demo-overview.png",
+    "reports/grader-demo-run-details.png",
+    "reports/grader-demo-comparison.png"
+  ],
+  "dependency_audit": {
+    "frontend_production_findings": 0,
+    "frontend_build_tool_package_entries_high": 4,
+    "advisory": "https://github.com/advisories/GHSA-fc5q-39xc-vjpf",
+    "patched_version": "None listed at inspection",
+    "action": "Documented; no forced breaking downgrade applied"
+  },
+  "limits": [
+    "Existing Docker build cache was available; this was a clean checkout and new database, not a cache-cold machine.",
+    "No native Windows, exhaustive browser/accessibility, public deployment or broad model-quality claim.",
+    "Newer report/documentation commits do not change the tested runtime source.",
+    "Screenshots record our rehearsal; peer evaluators should capture their own run."
+  ],
+  "hosted_ci": {
+    "tested_revision": "9bd7212",
+    "deterministic": {
+      "conclusion": "success",
+      "url": "https://github.com/Prathampthk/AgentEval/actions/runs/44198456770"
+    },
+    "container": {
+      "conclusion": "success",
+      "url": "https://github.com/Prathampthk/AgentEval/actions/runs/44198456600"
+    }
+  },
+  "temporary_grader_services": "Stopped after verification; volumes preserved"
+}

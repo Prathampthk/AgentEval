@@ -1,0 +1,80 @@
+{
+  "status": "PASS",
+  "stage": "complete",
+  "started_at_utc": "2026-11-17T23:21:33.059047+00:00",
+  "provider": "fake",
+  "model": "context-echo-v1",
+  "embedding_model": "hash-bag-v1-768",
+  "simulated": true,
+  "planned_live_provider_operations": 0,
+  "documents": [
+    {
+      "id": "9642984a-c79b-490a-8950-b7348e10489f",
+      "chunks": 1,
+      "simulated": true
+    },
+    {
+      "id": "7a762353-b1a0-4e4e-86f7-7cf6c0d83fa7",
+      "chunks": 1,
+      "simulated": true
+    }
+  ],
+  "evaluation": {
+    "retrieved": [
+      {
+        "document_id": "7a762353-b1a0-4e4e-86f7-7cf6c0d83fa7",
+        "chunk_id": "11db9244-2545-41d3-8c30-0bca63353cdb",
+        "content": "For the signal65bb358a897540fca2610a4f1ab0900d expedition, the arrival signal is silver lanterns.",
+        "distance": 0.3907281574823901
+      },
+      {
+        "document_id": "9642984a-c79b-490a-8950-b7348e10489f",
+        "chunk_id": "cb7c0f08-9cb1-49d1-8416-08fa3a5ecbf6",
+        "content": "The signal65bb358a897540fca2610a4f1ab0900d expedition signals its arrival with silver lanterns.",
+        "distance": 0.5979848504066467
+      }
+    ],
+    "context_chunk_ids": [
+      "11db9244-2545-41d3-8c30-0bca63353cdb",
+      "cb7c0f08-9cb1-49d1-8416-08fa3a5ecbf6"
+    ],
+    "context_characters": 375,
+    "context_truncated": false,
+    "recall_at_k": 1.0,
+    "hit_rate_at_k": 1,
+    "result": {
+      "dataset_name": "rag-request",
+      "dataset_version": "1",
+      "test_case_id": "request",
+      "provider": "fake",
+      "model": "context-echo-v1",
+      "rubric_version": "v1",
+      "judge_prompt_version": "v1",
+      "judge_prompt_sha256": null,
+      "answer": "[document=7a762353-b1a0-4e4e-86f7-7cf6c0d83fa7 chunk=11db9244-2545-41d3-8c30-0bca63353cdb] For the signal65bb358a897540fca2610a4f1ab0900d expedition, the arrival signal is silver lanterns.\n[document=9642984a-c79b-490a-8950-b7348e10489f chunk=cb7c0f08-9cb1-49d1-8416-08fa3a5ecbf6] The signal65bb358a897540fca2610a4f1ab0900d expedition signals its arrival with silver lanterns.",
+      "judgment": {
+        "correctness": 2,
+        "relevance": 2,
+        "groundedness": 2,
+        "explanation": "SIMULATED: substring check only; this is not a semantic AI judgment."
+      },
+      "exact_match": null,
+      "passed": true,
+      "generation_latency_ms": 0.02520799171179533,
+      "judge_latency_ms": 0.026708003133535385,
+      "generation_usage": {
+        "input_tokens": null,
+        "output_tokens": null
+      },
+      "judge_usage": {
+        "input_tokens": null,
+        "output_tokens": null
+      },
+      "simulated": true
+    }
+  },
+  "cited_expected_document_ids": [
+    "9642984a-c79b-490a-8950-b7348e10489f",
+    "7a762353-b1a0-4e4e-86f7-7cf6c0d83fa7"
+  ]
+}

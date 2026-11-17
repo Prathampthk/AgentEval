@@ -62,3 +62,9 @@ After the demo milestone and completed human review, continue with new-question/
 Two launcher rehearsals completed successfully. The first two completed runs and their four accepted fake results remained readable after the second launcher restart. The packaged dashboard browser workflow passed with fifty recorded study pairs displayed. All 225 container tests passed; evidence and source fingerprints are in [demo readiness verification](../reports/demo-readiness-verification.json). The screenshot below is a simulated demonstration, not live-model quality or latency evidence.
 
 ![Simulated AgentEval dashboard](../reports/demo-dashboard.png)
+
+## Grader clean-clone acceptance (2026-11-17)
+
+A fresh HTTPS GitHub clone at `9bd7212` ran through the documented launcher under a separate project/database on port 8014, including stop/resume with its first two runs/four results preserved. All 257 container backend tests, the packaged browser workflow, queue replay and fake RAG smoke passed. Both hosted workflows passed for that revision. The temporary services were stopped without deleting volumes; the original demo on 8013 stayed available. See [final verification](../reports/grader-demo-final-verification.json). Existing Docker build cache was available; this is not a cache-cold or cross-platform claim. The build-tool dependency advisory is documented in [known limitations](KNOWN_LIMITATIONS.md).
+
+Actual rehearsal screenshots: [Overview](../reports/grader-demo-overview.png), [completed answers and jobs](../reports/grader-demo-run-details.png), [comparison](../reports/grader-demo-comparison.png). Peer evaluators must capture their own run rather than treat these images as proof of their execution.

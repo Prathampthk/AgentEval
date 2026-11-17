@@ -18,7 +18,7 @@ docker version
 docker compose version
 ```
 
-Python must be **3.12 or newer**, `docker version` must show a working **Server** as well as Client, and Compose must be v2 (`docker compose`, not legacy `docker-compose`). Initial builds require internet access to download pinned images/dependencies. Ensure Docker has enough available memory and disk for PostgreSQL and image builds; no minimum hardware benchmark is claimed. Linux users need permission to access their local Docker socket. Do not expose the application publicly.
+Python must be **3.12 or newer**, `docker version` must show a working **Server** as well as Client, and Compose must be v2 or newer (`docker compose`, not legacy `docker-compose`). Initial builds require internet access to download pinned images/dependencies. Ensure Docker has enough available memory and disk for PostgreSQL and image builds; no minimum hardware benchmark is claimed. Linux users need permission to access their local Docker socket. Do not expose the application publicly.
 
 ### 2. Clone and enter the repository
 
@@ -79,6 +79,8 @@ docker compose -p agenteval-demo --env-file .local/compose.env -f compose.yaml s
 ```
 
 Run `python3 scripts/run_demo.py` again to resume/rehearse. Earlier runs and reports remain. Do not add volume-deletion flags. Finish any active presentation before rerunning because the launcher stops/rebuilds its own API and worker.
+
+The clean-clone rehearsal, full backend suite and packaged browser checks are recorded in [final demo verification](reports/grader-demo-final-verification.json). Example screenshots in that report illustrate our run; evaluators should still capture their own execution.
 
 ### Troubleshooting
 
