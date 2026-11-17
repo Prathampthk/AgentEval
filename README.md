@@ -97,6 +97,8 @@ The clean-clone rehearsal, full backend suite and packaged browser checks are re
 
 For completed deliverables and remaining hosting/evaluation boundaries, see [project completion](docs/PROJECT_COMPLETION.md). The sections below are optional developer/live-provider workflows, **not prerequisites for the grader demo**.
 
+For the class presentation, see the [Gemini prompt, timed script, demo walkthrough and app guide](docs/presentation/README.md).
+
 ## Run locally for development
 
 Requires Python 3.12+. From the repository root:
