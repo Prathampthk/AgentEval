@@ -3,17 +3,97 @@
 A local AI evaluation and regression-testing platform with durable PostgreSQL jobs, bounded workers, a pgvector RAG target, regression checks and a React dashboard. Recorded live evidence includes a fifty-response judge study against frozen human labels and a small RAG collection; their scope and completed human RAG review are documented separately.
 **Core stack:** a local FastAPI evaluation workflow, PostgreSQL persistence, and a durable job queue with a configurable bounded worker pool. Gemini adapter contracts and a small live generation/judgment smoke sample are verified.
 
-## Start the demo
+## Start here — grader / peer-evaluation demo
 
-With Python 3.12+ and a local Docker engine running:
+This path runs the complete dashboard, API, PostgreSQL database and worker **without an API key**. It uses a clearly identified simulated provider. It demonstrates application behavior; recorded Gemini studies are separate evidence. You do not need to install host Node, PostgreSQL, Python packages or create a `.env` file for this path.
+
+### 1. Check prerequisites
+
+Use macOS or Linux with a local Docker engine, or a Linux shell in WSL2 with Docker integration. Native Windows PowerShell and remote/TCP Docker contexts are not supported by this launcher. Open Docker Desktop (or start your local Docker engine) and wait until it is running. Then open a terminal and run:
+
+```bash
+git --version
+python3 --version
+docker version
+docker compose version
+```
+
+Python must be **3.12 or newer**, `docker version` must show a working **Server** as well as Client, and Compose must be v2 (`docker compose`, not legacy `docker-compose`). Initial builds require internet access to download pinned images/dependencies. Ensure Docker has enough available memory and disk for PostgreSQL and image builds; no minimum hardware benchmark is claimed. Linux users need permission to access their local Docker socket. Do not expose the application publicly.
+
+### 2. Clone and enter the repository
+
+```bash
+git clone https://github.com/Prathampthk/AgentEval.git
+cd AgentEval
+git rev-parse HEAD
+```
+
+Save the printed commit hash with your evaluation. Run all following commands **from this directory**, where `README.md` and `compose.yaml` are located. If already cloned, enter your existing checkout; preserve any work before updating it. No cloud account is required.
+
+### 3. Build, start and rehearse
 
 ```bash
 python3 scripts/run_demo.py
 ```
 
-Open **http://127.0.0.1:8013/dashboard/**. The launcher builds and rehearses a separate fake-provider stack, prints the completed run IDs and saves fresh evidence. No API key, cloud server or host Node installation is required. Initial image/dependency downloads need network access. Existing application stacks and demo database history are preserved. See the [five-minute walkthrough](docs/DEMO.md) for the presentation and stop/restart commands.
+Wait for the command to finish; the initial image build can take several minutes and build output is saved in protected local logs rather than streamed. Successful output includes:
 
-For completed deliverables and the remaining evaluation/hosting prerequisites, see [project completion](docs/PROJECT_COMPLETION.md).
+```text
+DEMO READY: http://127.0.0.1:8013/dashboard/
+baseline: <generated run ID>
+candidate: <generated run ID>
+Policy scenarios: PASS / FAIL / INCONCLUSIVE (explicitly synthetic).
+Evidence: <your checkout>/artifacts/demo-<unique ID>/report.json
+```
+
+The IDs and evidence directory are generated on your computer. Success means two queued runs completed with two cases each, replay returned the same submissions, the comparison worked, and all three deliberately synthetic policy scenarios produced their expected decisions. A synthetic FAIL is intentional, not a broken installation. The launcher leaves services running and preserves database history when repeated. It makes **zero external model requests**, even if you have a Gemini key configured in your shell.
+
+### 4. Open and test the dashboard
+
+Open **http://127.0.0.1:8013/dashboard/** in your browser. Keep the trailing `/`. You do not need a login for this loopback-only simulated demo.
+
+1. **Overview:** confirm run/result totals and the simulated-results notice appear.
+2. **Runs:** select the `portfolio-demo` dataset (the exact name/version is shown in the launcher report). Inspect a completed run by clicking its short ID, then inspect answers, rubric scores and job attempts.
+3. To exercise the UI yourself, keep the prefilled single-case JSON, choose a unique dataset name, click **Save dataset**, then **Submit run**. Wait for completion; the page refreshes approximately every five seconds. Click the new run ID and verify `QUALITY PASS` and a completed job.
+4. **Compare:** choose a dataset with completed runs, select baseline/candidate and click **Compare runs**. Selecting the same completed run twice is also a valid mechanics check. Inspect the outcome and paired-case count.
+5. **Judge study:** inspect the fifty recorded human/model pairs and their disclosed study scope. These are saved research results, not new Gemini requests from your demo.
+
+If you only want to inspect the launcher rehearsal, no further submissions are necessary. Read the printed `report.json` for exact dataset/run IDs and policy results. More details: [five-minute walkthrough](docs/DEMO.md).
+
+### 5. Capture evidence for peer evaluation
+
+Take **your own screenshots after running the code**, rather than submitting our example screenshots as proof of your execution:
+
+- Terminal showing the commit hash and `DEMO READY` output.
+- Dashboard Overview with the simulated-results notice visible.
+- A completed run's answer/job details and a comparison outcome.
+
+Include the commit, OS, Python/Docker/Compose versions and a brief description of what you tested. Write your own detailed, constructive presentation feedback: what was clear, what evidence supported the claims, and specific improvements. If execution fails, state the failed command, relevant sanitized error and any missing requirement. Never include API keys, `.local/compose.env`, credentials or a resolved Compose configuration in screenshots.
+
+### 6. Stop and resume without deleting data
+
+From the same checkout:
+
+```bash
+docker compose -p agenteval-demo --env-file .local/compose.env -f compose.yaml stop api worker db
+```
+
+Run `python3 scripts/run_demo.py` again to resume/rehearse. Earlier runs and reports remain. Do not add volume-deletion flags. Finish any active presentation before rerunning because the launcher stops/rebuilds its own API and worker.
+
+### Troubleshooting
+
+| Symptom | What to do |
+|---|---|
+| `python3` missing or older than 3.12 | Install/select Python 3.12+; repeat `python3 --version` in the same terminal. |
+| Docker unavailable / permission denied | Start the local engine and verify `docker version`. On Linux, use your approved Docker access setup. |
+| `Demo stopped at build-demo` | Open the printed evidence directory and inspect `build-demo.log` locally. Check internet access, proxy trust and Docker disk/memory; do not disable TLS verification. |
+| Port 8013 occupied | Run `python3 scripts/run_demo.py --port 8014`, then use the printed URL. Existing same-project services will move to that port. |
+| Existing project belongs to another checkout | The refusal protects another copy's services/data. Use `python3 scripts/run_demo.py --project agenteval-demo-grader --port 8014` for a separate project/database. Use `-p agenteval-demo-grader` in stop commands too. Do not delete the other copy. |
+| Timeout or startup failure | Keep the report/logs, inspect the reported stage and `docker compose -p agenteval-demo --env-file .local/compose.env -f compose.yaml ps -a`. Resolve the cause before retrying; do not delete data to hide failed runs. |
+| Dashboard unavailable | Wait for `DEMO READY`, use the exact printed HTTP URL and port, then reload. This address works on the machine running Docker; it is not a public website. |
+| Run stays pending | Check the worker with the `ps -a` command above. Preserve failed/pending run evidence; do not switch to Gemini to make the rehearsal pass. |
+
+For completed deliverables and remaining hosting/evaluation boundaries, see [project completion](docs/PROJECT_COMPLETION.md). The sections below are optional developer/live-provider workflows, **not prerequisites for the grader demo**.
 
 ## Run locally for development
 

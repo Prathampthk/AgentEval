@@ -88,3 +88,38 @@ def test_demo_refuses_to_strip_existing_private_configuration(tmp_path, profile)
     with pytest.raises(RuntimeError) as error:
         module["verify_existing"]([container], tmp_path)
     assert "SYNTHETIC_SECRET" not in str(error.value)
+
+
+@pytest.mark.parametrize(
+    "project",
+    [
+        "agenteval-platform",
+        "agenteval-gemini",
+        "agenteval-demo-",
+        "agenteval-demo-../other",
+        "agenteval-demo-TEST",
+    ],
+)
+def test_demo_project_names_cannot_target_other_stacks(project):
+    with pytest.raises(RuntimeError):
+        module["verify_project"](project)
+
+
+def test_distinct_demo_project_still_enforces_checkout_ownership(tmp_path):
+    project = "agenteval-demo-grader"
+    module["verify_project"](project)
+    container = {
+        "Config": {
+            "Labels": {
+                "com.docker.compose.project": project,
+                "com.docker.compose.project.working_dir": str(tmp_path),
+                "com.docker.compose.service": "api",
+            },
+            "Env": ["AGENTEVAL_PROVIDER=fake"],
+        }
+    }
+    module["verify_existing"]([container], tmp_path, project)
+    with pytest.raises(RuntimeError):
+        module["verify_existing"]([container], tmp_path / "another", project)
+    with pytest.raises(RuntimeError):
+        module["verify_existing"]([container], tmp_path)

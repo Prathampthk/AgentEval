@@ -3,6 +3,7 @@
 import argparse
 import json
 import os
+import re
 import runpy
 import subprocess
 import sys
@@ -38,11 +39,18 @@ def verify_configuration(config, port):
         raise RuntimeError("Demo requires exactly the selected loopback API port")
 
 
-def verify_existing(containers, root):
+def verify_project(project):
+    if not re.fullmatch(r"agenteval-demo(?:-[a-z0-9]+(?:-[a-z0-9]+)*)?", project):
+        raise RuntimeError(
+            "Project must be agenteval-demo or agenteval-demo- followed by lowercase words/numbers"
+        )
+
+
+def verify_existing(containers, root, project=PROJECT):
     for container in containers:
         labels = container["Config"].get("Labels", {})
         if (
-            labels.get("com.docker.compose.project") != PROJECT
+            labels.get("com.docker.compose.project") != project
             or not labels.get("com.docker.compose.project.working_dir")
             or Path(labels.get("com.docker.compose.project.working_dir", "")).resolve()
             != root.resolve()
@@ -70,13 +78,15 @@ def verify_existing(containers, root):
                 )
 
 
-def start(port):
+def start(port, project=PROJECT):
+    verify_project(project)
     folder = ROOT / "artifacts" / ("demo-" + uuid4().hex)
     folder.mkdir(parents=True, mode=0o700)
     report = {
         "status": "PREPARING",
         "stage": "local engine preflight",
         "simulated": True,
+        "project": project,
         "provider_calls": 0,
         "human_labels_generated": 0,
         "started_at_utc": datetime.now(timezone.utc).isoformat(),
@@ -91,7 +101,7 @@ def start(port):
         "docker",
         "compose",
         "-p",
-        PROJECT,
+        project,
         "--env-file",
         ".local/compose.env",
         "-f",
@@ -139,7 +149,7 @@ def start(port):
             containers = json.loads(
                 run(["docker", "inspect", *identifiers], "project-ownership", log=False)
             )
-            verify_existing(containers, ROOT)
+            verify_existing(containers, ROOT, project)
             run(compose + ["stop", "api", "worker"], "stop-own-demo-services")
         run(compose + ["build", "api"], "build-demo")
         run(compose + ["up", "-d", "--wait", "api", "worker"], "start-demo")
@@ -213,11 +223,16 @@ def start(port):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--port", type=int, default=8013)
+    parser.add_argument(
+        "--project",
+        default=PROJECT,
+        help="Separate agenteval-demo-NAME project for another checkout",
+    )
     args = parser.parse_args()
     if not 1 <= args.port <= 65535:
         parser.error("Port must be between 1 and 65535")
     try:
-        start(args.port)
+        start(args.port, args.project)
     except RuntimeError as exc:
         parser.error(str(exc))
 
